@@ -2,6 +2,7 @@ import React from 'react'
 import {globalProps} from '../../propTypes'
 import { Popover, Container, Row, Col, Button} from  'reactstrap' 
 import { ImStatsBars } from 'react-icons/im'
+import { AiFillSetting } from 'react-icons/ai'
 import { useToggle } from '../../hooks/useToggle'
 import '../../static/css/Headers/Header.css'
 import '../../static/css/Headers/Footer.css'
@@ -25,16 +26,19 @@ const UserActions = (props:globalProps) =>{
     })
     let length = splittedName.length * .8
     let fontSize = 30 - ((length * length))
+
+    let ButtonStyle = {marginBottom:'5px',border:'1px solid black',borderRadius:'5px',width:'20px',height:'20px',cursor:'pointer'}
     return  <>  
                 <div style={{fontSize:`${fontSize}px`}} id='UserActions'>{Initials}</div>
                 <Popover  placement='bottom' isOpen={popover} target='UserActions' toggle={togglePopover} >
 
                         <h3 className='UserActionsHeader' >User Actions</h3>
-                        <Container>
+                        <Container className='UserActionsBody'>
                             <UserActionsRow label='EID' value={props.eid}/>
                             <UserActionsRow xsValue = 'auto' label='Name' value={props.name}/>
                             <UserActionsRow label='Acccount' value={props.account_type}/>
-                            <UserActionsRow label='Statistics' value={<Button><ImStatsBars/></Button>}/>
+                            <UserActionsRow label='Statistics' value={<ImStatsBars style={ButtonStyle}/>}/>
+                            <UserActionsRow label='Settings' value={<AiFillSetting style={ButtonStyle}/>}/>
                         </Container>
 
 
