@@ -18,7 +18,8 @@
     }
     .IndividualTweet{
         box-shadow: 0 4px 2px -2px gray;
-        flex: 1 0 600px; /* explanation below */
+        flex-basis:500px;
+        flex-grow:1;
         margin:10px;
         border-radius: 5px;
         border:2px solid var(--cardColor);

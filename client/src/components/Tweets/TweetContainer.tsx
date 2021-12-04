@@ -7,28 +7,28 @@ import { Button } from 'reactstrap'
 
 const tempData:any = [
     {
-        tweet_content:'This is the tweet that they are trying to figure out now and the context might be something or it might be something',
-        
+        tweet_content:'This is the tweet that they are trying to figure out now and the context might be something or it might be something. This is the priority',
+        priority:false
     },
     {
-        tweet_content:'This is the tweet that they are trying to figure out now and the context might be something or it might be something',
-        
+        tweet_content:'Tdfdadssssssssssssssssffffffffhis is the tweet that they are trying to figure out now and the context might be something or it might be something',
+        priority:false
     },
     {
-        tweet_content:'This is the tweet that they are trying to figure out now and the context might be something or it might be something',
-        
+        tweet_content:'This is HIGH PRIORITYthdasfffffffffffffffffe tweet that they are trying to figure out now and the context might be something or it might be something',
+        priority:true
     },
     {
-        tweet_content:'This is the tweet that they are trying to figure out now and the context might be something or it might be something',
-        
+        tweet_content:'This is the tHIGH PRIROTITYweet that they are trying to figure out now and the context might be something or it might be something',
+        priority:true
     }
     , {
         tweet_content:'This is the tweet that they are trying to figure out now and the context might be something or it might be something',
-        
+        priority:false
     }
     , {
-        tweet_content:'This is the tweet that they are trying to figure out now and the context might be something or it might be something',
-        
+        tweet_content:'This is theffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff tweet that they are trying to figure out now and the context might be something or it might be something',
+        priority:false
     }
 
 ]
@@ -41,6 +41,12 @@ const AddMissingProps = (tweets:tweet[]) =>{
             tempObj[key] = item[key]
         })
         return tempObj
+    })
+    temp.sort((a:tweet,b:tweet)=>{
+        if(a.priority )
+            return -1
+        else
+            return 1
     })
     return temp;
 

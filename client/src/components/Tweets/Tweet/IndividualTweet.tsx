@@ -34,8 +34,12 @@ const HandleSkip = (props:any) =>{
 const IndividualTweet = (props:IndividualTweetType) =>{
     let currentTweet = props.tweets[props.index]
     const ref = useRef<HTMLParagraphElement>(null)
+    const indivRef = useRef<HTMLDivElement>(null)
     useEffect(()=>{
-        if(ref.current !== null)
+        if(ref.current !== null && indivRef.current !== null){
+            let width = (document.getElementsByClassName('IndividualTweet')[0] as any)
+            indivRef.current.style.width = width.clientWidth + 'px!important';
+            console.log(width.clientWidth)
             ref.current.addEventListener('mouseup',(e)=>{
                 if(ref.current === null)
                     return
@@ -44,6 +48,7 @@ const IndividualTweet = (props:IndividualTweetType) =>{
                     return
                 updateKey(props,'claim',obj.toString())
             })
+        }
     },[])
 
     if (currentTweet.claim !== '' && currentTweet.stance !== ''){
@@ -53,7 +58,7 @@ const IndividualTweet = (props:IndividualTweetType) =>{
     else if(currentTweet.complete)
         updateKey(props,'complete',false)
 
-    return  <div className='IndividualTweet'>
+    return  <div ref={indivRef} className='IndividualTweet'>
                 <h3 style={{position:'relative'}}>
                     Tweet #{props.index+1}
                     <div onClick={()=>HandleSkip(props)} style={{fontSize:'15px',position:'absolute',top:'5px',right:'10px',cursor:'pointer'}}>
