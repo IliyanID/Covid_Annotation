@@ -10,7 +10,7 @@ const header = (props:globalProps) =>{
     console.log(props)
     return  <>
                 <div className = 'Header'>
-                    Twitter Validator
+                    Tweet Validator
                     <UserActions {...props}/>
                 </div>
                 <div className='Footer'></div>

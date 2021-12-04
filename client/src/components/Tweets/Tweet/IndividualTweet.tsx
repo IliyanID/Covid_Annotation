@@ -17,13 +17,6 @@ let authorStance = [
     'Neutral'
 ]
 
-const setAtIndex = (arr:string[],setArr:(a:string[])=>void,index:number,value:string) =>{
-    let tempClaim = [...arr]
-    tempClaim[index] = value;
-    setArr(tempClaim)
-}
-
-
 const IndividualTweet = (props:IndividualTweetType) =>{
     const ref = useRef<HTMLParagraphElement>(null)
     useEffect(()=>{
@@ -44,21 +37,31 @@ const IndividualTweet = (props:IndividualTweetType) =>{
                 <h3>Tweet</h3>
                 <p ref={ref} className='tweetText'>{props.tweetText}</p>
                 { 
-                    (props.claim[props.index] !== '')?
                     <div>
                         <h5>Selected Claim</h5>
                         <p className='selectedClaim'>{props.claim[props.index]}</p>
                     </div>
-                    :<></>
                 }
                 {
-                    authorStance.map(stance=>{
-                        return <Button style={{margin:'5px'}}>{stance}</Button>
+                    authorStance.map((stance,index)=>{
+                        return <Button 
+                                    color={(authorStance[index] === props.authorStance[props.index])?'primary':'secondary'} 
+                                    style={{margin:'5px'}} 
+                                    onClick={()=>{
+                                        let temp = [...props.authorStance]
+                                        temp[props.index] = authorStance[index]
+                                        props.setAuthorStance(temp)
+                                    }}
+                                    >
+                                    {stance}
+                                </Button>
                     })
                 }
-                                <br/>
-                <Button color='success'>Submit</Button>
-
+                <br/>
+                {
+                    (props.claim[props.index] !== '' && props.authorStance[props.index] !== '')?
+                        <Button color='success'>Submit</Button>:<></>
+                }
             </div>
 
 }
