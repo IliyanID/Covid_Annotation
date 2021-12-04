@@ -6,7 +6,7 @@ import Header from '../containers/Margins/Margins'
 import TweetContainer from './Tweets/TweetContainer';
 
 import  zipObject  from 'lodash.zipobject'
-import { globalProps, globalPropsDefaultObj } from '../globalProps'
+import { globalProps, globalPropsDefaultObj } from '../propTypes'
 
 const packageStatesIntoObject = (originalPackage:any,states:[string,string],stateFunction:[any,(a:any)=>void]):globalProps =>{
   //originalPackage is the object so far holding the packages

@@ -1,23 +1,29 @@
 import React, { useEffect, useRef } from 'react'
+import { tweet } from '../../../propTypes'
 import { Button } from 'reactstrap'
 
 export type IndividualTweetType = {
-    tweetText:string,
-    claim:string[],
-    setClaim:(a:string[])=>void,
-
-    authorStance:string[],
-    setAuthorStance:(a:string[])=>void,
-    index:number
+    tweets:tweet[],
+    setTweets:(a:tweet[])=>void
+    index:number,
 }
 
 let authorStance = [
     'Approve',
     'Revoke',
-    'Neutral'
+    'Neutral',
+    "No Comment",
+    "No Claim"
 ]
 
+const updateKey = (props:IndividualTweetType,key:string,value:any)=>{
+    let temp = [...props.tweets]
+    temp[props.index][key] = value;
+    props.setTweets(temp)
+}
+
 const IndividualTweet = (props:IndividualTweetType) =>{
+    let currentTweet = props.tweets[props.index]
     const ref = useRef<HTMLParagraphElement>(null)
     useEffect(()=>{
         if(ref.current !== null)
@@ -27,46 +33,47 @@ const IndividualTweet = (props:IndividualTweetType) =>{
                 let obj = window.getSelection()
                 if(obj === null)
                     return
-                let selected = obj.toString()
-                let temp = [...props.claim]
-                temp[props.index] = selected.trim()
-                props.setClaim(temp)
+                updateKey(props,'claim',obj.toString())
             })
-    },[props])
+    },[])
+
+    if (currentTweet.claim !== '' && currentTweet.stance !== ''){
+        if(!currentTweet.complete)
+            updateKey(props,'complete',true)
+    }
+    else if(currentTweet.complete)
+        updateKey(props,'complete',false)
 
     return  <div className='IndividualTweet'>
                 <h3>Tweet</h3>
-                <p ref={ref} className='tweetText'>{props.tweetText}</p>
-                { 
+                <p ref={ref} className='tweetText'>{currentTweet.tweet_content}</p>
+                { (currentTweet.stance !== 'No Claim')?
                     <div>
-                        <h5>Selected Claim</h5>
-                        <p className='selectedClaim'>{props.claim[props.index]}</p>
-                    </div>
+                        <h5>Author's Claim</h5>
+                        <p className='selectedClaim'>{currentTweet.claim}</p>
+                    </div>:<></>
                 }
                 <br/>
-                <h5>Author Stance</h5>
+                <h5>Author's Stance</h5>
                 {
                     authorStance.map((stance,index)=>{
                         let unique = `Button-author-stance-${props.index}-${index}`
                         return <Button 
                                     key={unique}
-                                    color={(authorStance[index] === props.authorStance[props.index])?'primary':'secondary'} 
+                                    color={(authorStance[index] === currentTweet.stance)?'primary':'secondary'} 
                                     style={{margin:'5px'}} 
                                     onClick={()=>{
-                                        let temp = [...props.authorStance]
-                                        temp[props.index] = authorStance[index]
-                                        props.setAuthorStance(temp)
+                                        if(authorStance[index] === 'No Claim')
+                                            updateKey(props,'claim',authorStance[index])
+                                        else if(currentTweet.stance === 'No Claim')
+                                            updateKey(props,'claim','')
+
+                                        updateKey(props,'stance',authorStance[index])
                                     }}
                                     >
                                     {stance}                
                                 </Button>
                     })
-                }
-                <br/>
-                <br/>
-                {
-                    (props.claim[props.index] !== '' && props.authorStance[props.index] !== '')?
-                        <Button color='success'>Submit</Button>:<></>
                 }
             </div>
 

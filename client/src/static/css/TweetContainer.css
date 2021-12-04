@@ -11,7 +11,11 @@
     .TweetContainer > *{
 
     }
-
+    .submit_completed{
+        position: fixed;
+        right:5px;
+        bottom:45px;
+    }
     .IndividualTweet{
         box-shadow: 0 4px 2px -2px gray;
         flex: 1 0 600px; /* explanation below */

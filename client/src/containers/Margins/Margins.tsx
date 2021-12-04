@@ -1,5 +1,5 @@
 import React from 'react'
-import {globalProps} from '../../globalProps'
+import {globalProps} from '../../propTypes'
 import { Popover, Container, Row, Col, Button} from  'reactstrap' 
 import { ImStatsBars } from 'react-icons/im'
 import { useToggle } from '../../hooks/useToggle'
