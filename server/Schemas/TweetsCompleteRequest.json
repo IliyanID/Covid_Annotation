@@ -3,7 +3,7 @@
     "$schema": "http://json-schema.org/draft-07/schema#",
     "title": "Tweets Complete",
     "description": "TweetsComplete Request",
-    "type": "object",
+    "type": "array",
     "properties": {
       "tweet_content": {
         "description":"original tweet",
