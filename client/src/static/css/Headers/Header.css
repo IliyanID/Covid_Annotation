@@ -5,17 +5,21 @@
     position:fixed;
     top:0px;
     width:100vw;
-    height: 100px;
+    height: 40px;
     background-color: var(--mainColor);
     display:flex;
-    justify-content: center;
-    color:white
+    justify-content: left;
+    align-items: center;
+    padding-left:10px;
+    font-weight: 500;
+    font-size:25px;
+    color:white;
 }
 
 #UserActions{
     position:absolute;
-    right:10px;
-    top:110px;
+    right:19px;
+    top:45px;
     width:50px;
     height: 50px;
     border:2px solid var(--mainColor);
@@ -24,6 +28,7 @@
     display:flex;
     justify-content: center;
     align-items: center;
+    cursor:pointer;
 
 }
     .UserActionsHeader{

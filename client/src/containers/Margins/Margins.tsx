@@ -4,13 +4,17 @@ import { Popover, Container, Row, Col, Button} from  'reactstrap'
 import { ImStatsBars } from 'react-icons/im'
 import { useToggle } from '../../hooks/useToggle'
 import '../../static/css/Headers/Header.css'
+import '../../static/css/Headers/Footer.css'
 
 const header = (props:globalProps) =>{
     console.log(props)
-    return  <div className = 'Header'>
-                Twitter Validator
-                <UserActions {...props}/>
-            </div>
+    return  <>
+                <div className = 'Header'>
+                    Twitter Validator
+                    <UserActions {...props}/>
+                </div>
+                <div className='Footer'></div>
+            </>
 }
 
 const UserActions = (props:globalProps) =>{

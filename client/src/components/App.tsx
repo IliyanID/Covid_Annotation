@@ -2,7 +2,8 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../static/css/App.css';
-import Header from '../containers/Headers/Header'
+import Header from '../containers/Margins/Margins'
+import TweetContainer from './Tweets/TweetContainer';
 
 import  zipObject  from 'lodash.zipobject'
 import { globalProps, globalPropsDefaultObj } from '../globalProps'
@@ -35,6 +36,7 @@ const App = () => {
   return (
     <div className="App">
       <Header {...allPackages}/>
+      <TweetContainer {...allPackages} />
     </div>
   );
 }
