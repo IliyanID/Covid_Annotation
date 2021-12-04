@@ -1,4 +1,4 @@
-const express = require("express");
+import express, {Request, Response } from 'express';
 
 const PORT = process.env.PORT || 3001;
 
@@ -8,7 +8,7 @@ app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });
 
-app.get("/api/get_tweets/:eid", (req, res) => {
+app.get("/api/get_tweets/:eid", (req:Request, res:Response) => {
   let tempObj = [
     {
         tweet_content:'This is the tweet that they are trying to figure out now and the context might be something or it might be something. This is the priority',
@@ -43,6 +43,7 @@ app.get("/api/get_tweets/:eid", (req, res) => {
 
 ]
   const eid = req.params.eid;
-  const limit = req.query.limit
+  const limit:any = req.query.limit
+  console.log(req)
   res.json(tempObj.splice(0,limit));
 });
