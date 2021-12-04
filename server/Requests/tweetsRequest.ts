@@ -10,9 +10,10 @@ import bodyParser from 'body-parser';
 export const tweetsRequest = (app) =>{
     var jsonParser = bodyParser.json()
     const database = new database_tweets()
+
     app.get("/api/tweets/:eid", (req:Request, res:Response) => {
         log(req)  
-        const eid = req.params.eid;
+        const eid = parseInt(req.params.eid);
         const limit:any = req.query.limit
         let data = database.give_tweets(eid,limit)
         res.json(data);

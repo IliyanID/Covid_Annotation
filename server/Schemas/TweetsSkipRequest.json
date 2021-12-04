@@ -31,7 +31,7 @@
       },
       "eid":{
           "description": "eid of user",
-          "type":"string"
+          "type":"number"
       }
 
     },
