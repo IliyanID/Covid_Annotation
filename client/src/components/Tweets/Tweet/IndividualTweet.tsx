@@ -33,6 +33,7 @@ const IndividualTweet = (props:IndividualTweetType) =>{
                 props.setClaim(temp)
             })
     },[props])
+
     return  <div className='IndividualTweet'>
                 <h3>Tweet</h3>
                 <p ref={ref} className='tweetText'>{props.tweetText}</p>
@@ -42,10 +43,13 @@ const IndividualTweet = (props:IndividualTweetType) =>{
                         <p className='selectedClaim'>{props.claim[props.index]}</p>
                     </div>
                 }
+                <br/>
+                <h5>Author Stance</h5>
                 {
                     authorStance.map((stance,index)=>{
+                        let unique = `Button-author-stance-${props.index}-${index}`
                         return <Button 
-                                    key={`Button author-stance-${props.index}-${index}`}
+                                    key={unique}
                                     color={(authorStance[index] === props.authorStance[props.index])?'primary':'secondary'} 
                                     style={{margin:'5px'}} 
                                     onClick={()=>{
@@ -54,10 +58,11 @@ const IndividualTweet = (props:IndividualTweetType) =>{
                                         props.setAuthorStance(temp)
                                     }}
                                     >
-                                    {stance}
+                                    {stance}                
                                 </Button>
                     })
                 }
+                <br/>
                 <br/>
                 {
                     (props.claim[props.index] !== '' && props.authorStance[props.index] !== '')?

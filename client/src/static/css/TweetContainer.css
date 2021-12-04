@@ -1,6 +1,9 @@
+:root{
+    --cardColor:#257742
+}
 .TweetContainer{
     width: calc(100vw - 20px);
-    margin-top:40px;
+    margin-top:90px;
     margin-bottom:40px;
     display:flex;
     flex-wrap:wrap;
@@ -10,13 +13,21 @@
     }
 
     .IndividualTweet{
-        background-color: rgb(177, 177, 177);
+        box-shadow: 0 4px 2px -2px gray;
         flex: 1 0 600px; /* explanation below */
         margin:10px;
         border-radius: 5px;
-        border:2px solid var(--mainColor);
-        padding:10px;
+        border:2px solid var(--cardColor);
     }
+        .IndividualTweet h3{
+            background-color: var(--cardColor);
+            margin:0px;
+            color:white;
+            padding:10px;
+            border-radius:5px 5px 0px 0px;
+            transform: translate(0px,-2px);
+            width:calc(100% + 1px)
+        }
         .tweetText{
             background-color: white;
             border:solid 2px black;
@@ -24,13 +35,15 @@
             text-align: left;
             margin:10px;
             padding:10px;
-            height: 200px;
+            min-height: 100px;
             overflow:auto;
 
         }
         .selectedClaim{
             min-height: 20px;
             background-color: white;
+            border:2px solid black;
+            border-radius:5px;
             margin:10px;
             
         }

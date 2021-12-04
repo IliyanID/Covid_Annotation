@@ -4,4 +4,5 @@
     width:100vw;
     height:40px;
     background-color:var(--mainColor);
+    z-index: 1000;
 }

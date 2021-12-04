@@ -40,10 +40,6 @@ export const TweetContainer = (props:globalProps) =>{
 
     const authorStanceArr:string[] = new Array(tempData.length).fill('')
     const [authorStance,setAuthorStance] = useState(authorStanceArr)
-
-
-
-    
     return  <div className='TweetContainer'>
                 {tempData.map((tweetText,index) =>{
 
