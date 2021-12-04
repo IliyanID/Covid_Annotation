@@ -1,10 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { globalProps, tweet, tweetDefaultObject } from '../../propTypes'
 import '../../static/css/TweetContainer.css'
 import IndividualTweet from './Tweet/IndividualTweet'
 import { Button } from 'reactstrap'
-import { API_Get_Tweets } from '../../utils/API'
+import { API_Get_Tweets, API_Post_Tweet } from '../../utils/API'
 import { packageStatesIntoObject } from '../../utils/packageStatesIntoObject'
+import No_More_Tweets from './No-More-Tweets'
+
 type TweetContainerStates = {
     tweets:tweet[],
     setTweets:(a:tweet[])=>void,
@@ -48,20 +50,24 @@ const HandleNewTweets = (allPackages:tweetContainerAllPackages) =>{
         let missingAmmount = allPackages.showTweets - NumTweets
         API_Get_Tweets({eid:allPackages.eid,limit:missingAmmount}).then((response:tweet[]) =>{
             if(response){
-                console.log(response)
                 let updatedTweets = AddMissingProps(response)
                 let temp = [...allPackages.tweets]
                 temp = temp.concat(updatedTweets)
-                allPackages.setTweets([...temp])
+                if(response.length > 0)
+                    allPackages.setTweets([...temp])
             }
         })
     },[allPackages.tweets])
 }
 
-const handleSubmit = (props:any) =>{
+const handleSubmit = async(props:tweetContainerAllPackages) =>{
     let notCompleted = props.tweets.filter((tweet:tweet) =>{return !tweet.complete})
-    props.setTweets(notCompleted)
-    props.showMessage(`Submitted Completed Tweets! Getting New Tweets...`)
+    let completed = props.tweets.filter((tweet:tweet) =>{return tweet.complete})
+    let success = await API_Post_Tweet({requestType:'complete',eid:props.eid,data:completed},props.showMessage)
+    if(success){
+        props.setTweets(notCompleted)
+        props.showMessage(`Submitted Completed Tweets! Getting New Tweets...`)
+    }
 }
 
 export const TweetContainer = (props:globalProps) =>{
@@ -70,6 +76,8 @@ export const TweetContainer = (props:globalProps) =>{
     let completedExists = allPackages.tweets.filter(item => {return item.complete}).length > 0
     return  <>
                 <div className='TweetContainer'>
+                    <No_More_Tweets tweets = {allPackages.tweets}/>
+                    
                     {allPackages.tweets.map((tweet,index) =>{
                         let indivPackages = {...allPackages,index}
                         return <IndividualTweet 

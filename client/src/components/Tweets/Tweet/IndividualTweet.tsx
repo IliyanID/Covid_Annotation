@@ -3,6 +3,8 @@ import { tweet } from '../../../propTypes'
 import { Button } from 'reactstrap'
 import { BsFillSkipForwardFill } from 'react-icons/bs'
 import { tweetContainerAllPackages } from '../TweetContainer'
+import { API_Post_Tweet } from '../../../utils/API'
+
 type PropsType = {
     index:number,
 }
@@ -22,11 +24,18 @@ const updateKey = (props:IndividualTweetType,key:string,value:any)=>{
     props.setTweets(temp)
 }
 
-const HandleSkip = (props:any) =>{
-    props.showMessage(`Skipped Tweet #${props.tweets[props.index].id}`)
+const HandleSkip = async(props:IndividualTweetType) =>{
     let temp = [...props.tweets]
+    let removedTweet = temp.splice(props.index,1)
     temp.splice(props.index,1)
-    props.setTweets(temp)
+
+    let data = removedTweet[0]
+    let response = await API_Post_Tweet({requestType:'skip',eid:props.eid,data:data},props.showMessage)
+
+    if(response){
+        props.showMessage(`Skipped Tweet #${props.tweets[props.index].id}`)
+        props.setTweets(temp)
+    }
 
 }
 
@@ -38,7 +47,6 @@ const IndividualTweet = (props:IndividualTweetType) =>{
         if(ref.current !== null && indivRef.current !== null){
             let width = (document.getElementsByClassName('IndividualTweet')[0] as any)
             indivRef.current.style.width = width.clientWidth + 'px!important';
-            console.log(width.clientWidth)
             ref.current.addEventListener('mouseup',(e)=>{
                 if(ref.current === null)
                     return

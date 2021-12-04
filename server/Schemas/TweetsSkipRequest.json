@@ -1,0 +1,42 @@
+{
+    "$id": "https://example.com/address.schema.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Tweets Complete",
+    "description": "TweetsComplete Request",
+    "type": "object",
+    "properties": {
+      "tweet_content": {
+        "description":"original tweet",
+        "type":"string"
+      },
+      "claim": {
+        "description":"tweet claim",
+        "type":"string"
+      },
+      "stance":{
+          "description": "author's claim",
+          "type": "string"
+      },
+      "id": {
+        "description": "a list of places",
+        "type":"string"
+      },
+      "complete": {
+        "description": "if tweet is complete",
+        "type":"boolean"
+      },
+      "priority": {
+        "description": "if has been reviewed before",
+        "type":"boolean"
+      },
+      "eid":{
+          "description": "eid of user",
+          "type":"string"
+      }
+
+    },
+    "required":["tweet_content", "claim", "stance", "id"],
+    "additionalProperties": false
+  }
+
+ 

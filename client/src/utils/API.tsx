@@ -1,3 +1,4 @@
+import { propTypes } from 'react-bootstrap/esm/Image'
 import { tweet } from '../propTypes'
 
 type api = {
@@ -5,7 +6,7 @@ type api = {
     eid:number | string,
     ename?:string,
     limit?:number,
-    data?:tweet[]
+    data?:tweet[] | tweet
 }
 
 
@@ -22,11 +23,15 @@ export const API_Get_Tweets = async ({eid,limit}:api)=> {
         return false
 }
 
-export const API_Post_Tweet = async ({requestType,eid,data}:api) => {
+export const API_Post_Tweet = async ({requestType,eid,data}:api,showMessage:any) => {
     let base_url = Get_Base_URL()
+    let body = JSON.stringify(data)
     let response = await fetch(`${base_url}/tweets/${requestType}/${eid}`, {
         method: 'POST',
-        body:JSON.stringify(data)
+        headers: {
+            'Content-Type': 'application/json'
+          },
+        body:body
     })
 
     if(response.ok){
@@ -34,6 +39,7 @@ export const API_Post_Tweet = async ({requestType,eid,data}:api) => {
         return tweets
     }
     else {
+        showMessage(`Failed to send ${requestType}ed tweets to server. Check log for more details`,'error')
         return false
     }
 }

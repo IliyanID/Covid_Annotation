@@ -16,8 +16,8 @@ export class database_tweets extends database {
         })
     }
 
-    skip_tweet = (tweet) =>{
-
+    skip_tweet = (tweet,eid:number) =>{
+        
     }
 
     give_tweets = (eid:string,limit:number) =>{
