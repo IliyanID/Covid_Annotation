@@ -45,6 +45,7 @@ const IndividualTweet = (props:IndividualTweetType) =>{
                 {
                     authorStance.map((stance,index)=>{
                         return <Button 
+                                    key={`Button author-stance-${props.index}-${index}`}
                                     color={(authorStance[index] === props.authorStance[props.index])?'primary':'secondary'} 
                                     style={{margin:'5px'}} 
                                     onClick={()=>{

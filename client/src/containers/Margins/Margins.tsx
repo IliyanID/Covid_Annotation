@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import {globalProps} from '../../globalProps'
 import { Popover, Container, Row, Col, Button} from  'reactstrap' 
 import { ImStatsBars } from 'react-icons/im'
@@ -7,7 +7,6 @@ import '../../static/css/Headers/Header.css'
 import '../../static/css/Headers/Footer.css'
 
 const header = (props:globalProps) =>{
-    console.log(props)
     return  <>
                 <div className = 'Header'>
                     Tweet Validator
@@ -22,12 +21,10 @@ const UserActions = (props:globalProps) =>{
     let Initials = ''
     let splittedName = props.name.split(' ')
     splittedName.forEach((item)=>{
-        console.log(item)
         Initials += item[0].toUpperCase()
     })
     let length = splittedName.length * .8
     let fontSize = 30 - ((length * length))
-    console.log(fontSize)
     return  <>  
                 <div style={{fontSize:`${fontSize}px`}} id='UserActions'>{Initials}</div>
                 <Popover  placement='bottom' isOpen={popover} target='UserActions' toggle={togglePopover} >
