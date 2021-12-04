@@ -6,7 +6,7 @@ export type globalProps = {
 }
 
 export const globalPropsDefaultObj:globalProps = {
-    eid:'-1',
-    name:'NA',
-    account_type:'NA'
+    eid:'832542166',
+    name:'Iliyan Dimitrov',
+    account_type:'validator'
 } as const

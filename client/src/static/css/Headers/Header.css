@@ -1,16 +1,39 @@
+:root{
+    --mainColor:#1E4D2B;
+}
 .Header{
     position:fixed;
     top:0px;
     width:100vw;
+    height: 100px;
+    background-color: var(--mainColor);
     display:flex;
     justify-content: center;
+    color:white
 }
 
 #UserActions{
     position:absolute;
-    right:0px;
-    top:0px;
+    right:10px;
+    top:110px;
     width:50px;
     height: 50px;
-    background-color: black;
+    border:2px solid var(--mainColor);
+    background-color: var(--mainColor);
+    border-radius: 50%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+
 }
+    .UserActionsHeader{
+        background-color: var(--mainColor);
+        color:white;
+        padding:5px;
+        width:100%;
+        margin:0px;
+        font-weight: 5;
+    }
+    .popover{
+       max-width: 100vw;
+    }

@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import React, { useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import '../static/css/App.css';
 import Header from '../containers/Headers/Header'
 
