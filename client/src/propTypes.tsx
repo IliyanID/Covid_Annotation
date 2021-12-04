@@ -18,7 +18,8 @@ export type tweet = {
     claim:string,
     stance:string,
     complete:boolean,
-    priority:boolean
+    priority:boolean,
+    id:number
     [key: string]: any
 }
 
@@ -27,5 +28,6 @@ export const tweetDefaultObject:tweet = {
     claim:'',
     stance:'',
     complete:false,
-    priority:false
+    priority:false,
+    id:-1
 }

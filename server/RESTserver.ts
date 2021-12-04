@@ -1,49 +1,53 @@
 import express, {Request, Response } from 'express';
+import cors from 'cors'
+import bodyParser from 'body-parser';
+import { validateResponse } from './validateResponse'
+import database from './database.json'
+
+import TweetsCompleteRequest from './Schemas/TweetsCompleteRequest.json'
 
 const PORT = process.env.PORT || 3001;
 
 const app = express()
+var jsonParser = bodyParser.json()
+
+let activeSearchDatabase = []
+
+const log = (req:Request) =>{
+  console.log(`${req.method} ${req.url}`)
+  if(req.body)
+    console.log(req.body)
+}
 
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });
 
-app.get("/api/get_tweets/:eid", (req:Request, res:Response) => {
-  let tempObj = [
-    {
-        tweet_content:'This is the tweet that they are trying to figure out now and the context might be something or it might be something. This is the priority',
-        priority:false,
-        id:0
-    },
-    {
-        tweet_content:'Tdfdadssssssssssssssssffffffffhis is the tweet that they are trying to figure out now and the context might be something or it might be something',
-        priority:false,
-        id:1
-    },
-    {
-        tweet_content:'This is HIGH PRIORITYthdasfffffffffffffffffe tweet that they are trying to figure out now and the context might be something or it might be something',
-        priority:true,
-        id:2
-    },
-    {
-        tweet_content:'This is the tHIGH PRIROTITYweet that they are trying to figure out now and the context might be something or it might be something',
-        priority:true,
-        id:3
-    }
-    , {
-        tweet_content:'This is the tweet that they are trying to figure out now and the context might be something or it might be something',
-        priority:false,
-        id:4
-    }
-    , {
-        tweet_content:'This is theffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff tweet that they are trying to figure out now and the context might be something or it might be something',
-        priority:false,
-        id:5
-    }
+app.use(cors({
+  origin: 'http://localhost:3000'
+}));
 
-]
+app.get("/api/tweets/:eid", (req:Request, res:Response) => {
+  log(req)
+
+
   const eid = req.params.eid;
   const limit:any = req.query.limit
-  console.log(req)
-  res.json(tempObj.splice(0,limit));
+  let sentData = database.splice(0,limit)
+  database.splice(0,limit)
+  activeSearchDatabase = activeSearchDatabase.concat(sentData)
+  res.json(sentData);
 });
+
+app.post('/api/tweets/complete/:eid',jsonParser,(req:Request,res:Response)=>{
+  log(req)
+  let schema = validateResponse(req.body,TweetsCompleteRequest)
+  if(schema.valid){
+    res.status(200)
+    res.send()
+  }
+  else{
+    res.status(400)
+    res.send(schema)
+  }
+})

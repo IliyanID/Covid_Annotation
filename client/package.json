@@ -33,6 +33,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "start-all": "concurrently --names 'SERVER,CLIENT' --prefix-colors 'yellow,blue' --kill-others  \"npm run start --prefix ../server\" \"npm run start\" ",
     "build": "react-scripts build",
     "test": "react-scripts test --ci --coverage --reporters=default --watchAll --testMatch client/tests/*.test.tsx",
     "eject": "react-scripts eject"

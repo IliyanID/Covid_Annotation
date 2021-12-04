@@ -5,13 +5,18 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon RESTserver.ts"
+    "start": "nodemon RESTserver.ts",
+    "start-all": "concurrently --names 'SERVER,CLIENT' --prefix-colors 'yellow,blue' --kill-others \"npm run start\" \"npm run start --prefix ../client\" "
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@types/request": "^2.48.7",
+    "ajv": "^8.8.2",
+    "body-parser": "^1.19.0",
+    "concurrently": "^6.4.0",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "nodemon": "^2.0.15"
   },

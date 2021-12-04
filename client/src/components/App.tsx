@@ -4,24 +4,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../static/css/App.css';
 import Header from '../containers/Margins/Margins'
 import TweetContainer from './Tweets/TweetContainer';
-
-import  zipObject  from 'lodash.zipobject'
-import { globalProps, globalPropsDefaultObj } from '../propTypes'
-
-const packageStatesIntoObject = (originalPackage:any,states:[string,string],stateFunction:[any,(a:any)=>void]):globalProps =>{
-  //originalPackage is the object so far holding the packages
-  //states is an array [stateName, setStateFunction]
-
-  //zipObject creates an object where if you pass zipObject([1,2],['one','two']) it will return
-  // {1:'one',2:'two'}
-  const combinedStates = zipObject(states,stateFunction)
-
-  //Combine the the exisiting package with the combinedStates object
-  originalPackage = {...originalPackage,...combinedStates}
-  return originalPackage
-}
-
-
+import {globalPropsDefaultObj } from '../propTypes'
+import { packageStatesIntoObject } from '../utils/packageStatesIntoObject'
 
 const PackageUserStates = (props:any)=>{
   let p:any = {}

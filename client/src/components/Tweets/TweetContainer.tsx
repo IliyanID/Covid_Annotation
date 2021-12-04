@@ -1,37 +1,18 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { globalProps, tweet, tweetDefaultObject } from '../../propTypes'
 import '../../static/css/TweetContainer.css'
 import IndividualTweet from './Tweet/IndividualTweet'
 import { Button } from 'reactstrap'
+import { API_Get_Tweets } from '../../utils/API'
+import { packageStatesIntoObject } from '../../utils/packageStatesIntoObject'
+type TweetContainerStates = {
+    tweets:tweet[],
+    setTweets:(a:tweet[])=>void,
+    showTweets:number,
+    setShowTweets:(a:number)=>void
+}
 
-
-const tempData:any = [
-    {
-        tweet_content:'This is the tweet that they are trying to figure out now and the context might be something or it might be something. This is the priority',
-        priority:false
-    },
-    {
-        tweet_content:'Tdfdadssssssssssssssssffffffffhis is the tweet that they are trying to figure out now and the context might be something or it might be something',
-        priority:false
-    },
-    {
-        tweet_content:'This is HIGH PRIORITYthdasfffffffffffffffffe tweet that they are trying to figure out now and the context might be something or it might be something',
-        priority:true
-    },
-    {
-        tweet_content:'This is the tHIGH PRIROTITYweet that they are trying to figure out now and the context might be something or it might be something',
-        priority:true
-    }
-    , {
-        tweet_content:'This is the tweet that they are trying to figure out now and the context might be something or it might be something',
-        priority:false
-    }
-    , {
-        tweet_content:'This is theffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff tweet that they are trying to figure out now and the context might be something or it might be something',
-        priority:false
-    }
-
-]
+export type tweetContainerAllPackages = globalProps & TweetContainerStates
 
 const AddMissingProps = (tweets:tweet[]) =>{
 
@@ -52,25 +33,60 @@ const AddMissingProps = (tweets:tweet[]) =>{
 
 }
 
+const PackageAll = (props:globalProps):tweetContainerAllPackages =>{
+    let p:any = {...props}
+    p = packageStatesIntoObject(p,['tweets','setTweets'],useState<tweet[]>([]))
+    p = packageStatesIntoObject(p,['showTweets','setSHowTweets'],useState(6))
+    return p;
+}
+
+const HandleNewTweets = (allPackages:tweetContainerAllPackages) =>{
+    return useEffect(()=>{
+        let NumTweets = allPackages.tweets.length
+        if(NumTweets >= allPackages.showTweets)
+            return
+        let missingAmmount = allPackages.showTweets - NumTweets
+        API_Get_Tweets({eid:allPackages.eid,limit:missingAmmount}).then((response:tweet[]) =>{
+            if(response){
+                console.log(response)
+                let updatedTweets = AddMissingProps(response)
+                let temp = [...allPackages.tweets]
+                temp = temp.concat(updatedTweets)
+                allPackages.setTweets([...temp])
+            }
+        })
+    },[allPackages.tweets])
+}
+
 const handleSubmit = (props:any) =>{
     let notCompleted = props.tweets.filter((tweet:tweet) =>{return !tweet.complete})
-    console.log(notCompleted)
     props.setTweets(notCompleted)
     props.showMessage(`Submitted Completed Tweets! Getting New Tweets...`)
 }
 
 export const TweetContainer = (props:globalProps) =>{
-    let updatedTweets = AddMissingProps(tempData)
-    const [tweets,setTweets] = useState(updatedTweets)
-    let completedExists = tweets.filter(item => {return item.complete}).length > 0
+    const allPackages = PackageAll(props)
+    HandleNewTweets(allPackages)
+    let completedExists = allPackages.tweets.filter(item => {return item.complete}).length > 0
     return  <>
                 <div className='TweetContainer'>
-                    {tweets.map((tweet,index) =>{
-                        let packaged = {tweets:tweets,setTweets:setTweets,index:index,...props}
-                        return <IndividualTweet key={tweets.toString() + index} {...packaged}/>
+                    {allPackages.tweets.map((tweet,index) =>{
+                        let indivPackages = {...allPackages,index}
+                        return <IndividualTweet 
+                                    key={allPackages.tweets.toString() + index + tweet.toString()} 
+                                    {...indivPackages}
+                                />
                     })}
                 </div>
-                <Button onClick={()=>handleSubmit({tweets,setTweets,...props})} color={completedExists?'success':'secondary'} disabled={!completedExists} className='submit_completed'>Submit Completed</Button>
+                
+                <Button 
+                    onClick={()=>handleSubmit(allPackages)} 
+                    color={completedExists?'success':'secondary'} 
+                    disabled={!completedExists} 
+                    className='submit_completed'
+                >
+                    Submit Completed
+                </Button>
             </>
 }
 
