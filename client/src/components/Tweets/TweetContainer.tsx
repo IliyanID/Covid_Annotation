@@ -50,21 +50,21 @@ const handleSubmit = (props:any) =>{
     let notCompleted = props.tweets.filter((tweet:tweet) =>{return !tweet.complete})
     console.log(notCompleted)
     props.setTweets(notCompleted)
+    props.showMessage(`Submitted Completed Tweets! Getting New Tweets...`)
 }
 
 export const TweetContainer = (props:globalProps) =>{
     let updatedTweets = AddMissingProps(tempData)
     const [tweets,setTweets] = useState(updatedTweets)
     let completedExists = tweets.filter(item => {return item.complete}).length > 0
-    console.log(completedExists)
     return  <>
                 <div className='TweetContainer'>
                     {tweets.map((tweet,index) =>{
-                        let packaged = {tweets:tweets,setTweets:setTweets,index:index}
+                        let packaged = {tweets:tweets,setTweets:setTweets,index:index,...props}
                         return <IndividualTweet key={tweets.toString() + index} {...packaged}/>
                     })}
                 </div>
-                <Button onClick={()=>handleSubmit({tweets,setTweets})} color={completedExists?'success':'secondary'} disabled={!completedExists} className='submit_completed'>Submit Completed</Button>
+                <Button onClick={()=>handleSubmit({tweets,setTweets,...props})} color={completedExists?'success':'secondary'} disabled={!completedExists} className='submit_completed'>Submit Completed</Button>
             </>
 }
 

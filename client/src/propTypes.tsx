@@ -2,13 +2,15 @@ export type globalProps = {
     eid:string,
     name:string,
     account_type: 'validator' | 'admin' | 'NA',
+    showMessage:any,
     [key: string]: any
 }
 
 export const globalPropsDefaultObj:globalProps = {
     eid:'832542166',
     name:'Iliyan Dimitrov',
-    account_type:'validator'
+    account_type:'validator',
+    showMessage:(a:any,b:any)=>{return }
 } as const
 
 export type tweet = {

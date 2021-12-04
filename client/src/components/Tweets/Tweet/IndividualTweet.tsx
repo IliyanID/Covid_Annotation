@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { tweet } from '../../../propTypes'
 import { Button } from 'reactstrap'
-
+import { BsFillSkipForwardFill } from 'react-icons/bs'
 export type IndividualTweetType = {
     tweets:tweet[],
     setTweets:(a:tweet[])=>void
@@ -20,6 +20,15 @@ const updateKey = (props:IndividualTweetType,key:string,value:any)=>{
     let temp = [...props.tweets]
     temp[props.index][key] = value;
     props.setTweets(temp)
+}
+
+const HandleSkip = (props:any) =>{
+    props.showMessage(`Skipped Tweet #${props.index + 1}`)
+    let temp = [...props.tweets]
+    temp.splice(props.index,1)
+    console.log(temp)
+    props.setTweets(temp)
+
 }
 
 const IndividualTweet = (props:IndividualTweetType) =>{
@@ -45,7 +54,13 @@ const IndividualTweet = (props:IndividualTweetType) =>{
         updateKey(props,'complete',false)
 
     return  <div className='IndividualTweet'>
-                <h3>Tweet</h3>
+                <h3 style={{position:'relative'}}>
+                    Tweet #{props.index+1}
+                    <div onClick={()=>HandleSkip(props)} style={{fontSize:'15px',position:'absolute',top:'5px',right:'10px',cursor:'pointer'}}>
+                        Skip
+                        <BsFillSkipForwardFill style={{marginLeft:'5px'}}/>
+                    </div>
+                </h3>
                 <p ref={ref} className='tweetText'>{currentTweet.tweet_content}</p>
                 { (currentTweet.stance !== 'No Claim')?
                     <div>
