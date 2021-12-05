@@ -45,7 +45,7 @@ const PackageAll = (props:globalProps):tweetContainerAllPackages =>{
 const HandleNewTweets = (allPackages:tweetContainerAllPackages) =>{
     return useEffect(()=>{
         let NumTweets = allPackages.tweets.length
-        if(NumTweets >= allPackages.showTweets)
+        if(NumTweets >= allPackages.showTweets || allPackages.eid.length !== 9)
             return
         API_Get_Tweets({eid:allPackages.eid,limit:allPackages.showTweets}).then((response:tweet[]) =>{
             if(response){
@@ -54,7 +54,7 @@ const HandleNewTweets = (allPackages:tweetContainerAllPackages) =>{
                     allPackages.setTweets([...updatedTweets])
             }
         })
-    },[allPackages.tweets])
+    },[allPackages.tweets,allPackages.eid])
 }
 
 const handleSubmit = async(props:tweetContainerAllPackages) =>{

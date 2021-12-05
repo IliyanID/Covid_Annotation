@@ -6,6 +6,7 @@ import Header from '../containers/Margins/Margins'
 import TweetContainer from './Tweets/TweetContainer';
 import {globalPropsDefaultObj } from '../common_types'
 import { packageStatesIntoObject } from '../utils/packageStatesIntoObject'
+import Login_Modal from './Modals/Login_Modal';
 
 const PackageUserStates = (props:any)=>{
   let p:any = {}
@@ -22,6 +23,7 @@ const App = (props:any) => {
   let allPackages = PackageUserStates(props)
   return (
     <div className="App">
+      <Login_Modal {...allPackages}/>
       <Header {...allPackages}/>
       <TweetContainer {...allPackages} />
     </div>
