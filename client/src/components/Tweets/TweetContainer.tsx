@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { globalProps, tweet, tweetDefaultObject } from '../../propTypes'
+import { globalProps, tweet, tweetDefaultValidated } from '../../common_types'
 import '../../static/css/TweetContainer.css'
 import IndividualTweet from './Tweet/IndividualTweet'
 import { Button } from 'reactstrap'
@@ -19,7 +19,7 @@ export type tweetContainerAllPackages = globalProps & TweetContainerStates
 const AddMissingProps = (tweets:tweet[]) =>{
 
     let temp = tweets.map(item=>{
-        let tempObj = {...tweetDefaultObject}
+        let tempObj = {...tweetDefaultValidated}
         Object.keys(item).forEach(key=>{
             tempObj[key] = item[key]
         })
@@ -47,14 +47,11 @@ const HandleNewTweets = (allPackages:tweetContainerAllPackages) =>{
         let NumTweets = allPackages.tweets.length
         if(NumTweets >= allPackages.showTweets)
             return
-        let missingAmmount = allPackages.showTweets - NumTweets
-        API_Get_Tweets({eid:allPackages.eid,limit:missingAmmount}).then((response:tweet[]) =>{
+        API_Get_Tweets({eid:allPackages.eid,limit:allPackages.showTweets}).then((response:tweet[]) =>{
             if(response){
                 let updatedTweets = AddMissingProps(response)
-                let temp = [...allPackages.tweets]
-                temp = temp.concat(updatedTweets)
                 if(response.length > 0)
-                    allPackages.setTweets([...temp])
+                    allPackages.setTweets([...updatedTweets])
             }
         })
     },[allPackages.tweets])

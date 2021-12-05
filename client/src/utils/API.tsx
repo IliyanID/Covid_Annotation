@@ -1,5 +1,5 @@
 import { propTypes } from 'react-bootstrap/esm/Image'
-import { tweet } from '../propTypes'
+import { tweet } from '../common_types'
 
 type api = {
     requestType?:'complete' | 'skip',

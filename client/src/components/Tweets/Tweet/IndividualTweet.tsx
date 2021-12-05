@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { tweet } from '../../../propTypes'
+import { tweet } from '../../../common_types'
 import { Button } from 'reactstrap'
 import { BsFillSkipForwardFill } from 'react-icons/bs'
 import { tweetContainerAllPackages } from '../TweetContainer'

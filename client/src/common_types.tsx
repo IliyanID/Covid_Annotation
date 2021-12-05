@@ -13,21 +13,42 @@ export const globalPropsDefaultObj:globalProps = {
     showMessage:(a:any,b:any)=>{return }
 } as const
 
-export type tweet = {
+export type tweet = unvalidated_tweet | validated_tweet
+
+type unvalidated_tweet = {
+    tweet_content:string,
+    id:number,
+    priority:boolean,
+    claim?:never,
+    stance?:never,
+    complete?:never,
+    eid?:never
+    [key: string]: any
+}
+
+type validated_tweet = {
     tweet_content:string,
     claim:string,
     stance:string,
     complete:boolean,
     priority:boolean,
-    id:number
-    [key: string]: any
+    id:number,
+    eid:number
+    [key: string]: any   
 }
 
-export const tweetDefaultObject:tweet = {
+export const tweetDefaultValidated:tweet = {
     tweet_content:'',
     claim:'',
     stance:'',
     complete:false,
+    priority:false,
+    id:-1,
+    eid:-1
+}
+
+export const tweetDefaultUnvalidated:unvalidated_tweet = {
+    tweet_content:'',
     priority:false,
     id:-1
 }

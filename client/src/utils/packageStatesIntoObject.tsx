@@ -1,5 +1,5 @@
 import  zipObject  from 'lodash.zipobject'
-import { globalProps } from '../propTypes'
+import { globalProps } from '../common_types'
 
 export const packageStatesIntoObject = (originalPackage:any,states:[string,string],stateFunction:[any,(a:any)=>void]):any =>{
     //originalPackage is the object so far holding the packages

@@ -5,9 +5,11 @@ import { validateResponse } from '../utils/validateResponse';
 import TweetsCompleteRequest from '../Schemas/TweetsCompleteRequest.json'
 import TweetsSkipRequest from '../Schemas/TweetsSkipRequest.json'
 import bodyParser from 'body-parser';
+import { Express } from 'express'
 
 
-export const tweetsRequest = (app) =>{
+
+export const tweetsRequest = (app:Express) =>{
     var jsonParser = bodyParser.json()
     const database = new database_tweets()
 

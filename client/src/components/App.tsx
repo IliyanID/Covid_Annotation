@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../static/css/App.css';
 import Header from '../containers/Margins/Margins'
 import TweetContainer from './Tweets/TweetContainer';
-import {globalPropsDefaultObj } from '../propTypes'
+import {globalPropsDefaultObj } from '../common_types'
 import { packageStatesIntoObject } from '../utils/packageStatesIntoObject'
 
 const PackageUserStates = (props:any)=>{

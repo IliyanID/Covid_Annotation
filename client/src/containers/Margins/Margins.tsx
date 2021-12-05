@@ -1,5 +1,5 @@
 import React from 'react'
-import {globalProps} from '../../propTypes'
+import {globalProps} from '../../common_types'
 import { Popover, Container, Row, Col, Button} from  'reactstrap' 
 import { ImStatsBars } from 'react-icons/im'
 import { AiFillSetting } from 'react-icons/ai'
