@@ -1,7 +1,5 @@
 import { database } from "./database"
-import databaseJSON from '../database.json'
 import { unvalidated_tweet, validated_tweet, validating_tweet } from "../common/common_types"
-import { Client } from "pg"
 
 
 
@@ -51,9 +49,6 @@ const ADD_TWEET_UNVALIDATED = (tweet:unvalidated_tweet) => {
 
 
 export class database_tweets extends database {
-    tweets_validating:validating_tweet[] = []
-    tweets_validated:validated_tweet[] = []
-    tweets_unvalidated:unvalidated_tweet[] = databaseJSON
     constructor(){
         super('dev')
     }
@@ -73,7 +68,7 @@ export class database_tweets extends database {
 
     give_tweets = async (eid:number,limit:number) =>{
         let sentData = await this.queryDatabase(GET_TWEETS_VALIDATING(eid)) as validating_tweet[]
-        console.log(sentData)
+
         if(sentData.length < limit){
             limit = limit - sentData.length
             let addedUnvalidated = await this.queryDatabase(GET_TWEET_UNVALIDATED(limit)) as validating_tweet[]
@@ -90,7 +85,6 @@ export class database_tweets extends database {
             this.queryDatabase(ADD_TWEET_VALIDATING(tweet))
         })
 
-        console.log(sentData)
     
         return sentData
     }

@@ -57,7 +57,7 @@ export const tweetsRequest = (app:Express) =>{
         let obj = csvToJson(req.body)
         //console.log(obj)
         database.import_tweets(obj)
-        res.send({valid:true})
+        res.send(obj)
       })
 }
 
