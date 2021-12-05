@@ -19,7 +19,7 @@
       },
       "id": {
         "description": "a list of places",
-        "type":"string"
+        "type":"number"
       },
       "complete": {
         "description": "if tweet is complete",
