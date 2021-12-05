@@ -1,5 +1,6 @@
 import { database } from "./database"
 import { unvalidated_tweet, validated_tweet, validating_tweet } from "../common/common_types"
+import { JsonTocsv } from "../utils/JsonTocsv"
 
 
 
@@ -44,6 +45,12 @@ const ADD_TWEET_UNVALIDATED = (tweet:unvalidated_tweet) => {
     return `
     INSERT INTO unvalidated(id,tweet_content,priority)
     VALUES(nextval('unvalidated_seq'),'${tweet.tweet_content}',false)
+    `
+}
+
+const GET_TWEETS_VALIDATED = () =>{
+    return `
+    SELECT * FROM validated
     `
 }
 
@@ -98,5 +105,12 @@ export class database_tweets extends database {
             if(tweet.tweet_content && tweet.tweet_content !== '')
                 this.queryDatabase(ADD_TWEET_UNVALIDATED(tweet))
         })
+    }
+
+    export_tweets = async() =>{
+        let tweetsArr = await this.queryDatabase(GET_TWEETS_VALIDATED())
+        //console.log(tweetsArr)
+        let csvTweets = JsonTocsv(tweetsArr)
+        return csvTweets
     }
 }

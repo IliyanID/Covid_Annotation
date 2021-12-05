@@ -53,7 +53,7 @@ export const tweetsRequest = (app:Express) =>{
       })
 
       var urlencodedParser = bodyParser.text()
-      app.post('/api/tweets',urlencodedParser,(req:Request,res:Response) =>{
+      app.put('/api/tweets',urlencodedParser,(req:Request,res:Response) =>{
         let obj = csvToJson(req.body)
         let schema = validateResponse(obj,TweetsImportRequest)
         if(!schema.valid){
@@ -64,6 +64,13 @@ export const tweetsRequest = (app:Express) =>{
     
         database.import_tweets(obj)
         res.send(obj)
+      })
+
+      app.get('/api/tweets',async (req:Request,res:Response) =>{
+        let allTweetsObj = await database.export_tweets()
+        console.log(allTweetsObj)
+        res.setHeader('content-type', 'text/plain');
+        res.send(allTweetsObj)
       })
 }
 

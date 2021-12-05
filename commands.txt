@@ -1,0 +1,35 @@
+CREATE TABLE  validated (
+   id BIGINT PRIMARY KEY ,
+   tweet_content VARCHAR UNIQUE,
+   eid1 INT,
+   eid2 INT,
+   stance1 VARCHAR,
+   stance2 VARCHAR,
+   claim1 VARCHAR,
+   claim2 VARCHAR
+
+);
+
+CREATE SEQUENCE unvalidated_seq
+  start 1
+  increment 1;
+
+ALTER SEQUENCE unvalidated_seq RESTART WITH 1;
+DELETE FROM unvalidated WHERE id != -1
+CREATE TABLE  validating (
+   id BIGINT PRIMARY KEY ,
+   tweet_content VARCHAR UNIQUE,
+   priority BOOL NOT NULL,
+   eid INT
+);
+
+CREATE TABLE  unvalidated (
+   id BIGINT PRIMARY KEY ,
+   tweet_content VARCHAR UNIQUE,
+   priority BOOL NOT NULL
+);
+
+
+INSERT INTO unvalidated(id, tweet_content, priority)
+VALUES (1366901368536109000,'The united states really closed down for a year, came up with no conclusion to help the situation and said fuck it lets open back up ::face_with_tears_of_joy:: ::face_with_tears_of_joy:: ::face_with_tears_of_joy:: ::face_with_tears_of_joy:: ::face_with_tears_of_joy::',FALSE)
+RETURNING *;
