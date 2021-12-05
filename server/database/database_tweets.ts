@@ -1,6 +1,41 @@
 import { database } from "./database"
 import databaseJSON from '../database.json'
 import { unvalidated_tweet, validated_tweet, validating_tweet } from "../common/common_types"
+import { Client } from "pg"
+
+
+
+const ADD_TWEET_VALIDATING = (tweet:validating_tweet) =>{
+    let query =  `
+    INSERT INTO validating(id, tweet_content, priority)
+    VALUES(${tweet.id},'${tweet.tweet_content}',${tweet.priority})
+    `
+}
+
+const ADD_TWEET_VALIDATED = (tweet:validated_tweet) =>{
+    return `
+    INSERT INTO validated(id, tweet_content, eid1,stance1, claim1)
+    VALUES(${tweet.id},'${tweet.tweet_content}',${tweet.eid}, '${tweet.stance}', '${tweet.claim}')
+    `
+}
+const GET_TWEET_UNVALIDATED = (limit:number) =>{
+    return `
+        SELECT * FROM unvalidated LIMIT ${limit}
+    `
+}
+
+const ADD_TWEET_UNVALIDATED = (tweet:unvalidated_tweet) => {
+    return `
+    INSERT INTO unvalidated(id,tweet_content,priority)
+    VALUES(nextval('unvalidated_seq'),'${tweet.tweet_content}',false)
+    `
+}
+
+const REMOVE_TWEET_VALIDATING = (id:number) =>{
+    return `
+    DELETE FROM validating WHERE id == ${id} 
+    `
+}
 
 export class database_tweets extends database {
     tweets_validating:validating_tweet[] = []
@@ -9,40 +44,18 @@ export class database_tweets extends database {
     constructor(){
         super('dev')
     }
-
-    writeArray = (arr:any[],name:string) =>{
-        var fs = require('fs');
-
-        var file = fs.createWriteStream(`../${name}.json`);
-        file.write('[\n')
-        arr.forEach((obj:any,ind)=>{
-            let newline = (ind=== arr.length - 1)? '\n':',\n'
-            file.write(JSON.stringify(obj) + newline)
-        })
-        file.write(']\n')
-        file.end();
-            }
-    writeAllArrs = () =>{
-        this.writeArray(this.tweets_validating,'tweets_validating')
-        this.writeArray(this.tweets_unvalidated,'tweets_unvalidated')
-        this.writeArray(this.tweets_validated,'tweets_validated')
-    }
     
     add_complete_tweets = (tweets:validated_tweet[],eid:number) =>{
         tweets.forEach(item=>{
             let temp = {...item,eid}
-            this.tweets_validated.push(temp)
-
+            this.queryDatabase(ADD_TWEET_VALIDATED(temp))
+            this.queryDatabase(REMOVE_TWEET_VALIDATING(temp.id))
         })
-        let allText = tweets.map((obj)=>{return obj.tweet_content})
-        this.tweets_validating = this.tweets_validating.filter(item=>{return !allText.includes(item.tweet_content)})
-        this.writeAllArrs()
     }
 
     skip_tweet = (tweet:unvalidated_tweet,eid:number) =>{
         this.tweets_validating = this.tweets_validating.filter(item=>{return !(item.tweet_content === tweet.tweet_content)})
         this.tweets_unvalidated.push(tweet)
-        this.writeAllArrs()
     }
 
     give_tweets = (eid:number,limit:number) =>{
@@ -59,12 +72,18 @@ export class database_tweets extends database {
             return {...item,eid}
         })
 
-        this.writeAllArrs()
 
         return sentData
     }
 
     remove_tweets = (eid:string) =>{
 
+    }
+
+    import_tweets = (tweets:unvalidated_tweet[]) =>{
+        tweets.forEach(tweet =>{
+            if(tweet.tweet_content)
+                this.queryDatabase(ADD_TWEET_UNVALIDATED(tweet))
+        })
     }
 }
