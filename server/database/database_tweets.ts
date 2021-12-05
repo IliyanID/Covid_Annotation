@@ -82,7 +82,7 @@ export class database_tweets extends database {
 
     import_tweets = (tweets:unvalidated_tweet[]) =>{
         tweets.forEach(tweet =>{
-            if(tweet.tweet_content)
+            if(tweet.tweet_content && tweet.tweet_content !== '')
                 this.queryDatabase(ADD_TWEET_UNVALIDATED(tweet))
         })
     }

@@ -6,7 +6,7 @@ import TweetsCompleteRequest from '../Schemas/TweetsCompleteRequest.json'
 import TweetsSkipRequest from '../Schemas/TweetsSkipRequest.json'
 import bodyParser from 'body-parser';
 import { Express } from 'express'
-import csv from 'csv-parse'
+import { csvToJson } from '../utils/csvToJson';
 import { unvalidated_tweet } from '../common/common_types';
 
 
@@ -54,7 +54,7 @@ export const tweetsRequest = (app:Express) =>{
 
       var urlencodedParser = bodyParser.text()
       app.post('/api/tweets',urlencodedParser,(req:Request,res:Response) =>{
-        let obj = csv(req.body)
+        let obj = csvToJson(req.body)
         //console.log(obj)
         database.import_tweets(obj)
         res.send({valid:true})
