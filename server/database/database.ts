@@ -9,10 +9,12 @@ export class database {
     }
 
     queryDatabase = async (query:string) =>{
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
             this.connection.query(query, (err, res) => {
+                
                 if(res && res.rows)
                     resolve(res.rows)
+                //console.log(err)
             })
           });
     }

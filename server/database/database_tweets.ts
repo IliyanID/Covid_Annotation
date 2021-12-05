@@ -6,9 +6,20 @@ import { Client } from "pg"
 
 
 const ADD_TWEET_VALIDATING = (tweet:validating_tweet) =>{
-    let query =  `
-    INSERT INTO validating(id, tweet_content, priority)
-    VALUES(${tweet.id},'${tweet.tweet_content}',${tweet.priority})
+    return `
+    INSERT INTO validating(id, tweet_content, priority,eid)
+    VALUES(${tweet.id},'${tweet.tweet_content}',${tweet.priority},${tweet.eid})
+    `
+}
+
+const REMOVE_TWEET_VALIDATING = (id:number) =>{
+    return `
+    DELETE FROM validating WHERE id = ${id} 
+    `
+}
+const GET_TWEETS_VALIDATING = (eid:number) =>{
+    return `
+    SELECT * FROM validating WHERE eid = ${eid}
     `
 }
 
@@ -18,9 +29,16 @@ const ADD_TWEET_VALIDATED = (tweet:validated_tweet) =>{
     VALUES(${tweet.id},'${tweet.tweet_content}',${tweet.eid}, '${tweet.stance}', '${tweet.claim}')
     `
 }
+
 const GET_TWEET_UNVALIDATED = (limit:number) =>{
     return `
         SELECT * FROM unvalidated LIMIT ${limit}
+    `
+}
+
+const REMOVE_TWEET_UNVALIDATED = (id:number) =>{
+    return `
+        DELETE FROM unvalidated WHERE id = ${id}
     `
 }
 
@@ -31,11 +49,6 @@ const ADD_TWEET_UNVALIDATED = (tweet:unvalidated_tweet) => {
     `
 }
 
-const REMOVE_TWEET_VALIDATING = (id:number) =>{
-    return `
-    DELETE FROM validating WHERE id == ${id} 
-    `
-}
 
 export class database_tweets extends database {
     tweets_validating:validating_tweet[] = []
@@ -54,25 +67,31 @@ export class database_tweets extends database {
     }
 
     skip_tweet = (tweet:unvalidated_tweet,eid:number) =>{
-        this.tweets_validating = this.tweets_validating.filter(item=>{return !(item.tweet_content === tweet.tweet_content)})
-        this.tweets_unvalidated.push(tweet)
+        this.queryDatabase(ADD_TWEET_UNVALIDATED(tweet))
+        this.queryDatabase(REMOVE_TWEET_VALIDATING(tweet.id))
     }
 
-    give_tweets = (eid:number,limit:number) =>{
-        let sentData = this.tweets_validating.filter((item)=>{return item.eid === eid})
+    give_tweets = async (eid:number,limit:number) =>{
+        let sentData = await this.queryDatabase(GET_TWEETS_VALIDATING(eid)) as validating_tweet[]
+        console.log(sentData)
         if(sentData.length < limit){
             limit = limit - sentData.length
-            let addedUnvalidated = this.tweets_unvalidated.splice(0,limit).map(item=>{return {...item,eid}})
-
+            let addedUnvalidated = await this.queryDatabase(GET_TWEET_UNVALIDATED(limit)) as validating_tweet[]
+            addedUnvalidated.forEach(tweet=>{
+                this.queryDatabase(REMOVE_TWEET_UNVALIDATED(tweet.id))
+            })
             sentData = sentData.concat(addedUnvalidated)
-            this.tweets_validating = this.tweets_validating.concat(addedUnvalidated)
-            this.tweets_unvalidated.splice(0,limit)
         }
         sentData = sentData.map(item=>{
             return {...item,eid}
         })
 
+        sentData.forEach(tweet=>{
+            this.queryDatabase(ADD_TWEET_VALIDATING(tweet))
+        })
 
+        console.log(sentData)
+    
         return sentData
     }
 

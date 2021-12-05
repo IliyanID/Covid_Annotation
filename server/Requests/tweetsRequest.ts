@@ -15,11 +15,11 @@ export const tweetsRequest = (app:Express) =>{
     var jsonParser = bodyParser.json()
     const database = new database_tweets()
 
-    app.get("/api/tweets/:eid", (req:Request, res:Response) => {
+    app.get("/api/tweets/:eid",async (req:Request, res:Response) => {
         log(req)  
         const eid = parseInt(req.params.eid);
         const limit:any = req.query.limit
-        let data = database.give_tweets(eid,limit)
+        let data = await database.give_tweets(eid,limit)
         res.json(data);
       });
       
