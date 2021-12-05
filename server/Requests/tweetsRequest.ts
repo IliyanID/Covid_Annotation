@@ -4,10 +4,11 @@ import { database_tweets } from '../database/database_tweets';
 import { validateResponse } from '../utils/validateResponse';
 import TweetsCompleteRequest from '../Schemas/TweetsCompleteRequest.json'
 import TweetsSkipRequest from '../Schemas/TweetsSkipRequest.json'
+import TweetsImportRequest from '../Schemas/TweetImportRequest.json'
 import bodyParser from 'body-parser';
 import { Express } from 'express'
 import { csvToJson } from '../utils/csvToJson';
-import { unvalidated_tweet } from '../common/common_types';
+import CSVFileValidator from 'csv-file-validator'
 
 
 
@@ -55,8 +56,14 @@ export const tweetsRequest = (app:Express) =>{
       var urlencodedParser = bodyParser.text()
       app.post('/api/tweets',urlencodedParser,(req:Request,res:Response) =>{
         let obj = csvToJson(req.body)
-        //console.log(obj)
-        database.import_tweets(obj)
+        let schema = validateResponse(obj,TweetsImportRequest)
+        if(!schema.valid){
+          res.status(400)
+          res.send(schema)
+          return
+        }
+    
+        //database.import_tweets(obj)
         res.send(obj)
       })
 }

@@ -1,0 +1,14 @@
+{
+    "type": "array",
+    "items": {
+      "type": "object",
+      "properties": {
+        "tweet_content": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "tweet_content"
+      ]
+    }
+  }
