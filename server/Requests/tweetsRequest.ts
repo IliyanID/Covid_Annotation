@@ -8,7 +8,6 @@ import TweetsImportRequest from '../Schemas/TweetImportRequest.json'
 import bodyParser from 'body-parser';
 import { Express } from 'express'
 import { csvToJson } from '../utils/csvToJson';
-import CSVFileValidator from 'csv-file-validator'
 
 
 
@@ -63,7 +62,7 @@ export const tweetsRequest = (app:Express) =>{
           return
         }
     
-        //database.import_tweets(obj)
+        database.import_tweets(obj)
         res.send(obj)
       })
 }
