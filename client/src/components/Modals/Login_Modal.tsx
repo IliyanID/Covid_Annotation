@@ -3,17 +3,18 @@ import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Input } from 'react
 import { globalProps } from '../../common_types'
 
 export const Login_Modal = (props:globalProps) =>{
-    const [input,setInput] = useState('')
+    const [input,setInput] = useState(localStorage.getItem('eid') || '')
 
     const handleLogin = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>{
         props.setModalOpen(false)
+        localStorage.setItem('eid',input);
         props.setEid(input)
     }
 
     return <Modal isOpen = {props.modalOpen}>
-        <ModalHeader>Enter EID</ModalHeader>
+        <ModalHeader>Enter Your 9 Digit EID</ModalHeader>
         <ModalBody>
-            <Input value={input} onChange={(e)=>setInput(e.target.value)} valid={input.length === 9} invalid={input.length !== 9} placeholder='Your EID'/>
+            <Input value={input} onChange={(e)=>setInput(e.target.value)} valid={input.length === 9} invalid={input.length !== 9} placeholder='EID'/>
         </ModalBody>
         <ModalFooter><Button 
                         onClick={handleLogin}
