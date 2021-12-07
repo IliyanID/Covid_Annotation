@@ -1,0 +1,47 @@
+cliam and then remark
+	there is no claim sometimes
+tweet authors revoke or approve claim
+	agree disagree or neutral
+	if there is no claim
+
+load multiple tweets on the page and do the anotation part
+
+skip option
+
+add export into csv
+
+upload csv into database
+	each tweet needs two annotaters
+	
+
+csv
+	date that it was created
+output
+	two colums for two annotations
+	two more columsn for the user id
+	two more for the stance 
+
+They can highlight the text to select the claim.
+
+Submit all at once
+
+Skip
+	if two people skip the tweet then remove it from the database
+	if one person skips then display prompt
+
+<BC> for begging of highligh claim put at the beggning of the word
+Garlic can cure covid
+	Garlic <BC> can cure covid<EC>
+<EC> end of claim
+
+
+postgress database
+	need credentials
+
+whatever choice for the front end and backend
+
+
+Add statistic page 
+	Show how may students have annoted tweets
+	Show Show also how many tweets have two or one tweet
+	Make private

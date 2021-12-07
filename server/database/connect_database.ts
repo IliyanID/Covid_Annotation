@@ -1,13 +1,23 @@
 import { Client } from 'pg'
-export const connect_database = (url:string) =>{
-    const client = new Client({
+import mariadb from 'mariadb'
+export const connect_database = async (url:string) =>{
+    /*const client = new Client({
         user: 'iliyan',
         host: url,
-        database: 'covidtweet',
-        password: 'password',
-        port: 5432,
+        database: 'covid_tweet',
+        password: '832542166',
+        port: 3306,
       })
-      client.connect()
+      client.connect()*/
 
-    return client
+
+    const connection = mariadb.createPool({
+      host: 'faure',
+        user: 'iliyan',
+        password: '832542166',
+        database: 'covid_tweet',
+        port: 3306,
+ });
+
+    return connection
 }

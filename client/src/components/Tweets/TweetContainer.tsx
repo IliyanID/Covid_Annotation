@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { globalProps, tweet, tweetDefaultValidated } from '../../common_types'
 import '../../static/css/TweetContainer.css'
 import IndividualTweet from './Tweet/IndividualTweet'
@@ -6,6 +6,7 @@ import { Button } from 'reactstrap'
 import { API_Get_Tweets, API_Post_Tweet } from '../../utils/API'
 import { packageStatesIntoObject } from '../../utils/packageStatesIntoObject'
 import No_More_Tweets from './No-More-Tweets'
+import { propTypes } from 'react-bootstrap/esm/Image'
 
 type TweetContainerStates = {
     tweets:tweet[],
@@ -38,23 +39,24 @@ const AddMissingProps = (tweets:tweet[]) =>{
 const PackageAll = (props:globalProps):tweetContainerAllPackages =>{
     let p:any = {...props}
     p = packageStatesIntoObject(p,['tweets','setTweets'],useState<tweet[]>([]))
-    p = packageStatesIntoObject(p,['showTweets','setSHowTweets'],useState(6))
+    p = packageStatesIntoObject(p,['showTweets','setShowTweets'],useState(5))
     return p;
 }
 
 const HandleNewTweets = (allPackages:tweetContainerAllPackages) =>{
     return useEffect(()=>{
         let NumTweets = allPackages.tweets.length
-        if(NumTweets >= allPackages.showTweets || allPackages.eid.length !== 9)
+        if(NumTweets === allPackages.showTweets || allPackages.eid.length !== 9)
             return
         API_Get_Tweets({eid:allPackages.eid,limit:allPackages.showTweets}).then((response:tweet[]) =>{
             if(response){
                 let updatedTweets = AddMissingProps(response)
-                if(response.length > 0)
+                allPackages.setShowTweets(response.length)
+                if(response.length  > 0)
                     allPackages.setTweets([...updatedTweets])
             }
         })
-    },[allPackages.tweets,allPackages.eid])
+    },[allPackages.tweets,allPackages.eid,allPackages.showTweets])
 }
 
 const handleSubmit = async(props:tweetContainerAllPackages) =>{
@@ -67,11 +69,25 @@ const handleSubmit = async(props:tweetContainerAllPackages) =>{
     }
 }
 
+const handleInput = (e:React.MouseEvent<HTMLInputElement, MouseEvent>,allPackages:tweetContainerAllPackages) =>{
+    
+    let value = document.getElementById('inputId') as any
+    console.log(value)
+    value = parseInt(value.value)
+    console.log(value)
+    if(value > 0 && value !== allPackages.showTweets){
+        console.log('set: ' + value)
+    allPackages.setShowTweets(value)
+    }
+}
+
 export const TweetContainer = (props:globalProps) =>{
     const allPackages = PackageAll(props)
     HandleNewTweets(allPackages)
     let completedExists = allPackages.tweets.filter(item => {return item.complete}).length > 0
     return  <>
+                <input  id='inputId' defaultValue='5' style={{marginTop:'20px'}}  onMouseUp={(e)=>{handleInput(e,allPackages)}} type='range' min='1' max='10'></input>
+                <h6>Displaying {allPackages.showTweets} Tweets</h6>
                 <div className='TweetContainer'>
                     <No_More_Tweets tweets = {allPackages.tweets}/>
                     

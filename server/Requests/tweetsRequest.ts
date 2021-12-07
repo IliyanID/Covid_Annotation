@@ -9,18 +9,32 @@ import bodyParser from 'body-parser';
 import { Express } from 'express'
 import { csvToJson } from '../utils/csvToJson';
 
-
-
 export const tweetsRequest = (app:Express) =>{
     var jsonParser = bodyParser.json()
     const database = new database_tweets()
+
+    const buildTweet = (response:any,eid:number):any =>{
+      let priority = false;
+      if(response.eid1 && response.eid1 != eid)
+        priority = true
+      else if(response.eid2 && response.eid2 != eid)
+        priority = true
+      
+      return{
+        tweet_content:response.tweet_content,
+        id:response.id,
+        priority:false
+      }
+    }
 
     app.get("/api/tweets/:eid",async (req:Request, res:Response) => {
         log(req)  
         const eid = parseInt(req.params.eid);
         const limit:any = req.query.limit
         let data = await database.give_tweets(eid,limit)
-        res.json(data);
+
+        let response:any  = data.map(item =>{return buildTweet(item,eid)})
+        res.json(response);
       });
       
       app.post('/api/tweets/complete/:eid',jsonParser,(req:Request,res:Response)=>{
@@ -70,6 +84,8 @@ export const tweetsRequest = (app:Express) =>{
         let allTweetsObj = await database.export_tweets()
         console.log(allTweetsObj)
         res.setHeader('content-type', 'text/plain');
+        if(!allTweetsObj)
+          allTweetsObj = ''
         res.send(allTweetsObj)
       })
 }

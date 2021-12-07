@@ -1,35 +1,65 @@
 CREATE TABLE  validated (
-   id BIGINT PRIMARY KEY ,
-   tweet_content VARCHAR UNIQUE,
-   eid1 INT,
-   eid2 INT,
-   stance1 VARCHAR,
-   stance2 VARCHAR,
-   claim1 VARCHAR,
-   claim2 VARCHAR
-
+   tweet_created varchar(1000),
+   id INT UNIQUE,
+   tweet_content VARCHAR(1000) UNIQUE,
+   eid1 int,
+   claim1 varchar(1000),
+   stance1 varchar(1000),
+   validated_time1 timestamp,
+   eid2 int,
+   claim2 varchar(1000),
+   stance2 varchar(1000),
+   validated_time2 timestamp
 );
 
-CREATE SEQUENCE unvalidated_seq
-  start 1
-  increment 1;
-
-ALTER SEQUENCE unvalidated_seq RESTART WITH 1;
-DELETE FROM unvalidated WHERE id != -1
-CREATE TABLE  validating (
-   id BIGINT PRIMARY KEY ,
-   tweet_content VARCHAR UNIQUE,
-   priority BOOL NOT NULL,
-   eid INT
-);
-
-CREATE TABLE  unvalidated (
-   id BIGINT PRIMARY KEY ,
-   tweet_content VARCHAR UNIQUE,
-   priority BOOL NOT NULL
+CREATE OR REPLACE TABLE  unvalidated (
+   tweet_created varchar(1000),
+   id INT NOT NULL AUTO_INCREMENT,
+   tweet_content VARCHAR(1000) UNIQUE,
+   eid1 int,
+   claim1 varchar(1000),
+   stance1 varchar(1000),
+   validated_time1 timestamp DEFAULT '0000-00-00',
+   eid2 int,
+   claim2 varchar(1000),
+   stance2 varchar(1000),
+   validated_time2 timestamp DEFAULT '0000-00-00'
 );
 
 
-INSERT INTO unvalidated(id, tweet_content, priority)
-VALUES (1366901368536109000,'The united states really closed down for a year, came up with no conclusion to help the situation and said fuck it lets open back up ::face_with_tears_of_joy:: ::face_with_tears_of_joy:: ::face_with_tears_of_joy:: ::face_with_tears_of_joy:: ::face_with_tears_of_joy::',FALSE)
-RETURNING *;
+
+CREATE OR REPLACE TRIGGER log_time
+BEFORE UPDATE ON unvalidated
+FOR EACH ROW
+BEGIN
+   IF (OLD.claim1 IS NULL AND OLD.stance1 IS NULL 
+   AND NEW.claim1 IS NOT NULL AND NEW.stance1 IS NOT NULL)
+   THEN 
+   SET NEW.validated_time1 = CURRENT_TIMESTAMP; 
+   END IF;
+   
+   IF (OLD.claim2 IS NULL AND OLD.stance2 IS NULL 
+   AND NEW.claim2 IS NOT NULL AND NEW.stance2 IS NOT NULL)
+   THEN 
+   SET NEW.validated_time2 = CURRENT_TIMESTAMP; 
+
+   END IF;
+END;
+
+CREATE OR REPLACE TRIGGER check_validated
+AFTER UPDATE ON unvalidated
+FOR EACH ROW
+BEGIN
+   IF NEW.eid1 IS NOT NULL 
+   AND NEW.claim1 IS NOT NULL 
+   AND NEW.stance1 IS NOT NULL 
+   AND NEW.eid2 IS NOT NULL 
+   AND NEW.claim2 IS NOT NULL 
+   AND NEW.stance2 IS NOT NULL 
+   THEN 
+   INSERT INTO validated SELECT * FROM unvalidated 
+   WHERE id = OLD.id; 
+   END IF;
+
+END;
+

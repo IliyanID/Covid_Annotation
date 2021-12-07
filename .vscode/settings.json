@@ -1,0 +1,17 @@
+{
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default"
+            },
+            "previewLimit": 50,
+            "server": "faure",
+            "port": 3306,
+            "driver": "MariaDB",
+            "name": "covid_tweet",
+            "database": "covid_tweet",
+            "username": "iliyan",
+            "password": "832542166"
+        }
+    ]
+}

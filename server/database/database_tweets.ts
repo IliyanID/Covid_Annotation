@@ -4,47 +4,69 @@ import { JsonTocsv } from "../utils/JsonTocsv"
 
 
 
-const ADD_TWEET_VALIDATING = (tweet:validating_tweet) =>{
+
+
+
+
+const ADD_TWEET_COMPLETE = (tweet:validated_tweet,columns:string[]) =>{
     return `
-    INSERT INTO validating(id, tweet_content, priority,eid)
-    VALUES(${tweet.id},'${tweet.tweet_content}',${tweet.priority},${tweet.eid})
+    UPDATE unvalidated SET ${columns[0]} = '${tweet.claim}', ${columns[1]} = '${tweet.stance}'
+    WHERE id = ${tweet.id}
     `
 }
 
-const REMOVE_TWEET_VALIDATING = (id:number) =>{
-    return `
-    DELETE FROM validating WHERE id = ${id} 
+const GET_TWEETS_VALIDATING = (eid:number, limit:number) =>{
+    return`
+    SELECT * FROM unvalidated WHERE 
+    (eid1 = ${eid} AND claim1 IS NULL AND stance1 IS NULL) 
+    OR 
+    (eid2 = ${eid} AND claim2 IS NULL AND stance2 IS NULL)
+      LIMIT ${limit}
     `
 }
-const GET_TWEETS_VALIDATING = (eid:number) =>{
+const ADD_TWEET_VALIDATING = (id:number,eid:number) =>{
     return `
-    SELECT * FROM validating WHERE eid = ${eid}
+    UPDATE unvalidated
+    SET eid1 = COALESCE(eid1,${eid}),
+        eid2 =
+            CASE
+            WHEN eid1  = ${eid} THEN
+              NULL
+            ELSE
+              ${eid}
+            END
+    WHERE id = ${id}
     `
 }
 
-const ADD_TWEET_VALIDATED = (tweet:validated_tweet) =>{
+const GET_TWEET_UNVALIDATED = (id:number) =>{
     return `
-    INSERT INTO validated(id, tweet_content, eid1,stance1, claim1)
-    VALUES(${tweet.id},'${tweet.tweet_content}',${tweet.eid}, '${tweet.stance}', '${tweet.claim}')
+        SELECT * FROM unvalidated WHERE id = ${id}
+    `
+}
+const GET_TWEETS_UNVALIDATED = (limit:number, eid:number) =>{
+    return `
+    SELECT * FROM unvalidated WHERE 
+    (eid1 IS NULL AND eid2 IS NOT NULL AND eid2 != ${eid}) 
+    OR 
+    (eid2 IS NULL AND eid1 IS NOT NULL AND eid1 != ${eid}) 
+    OR 
+    (eid1 IS NULL AND eid2 IS NULL)
+    ORDER BY eid1 DESC LIMIT ${limit}
     `
 }
 
-const GET_TWEET_UNVALIDATED = (limit:number) =>{
+const SKIP_TWEET = (id:number,column:string) =>{
     return `
-        SELECT * FROM unvalidated LIMIT ${limit}
-    `
-}
-
-const REMOVE_TWEET_UNVALIDATED = (id:number) =>{
-    return `
-        DELETE FROM unvalidated WHERE id = ${id}
+    UPDATE unvalidated SET ${column} = NULL
+    WHERE id = ${id}
     `
 }
 
 const ADD_TWEET_UNVALIDATED = (tweet:unvalidated_tweet) => {
     return `
-    INSERT INTO unvalidated(id,tweet_content,priority)
-    VALUES(nextval('unvalidated_seq'),'${tweet.tweet_content}',false)
+    INSERT INTO unvalidated(tweet_content,tweet_created)
+    VALUES('${tweet.tweet_content}','${tweet.tweet_created}')
     `
 }
 
@@ -60,39 +82,44 @@ export class database_tweets extends database {
         super('dev')
     }
     
-    add_complete_tweets = (tweets:validated_tweet[],eid:number) =>{
-        tweets.forEach(item=>{
+
+    add_complete_tweets = async (tweets:validated_tweet[],eid:number) =>{
+        tweets.forEach(async (item)=>{
             let temp = {...item,eid}
-            this.queryDatabase(ADD_TWEET_VALIDATED(temp))
-            this.queryDatabase(REMOVE_TWEET_VALIDATING(temp.id))
+            let unvalidatedTweet = await this.queryDatabase(GET_TWEET_UNVALIDATED(item.id)) as any
+            console.log(unvalidatedTweet.eid1)
+            if(unvalidatedTweet[0].eid2 === eid){
+                this.queryDatabase(ADD_TWEET_COMPLETE(temp,['claim2','stance2']))
+            }
+            else if(unvalidatedTweet[0].eid1 === eid)
+                this.queryDatabase(ADD_TWEET_COMPLETE(temp,['claim1','stance1']))
         })
     }
 
-    skip_tweet = (tweet:unvalidated_tweet,eid:number) =>{
-        this.queryDatabase(ADD_TWEET_UNVALIDATED(tweet))
-        this.queryDatabase(REMOVE_TWEET_VALIDATING(tweet.id))
+    skip_tweet = async (tweet:unvalidated_tweet,eid:number) =>{
+        let unvalidatedTweet = await this.queryDatabase(GET_TWEET_UNVALIDATED(tweet.id)) as any
+
+        if(unvalidatedTweet[0].eid1 === eid)
+            this.queryDatabase(SKIP_TWEET(tweet.id,'eid1'))
+        else if (unvalidatedTweet[0].eid2 === eid)
+            this.queryDatabase(SKIP_TWEET(tweet.id,'eid2'))
     }
 
     give_tweets = async (eid:number,limit:number) =>{
-        let sentData = await this.queryDatabase(GET_TWEETS_VALIDATING(eid)) as validating_tweet[]
-
+        let sentData = await this.queryDatabase(GET_TWEETS_VALIDATING(eid,limit)) as validating_tweet[]
+        
         if(sentData.length < limit){
             limit = limit - sentData.length
-            let addedUnvalidated = await this.queryDatabase(GET_TWEET_UNVALIDATED(limit)) as validating_tweet[]
-            addedUnvalidated.forEach(tweet=>{
-                this.queryDatabase(REMOVE_TWEET_UNVALIDATED(tweet.id))
+            let addedUnvalidated = await this.queryDatabase(GET_TWEETS_UNVALIDATED(limit,eid)) as validating_tweet[]
+            addedUnvalidated.forEach((tweet)=>{
+                this.queryDatabase(ADD_TWEET_VALIDATING(tweet.id,eid))
             })
             sentData = sentData.concat(addedUnvalidated)
         }
         sentData = sentData.map(item=>{
             return {...item,eid}
         })
-
-        sentData.forEach(tweet=>{
-            this.queryDatabase(ADD_TWEET_VALIDATING(tweet))
-        })
-
-    
+   
         return sentData
     }
 

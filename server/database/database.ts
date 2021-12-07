@@ -1,22 +1,41 @@
 import { connect_database } from './connect_database'
+import mariadb from 'mariadb'
 export class database {
-    connection
-    constructor(enviroment:'dev'|'prod'){
+    connection:mariadb.Pool
+    constructor (enviroment:'dev'|'prod'){
         if(enviroment == 'dev')
-            this.connection = connect_database('localhost')
+            this.handleLogin('faure')
         else    
-            this.connection = connect_database('')
+            this.handleLogin('faure')
+    }
+
+    handleLogin = async (url:string) =>{
+        this.connection = await connect_database(url)
     }
 
     queryDatabase = async (query:string) =>{
         return new Promise((resolve) => {
-            this.connection.query(query, (err, res) => {
+
+            this.connection.getConnection()
+            .then(conn => {
+            
+            conn.query(query)
+                .then((rows) => {
+                //console.log(rows);
+                resolve(rows)
+                conn.end()
+                return rows
+                })
+                .catch(err => {
+                //handle error
+                console.log(err); 
+                conn.end();
+                })
                 
-                if(res && res.rows)
-                    resolve(res.rows)
-                //console.log(err)
-            })
-          });
+                }).catch(err => {
+                //not connected
+                });
+        })
     }
 
 }
