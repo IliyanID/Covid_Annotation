@@ -3,7 +3,7 @@
 }
 .TweetContainer{
     width: calc(100vw - 20px);
-    margin-top:90px;
+    margin-top:10px;
     margin-bottom:40px;
     display:flex;
     flex-wrap:wrap;
