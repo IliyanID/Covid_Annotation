@@ -1,8 +1,11 @@
 import { connect_database } from './connect_database'
+import express from 'express'
 import mariadb from 'mariadb'
 export class database {
     connection:mariadb.Pool
-    constructor (enviroment:'dev'|'prod'){
+    res:express.Response
+    constructor (enviroment:'dev'|'prod',res:express.Response){
+        this.res = res;
         if(enviroment == 'dev')
             this.handleLogin('faure')
         else    
@@ -16,25 +19,26 @@ export class database {
     queryDatabase = async (query:string) =>{
         return new Promise((resolve) => {
 
-            this.connection.getConnection()
+            connect_database('faure').then(e=>e.getConnection()
             .then(conn => {
             
             conn.query(query)
                 .then((rows) => {
-                //console.log(rows);
                 resolve(rows)
                 conn.end()
-                return rows
                 })
                 .catch(err => {
-                //handle error
-                console.log(err); 
+                console.log(err)
+                resolve(undefined)
+                
                 conn.end();
                 })
                 
                 }).catch(err => {
                 //not connected
-                });
+                })
+            )
+            
         })
     }
 
