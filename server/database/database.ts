@@ -3,9 +3,7 @@ import express from 'express'
 import mariadb from 'mariadb'
 export class database {
     connection:mariadb.Pool
-    res:express.Response
-    constructor (enviroment:'dev'|'prod',res:express.Response){
-        this.res = res;
+    constructor (enviroment:'dev'|'prod'){
         if(enviroment == 'dev')
             this.handleLogin('faure')
         else    

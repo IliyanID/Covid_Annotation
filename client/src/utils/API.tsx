@@ -60,6 +60,14 @@ export const API_LOGIN = async ({ename,eid}:api) => {
     }
 }
 
+export const API_LOGOUT =  ({eid}:api) => {
+    let base_url = Get_Base_URL();
+
+    navigator.sendBeacon(`${base_url}/user/${eid}`, '');
+
+
+}
+
 export const Get_Base_URL = () =>{
     return 'http://localhost:3001/api'
 }

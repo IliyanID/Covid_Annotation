@@ -90,8 +90,8 @@ const GET_TWEETS_VALIDATED = () =>{
 
 
 export class database_tweets extends database {
-    constructor(req:express.Response){
-        super('dev',req)
+    constructor(){
+        super('dev')
     }
     
 

@@ -16,13 +16,7 @@ export const tweetsRequest = (app:Express) =>{
     const errorMessage = {error:'Internal Database Query Error'}
 
     var jsonParser = bodyParser.json()
-    let database:database_tweets
-
-    function myMiddleware (req:Express.Request, res:express.Response, next:NextFunction) {
-      database = new database_tweets(res)
-      next()
-   }
-   app.use(myMiddleware)
+      let database:database_tweets = new database_tweets()
 
     const buildTweet = (response:any,eid:number):any =>{
       let priority = false;
