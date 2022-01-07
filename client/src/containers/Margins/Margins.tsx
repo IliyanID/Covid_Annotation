@@ -4,6 +4,7 @@ import { Popover, Container, Row, Col, Button} from  'reactstrap'
 import { ImStatsBars } from 'react-icons/im'
 import { AiFillSetting, AiOutlineLogout } from 'react-icons/ai'
 import { useToggle } from '../../hooks/useToggle'
+import { Pages } from '../App'
 import '../../static/css/Headers/Header.css'
 import '../../static/css/Headers/Footer.css'
 
@@ -34,7 +35,7 @@ const UserActions = (props:globalProps) =>{
                             <UserActionsRow  label='EID' value={props.eid}/>
                             <UserActionsRow label='Acccount' value={props.account_type}/>
                             <UserActionsRow label='Statistics' value={<ImStatsBars style={ButtonStyle}/>}/>
-                            <UserActionsRow label='Settings' value={<AiFillSetting style={ButtonStyle}/>}/>
+                            <UserActionsRow label='Settings' onClick={()=>{togglePopover();props.setCurrentPage(Pages.settings)}} value={<AiFillSetting  style={ButtonStyle}/>}/>
                             <UserActionsRow label='Logout' value={<AiOutlineLogout onClick={handleLogout} style={ButtonStyle}/>}/>
                         </Container>
 
@@ -43,8 +44,8 @@ const UserActions = (props:globalProps) =>{
 
             </>
 }
-const UserActionsRow = (props:{label:any,value:any,xsValue?:any}) =>{
-    return  <Row style={{display:'flex',alignItems:'center',marginTop:'5px',borderBottom:'1px solid black'}}>
+const UserActionsRow = (props:{label:any,value:any,xsValue?:any,onClick?:any}) =>{
+    return  <Row {...props} style={{display:'flex',alignItems:'center',marginTop:'5px',borderBottom:'1px solid black'}}>
                 <Col xs ={(props.xsValue)?'auto':'auto'}>
                     {props.label}
                 </Col>

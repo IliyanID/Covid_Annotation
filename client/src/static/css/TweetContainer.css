@@ -1,6 +1,7 @@
 :root{
     --cardColor:#257742
 }
+
 .TweetContainer{
     width: calc(100vw - 20px);
     margin-top:10px;

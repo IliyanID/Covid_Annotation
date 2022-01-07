@@ -55,6 +55,10 @@ const HandleNewTweets = (allPackages:tweetContainerAllPackages) =>{
                 if(response.length  > 0)
                     allPackages.setTweets([...updatedTweets])
             }
+            else{
+                console.log('failed')
+                allPackages.showmessage('Failed to retreive tweets')
+            }
         })
     },[allPackages.tweets,allPackages.eid,allPackages.showTweets])
 }
@@ -86,7 +90,7 @@ export const TweetContainer = (props:globalProps) =>{
     HandleNewTweets(allPackages)
     let completedExists = allPackages.tweets.filter(item => {return item.complete}).length > 0
     return  <>
-                <input  id='inputId' defaultValue='5' style={{marginTop:'20px'}}  onMouseUp={(e)=>{handleInput(e,allPackages)}} type='range' min='1' max='10'></input>
+                <input  id='inputId' defaultValue='5' style={{marginTop:'45px'}}  onMouseUp={(e)=>{handleInput(e,allPackages)}} type='range' min='1' max='10'></input>
                 <h6>Displaying {allPackages.showTweets} Tweets</h6>
                 <div className='TweetContainer'>
                     <No_More_Tweets tweets = {allPackages.tweets}/>

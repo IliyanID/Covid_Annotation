@@ -2,12 +2,8 @@ import { log } from '../utils/log'
 import {NextFunction, Request, Response} from 'express'
 import { database_user } from '../database/database_user';
 import { validateResponse } from '../utils/validateResponse';
-import TweetsCompleteRequest from '../Schemas/TweetsCompleteRequest.json'
-import TweetsSkipRequest from '../Schemas/TweetsSkipRequest.json'
-import TweetsImportRequest from '../Schemas/TweetImportRequest.json'
 import bodyParser from 'body-parser';
 import express, { Express } from 'express'
-import { csvToJson } from '../utils/csvToJson';
 
 export let response:express.Response;
 
@@ -23,6 +19,55 @@ export const userRequests = (app:Express) =>{
             database.logout(eid)
             res.send();
       })
+
+      app.get('/api/user/:eid',async(req:Request,res:Response)=>{
+            log(req)
+            const eid = parseInt(req.params.eid);
+            let accountType = await database.login(eid)
+            res.send({accountType})
+      })
+
+      app.get('/api/user/:eid',async(req:Request,res:Response)=>{
+            log(req)
+            const eid = parseInt(req.params.eid);
+            let accountType = await database.login(eid)
+            res.send({accountType})
+      })
+
+      
+      
+      app.get('/api/user/parent/:eid',async(req:Request,res:Response)=>{
+            log(req)
+            const eid = parseInt(req.params.eid);
+            let parent_users = await database.get_parent_users(eid)
+            res.send(parent_users)
+      })
+
+      app.put('/api/user/parent/:eid',jsonParser,async(req:Request,res:Response)=>{
+            log(req)
+            const eid = parseInt(req.params.eid);
+            database.logout(eid)
+            res.send();
+      })
+
+      app.post('/api/user/parent/:eid',jsonParser,async(req:Request,res:Response)=>{
+
+            log(req)
+            const eid = parseInt(req.params.eid);
+            database.add_parent_user(eid,req.body.eid)
+            res.send();
+      })
+      
+      app.delete('/api/user/parent/:eid',jsonParser,async(req:Request,res:Response)=>{
+
+            log(req)
+            const eid = parseInt(req.params.eid);
+            const delete_eid = req.body.eid
+            database.delete_parent_user(eid,delete_eid)
+            res.send();
+      })
+
+
 
 
 }

@@ -4,15 +4,17 @@ export type globalProps = {
     account_type: 'validator' | 'admin' | 'NA',
     showMessage:any,
     modalOpen:boolean,
+    currentPage?:any
     [key: string]: any
 }
 
 export const globalPropsDefaultObj:globalProps = {
     eid:'',
     name:'Iliyan Dimitrov',
-    account_type:'validator',
+    account_type:'admin',
     showMessage:(a:any,b:any)=>{return },
     modalOpen:true,
+
 } as const
 
 export type tweet = unvalidated_tweet | validated_tweet

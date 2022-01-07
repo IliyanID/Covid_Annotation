@@ -1,0 +1,68 @@
+#containerSettings{
+    margin-top:40px;
+    
+    
+}
+
+#optionSelectorSettings{
+    float:left;
+    //border:2px solid black;
+    height:80vh;
+    width: 30vw;
+    position:relative;
+}
+    #optionSelectorSettings > *{
+        list-style-type: none;
+        padding:0px;
+        margin:0px;
+
+    }
+    #optionSelectorSettings ul{
+        background-color:rgb(219, 219, 219);
+        height:calc(100vh - 40px);
+
+    }
+    #optionSelectorSettings ul li{
+        border-bottom:1px solid black;
+        padding:30px;
+        width:100%;
+        transition: .5s;
+        cursor:pointer;
+    }
+        #optionSelectorSettings ul li:hover{
+            background-color: rgb(173, 171, 171);
+        }
+        .selectedSettings{
+            background-color: gray!important;
+            font-weight:bolder;
+        }
+
+#optionContentSettings{
+    margin-top:60px;
+    float:right;
+    //border:2px solid black;
+    height:80vh;
+    width:68vw;
+}
+    #optionContentSettings > *{
+        margin-bottom:20px;
+        display:block;
+    }
+
+.validatorMessage{
+    position:absolute;
+
+    width:80%;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    text-align: center;
+    border:2px solid var(--cardColor);
+    background-color:var(--cardColor);
+    color:white;
+    padding:20px;
+    border-radius: 5px;
+
+}
+
+ 

@@ -8,6 +8,9 @@ import TweetsImportRequest from '../Schemas/TweetImportRequest.json'
 import bodyParser from 'body-parser';
 import express, { Express } from 'express'
 import { csvToJson } from '../utils/csvToJson';
+const multer  = require('multer');
+const os = require('os')
+const fs = require('fs')
 
 export let response:express.Response;
 
@@ -87,24 +90,30 @@ export const tweetsRequest = (app:Express) =>{
         res.send(schema)
 
       })
+      
+      const upload = multer({ dest: os.tmpdir() });
+      app.post('/api/tweets',upload.single('file'),async (req:any,res:Response) =>{
+        fs.readFile(req.file.path,'utf8', async function (err:any, fileData:any) {
+          let obj = csvToJson(fileData)
+          let schema = validateResponse(obj,TweetsImportRequest)
+          if(!schema.valid){
+            res.status(400)
+            res.send(schema)
+            return
+          }
+      
+          let response = await database.import_tweets(obj)
+          if(!response){
+            res.status(500)
+            res.send(errorMessage)
+            return
+          }
+          res.send(obj)
+        })
 
-      var urlencodedParser = bodyParser.text()
-      app.put('/api/tweets',urlencodedParser,async (req:Request,res:Response) =>{
-        let obj = csvToJson(req.body)
-        let schema = validateResponse(obj,TweetsImportRequest)
-        if(!schema.valid){
-          res.status(400)
-          res.send(schema)
-          return
-        }
     
-        let response = await database.import_tweets(obj)
-        if(!response){
-          res.status(500)
-          res.send(errorMessage)
-          return
-        }
-        res.send(obj)
+     
+     
 
         
       })

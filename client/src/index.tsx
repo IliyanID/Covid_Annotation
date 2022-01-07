@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './static/css/index.css';
-import App from './components/App';
+import App from './containers/App';
 import reportWebVitals from './reportWebVitals';
 import { SnackbarProvider, useSnackbar, VariantType } from 'notistack';
 export const HookCaller = () => {
@@ -16,11 +16,11 @@ export const HookCaller = () => {
 
 ReactDOM.render(
   <React.StrictMode>
-      return (
+     
         <SnackbarProvider maxSnack={3} preventDuplicate>
             <HookCaller />
         </SnackbarProvider>
-    );
+    
    
   </React.StrictMode>,
   document.getElementById('root')

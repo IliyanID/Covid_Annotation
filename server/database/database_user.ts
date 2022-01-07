@@ -6,8 +6,19 @@ export class database_user extends database{
     constructor(){
         super('dev')
     }
-    login = (ename:string,eid:string) =>{
-
+    login = async (eid:number) =>{
+        const checkExists = `
+        SELECT * FROM users WHERE eid = ${eid}
+        `
+        let results:any = await this.queryDatabase(checkExists)
+        if(results[0]!== undefined)
+            return results[0].account_type
+        
+        const addNewUser = `
+        INSERT INTO users (eid,account_type) VALUES (${eid},"validator")
+        `
+        await this.queryDatabase(addNewUser);
+        return "validator"
     }
 
     logout = (eid:number) =>{
@@ -25,7 +36,30 @@ export class database_user extends database{
         this.queryDatabase(eid2)
     }
 
-    newUser = (ename:string,eid:string) =>{
-        
+    get_parent_users = async(eid:number)=>{
+        let query = `
+        SELECT * FROM users  WHERE parent = ${eid}
+        `
+
+        let results = await this.queryDatabase(query)
+        return results
+    }
+
+    add_parent_user = async (parent:number,new_user:number)=>{
+        let query = `
+        INSERT IGNORE INTO users (eid,account_type,parent) values (${new_user},"admin",${parent})
+        `
+        let query2=`
+        UPDATE users SET account_type = "admin",parent=${parent} where eid = ${new_user}
+        `
+        await this.queryDatabase(query)
+        await this.queryDatabase(query2)
+    }
+
+    delete_parent_user = (parent:number,delete_user:number)=>{
+        let query = `
+            DELETE FROM users WHERE eid = ${delete_user} AND parent = ${parent}
+        `
+        this.queryDatabase(query)
     }
 }

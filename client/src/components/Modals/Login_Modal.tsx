@@ -1,14 +1,20 @@
 import React, { useState } from 'react'
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Input } from 'reactstrap'
 import { globalProps } from '../../common_types'
+import { API_LOGIN } from '../../utils/API'
 
 export const Login_Modal = (props:globalProps) =>{
     const [input,setInput] = useState(localStorage.getItem('eid') || '')
 
-    const handleLogin = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>{
+    const handleLogin = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>{
+        let res = await API_LOGIN({eid:parseInt(input)})
+        if(!res)
+            return
+        
         props.setModalOpen(false)
         localStorage.setItem('eid',input);
         props.setEid(input)
+        props.setAccount_type(res.accountType)
     }
 
     return <Modal isOpen = {props.modalOpen}>

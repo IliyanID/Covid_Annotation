@@ -9,6 +9,7 @@ const PORT = process.env.PORT || 3001;
 
 const app = express()
 
+
 const log = (req:Request) =>{
   console.log(`${req.method} ${req.url}`)
   if(req.body)
@@ -20,7 +21,7 @@ app.listen(PORT, () => {
 });
 
 app.use(cors({
-  origin: 'http://localhost:3000'
+  origin: true,
 }));
 
 tweetsRequest(app)

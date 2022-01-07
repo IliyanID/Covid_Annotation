@@ -9,7 +9,8 @@ export const JsonTocsv = (arr:any) =>{
         let line = ''
         Object.keys(obj).forEach((key:string,index)=>{
             let value = String(obj[key]).replace(/(\r\n|\n|\r)/gm, "");
-            line += `${value},`
+            value = value.replace(/(")/gm, "");
+            line += `"${value}",`
         })
         line = line.substring(0,line.length - 1)
         csv += line + '\n'
