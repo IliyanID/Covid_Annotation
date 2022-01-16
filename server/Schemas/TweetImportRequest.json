@@ -8,7 +8,8 @@
         }
       },
       "required": [
-        "tweet_content"
+        "tweet_content",
+        "tweet_created"
       ]
     }
   }

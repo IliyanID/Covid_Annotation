@@ -1,6 +1,6 @@
 import React from 'react'
 import {globalProps} from '../../common_types'
-import { Popover, Container, Row, Col, Button} from  'reactstrap' 
+import { Popover, Container, Row, Col } from  'reactstrap' 
 import { ImStatsBars } from 'react-icons/im'
 import { AiFillSetting, AiOutlineLogout } from 'react-icons/ai'
 import { useToggle } from '../../hooks/useToggle'
@@ -34,7 +34,7 @@ const UserActions = (props:globalProps) =>{
                         <Container className='UserActionsBody'>
                             <UserActionsRow  label='EID' value={props.eid}/>
                             <UserActionsRow label='Acccount' value={props.account_type}/>
-                            <UserActionsRow label='Statistics' value={<ImStatsBars style={ButtonStyle}/>}/>
+                            <UserActionsRow label='Statistics' onClick={()=>{togglePopover();props.setCurrentPage(Pages.statistics)}} value={<ImStatsBars style={ButtonStyle}/>}/>
                             <UserActionsRow label='Settings' onClick={()=>{togglePopover();props.setCurrentPage(Pages.settings)}} value={<AiFillSetting  style={ButtonStyle}/>}/>
                             <UserActionsRow label='Logout' value={<AiOutlineLogout onClick={handleLogout} style={ButtonStyle}/>}/>
                         </Container>

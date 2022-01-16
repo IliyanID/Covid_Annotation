@@ -1,12 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { globalProps, tweet, tweetDefaultValidated } from '../../common_types'
 import '../../static/css/TweetContainer.css'
 import IndividualTweet from './Tweet/IndividualTweet'
 import { Button } from 'reactstrap'
 import { API_Get_Tweets, API_Post_Tweet } from '../../utils/API'
 import { packageStatesIntoObject } from '../../utils/packageStatesIntoObject'
-import No_More_Tweets from './No-More-Tweets'
-import { propTypes } from 'react-bootstrap/esm/Image'
+import NoMoreTweets from './No-More-Tweets'
 
 type TweetContainerStates = {
     tweets:tweet[],
@@ -60,6 +59,7 @@ const HandleNewTweets = (allPackages:tweetContainerAllPackages) =>{
                 allPackages.showmessage('Failed to retreive tweets')
             }
         })
+        // eslint-disable-next-line
     },[allPackages.tweets,allPackages.eid,allPackages.showTweets])
 }
 
@@ -93,7 +93,7 @@ export const TweetContainer = (props:globalProps) =>{
                 <input  id='inputId' defaultValue='5' style={{marginTop:'45px'}}  onMouseUp={(e)=>{handleInput(e,allPackages)}} type='range' min='1' max='10'></input>
                 <h6>Displaying {allPackages.showTweets} Tweets</h6>
                 <div className='TweetContainer'>
-                    <No_More_Tweets tweets = {allPackages.tweets}/>
+                    <NoMoreTweets tweets = {allPackages.tweets}/>
                     
                     {allPackages.tweets.map((tweet,index) =>{
                         let indivPackages = {...allPackages,index}

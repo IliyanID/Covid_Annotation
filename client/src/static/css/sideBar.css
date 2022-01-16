@@ -1,0 +1,45 @@
+.sideBar{
+    float:left;
+    position:relative;
+    width:220px;
+    list-style-type: none;
+
+    height:100vh;
+    overflow:hidden;
+    border-right:2px solid var(--lightGray);
+    margin:0px;
+    padding:0px;
+}
+
+    .sideBar li{
+        padding:30px;
+        width:100%;
+        transition: .2s;
+        cursor:pointer;
+        font-size: 14px;
+        position:relative;
+    }
+        .sideBar li > *{
+            position: absolute;
+            left:25px;
+            top:50%;
+            transform: translateY(-50%);
+            width:20px;
+            height:20px;
+        }
+        .sideBar li:hover{
+            background-color: rgb(173, 171, 171);
+        }
+        .selectedSideBar::after{
+            position:absolute;
+            content:"";
+            width:15px;
+            height:100%;
+            background-color:  var(--blue);
+            left:0px;
+            top:0px;
+            border-radius: 0px 3px 3px 0px;
+        }
+        .selectedSideBar{
+            color:var(--blue);
+        }

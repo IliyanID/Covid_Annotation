@@ -1,15 +1,24 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-dropzone-uploader/dist/styles.css'
+import 'antd/dist/antd.css';
+import 'rc-slider/assets/index.css';
 import '../static/css/App.css';
 import Header from './Margins/Margins'
 import TweetContainer from '../components/Tweets/TweetContainer';
 import SettingsContainer from '../components/Settings/SettingsContainer'
+import StatisticsContainer from '../components/Statistics/StatisticsContainer'
 import {globalPropsDefaultObj } from '../common_types'
 import { packageStatesIntoObject } from '../utils/packageStatesIntoObject'
-import Login_Modal from '../components/Modals/Login_Modal';
+import LoginModal from '../components/Modals/Login_Modal';
 import { API_LOGOUT } from '../utils/API';
+
+export enum Pages  {
+  validate,
+  settings ,
+  statistics
+}
 
 const PackageUserStates = (props:any)=>{
   let p:any = {}
@@ -23,17 +32,13 @@ const PackageUserStates = (props:any)=>{
   return p
 }
 
-export enum Pages  {
-  validate,
-  settings ,
-  statistics
-}
-
 const getCurrentPage = (allPackages:any) =>{
   if(allPackages.currentPage === Pages.validate)
     return  <TweetContainer {...allPackages}/>
   else if(allPackages.currentPage === Pages.settings)
     return <SettingsContainer {...allPackages}/>
+  else if(allPackages.currentPage === Pages.statistics)
+    return <StatisticsContainer {...allPackages}/>
 }
 
 const App = (props:any) => {
@@ -45,7 +50,7 @@ const App = (props:any) => {
 }
 
   return <div className="App">
-      <Login_Modal {...allPackages}/>
+      <LoginModal {...allPackages}/>
       <Header {...allPackages}/>
       {getCurrentPage(allPackages)}
       

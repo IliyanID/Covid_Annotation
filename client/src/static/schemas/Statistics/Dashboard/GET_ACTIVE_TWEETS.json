@@ -1,0 +1,20 @@
+{
+    "type": "array",
+    "items": {
+      "type": "object",
+      "properties": {
+        "tweet_content": {
+          "type": "string"
+        },
+        "reviewer": {
+          "type": ["number","string"]
+        },
+        "id": {
+          "type": ["number","string"]
+        }
+      },
+      "required": [
+        "tweet_content","reviewer","id"
+      ]
+    }
+  }

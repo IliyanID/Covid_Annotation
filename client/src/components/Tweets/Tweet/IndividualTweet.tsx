@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from 'react'
-import { tweet } from '../../../common_types'
 import { Button } from 'reactstrap'
 import { BsFillSkipForwardFill } from 'react-icons/bs'
 import { tweetContainerAllPackages } from '../TweetContainer'
@@ -56,6 +55,7 @@ const IndividualTweet = (props:IndividualTweetType) =>{
                 updateKey(props,'claim',obj.toString())
             })
         }
+    // eslint-disable-next-line
     },[])
 
     if (currentTweet.claim !== '' && currentTweet.stance !== ''){

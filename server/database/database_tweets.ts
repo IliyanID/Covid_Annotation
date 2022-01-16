@@ -113,14 +113,19 @@ export class database_tweets extends database {
     }
 
     skip_tweet = async (tweet:unvalidated_tweet,eid:number) =>{
+        await this.queryDatabase(`INSERT IGNORE INTO skipped_tweets SELECT * FROM unvalidated WHERE id = ${tweet.id}`)
+
         let response:any = []
         
         let unvalidatedTweet = await this.queryDatabase(GET_TWEET_UNVALIDATED(tweet.id)) as any
 
-        if(unvalidatedTweet[0].eid1 === eid)
+        if(unvalidatedTweet[0].eid1 === eid){
             SKIP_TWEET(tweet.id,'eid1',this.queryDatabase,eid)
-        else if (unvalidatedTweet[0].eid2 === eid)
+        }
+        else if (unvalidatedTweet[0].eid2 === eid){
             SKIP_TWEET(tweet.id,'eid2',this.queryDatabase,eid)
+        }
+
         return response
     }
 

@@ -1,4 +1,3 @@
-import { propTypes } from 'react-bootstrap/esm/Image'
 import { tweet } from '../common_types'
 
 type api = {

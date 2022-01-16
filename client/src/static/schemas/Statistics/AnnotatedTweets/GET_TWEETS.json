@@ -1,0 +1,41 @@
+{
+    "type": "array",
+    "items": {
+      "type": "object",
+      "properties": {
+        "tweet_created": {
+          "type": "string"
+        },
+        "tweet_content": {
+          "type": ["string"]
+        },
+        "eid1": {
+          "type": ["number"]
+        },
+        "claim1": {
+            "type": ["string"]
+        },
+        "stance1": {
+        "type": ["string"]
+        },
+        "validated_time1": {
+        "type": ["string"]
+        },
+        "eid2": {
+            "type": ["number"]
+        },
+        "claim2": {
+            "type": ["string"]
+        },
+        "stance2": {
+        "type": ["string"]
+        },
+        "validated_time2": {
+        "type": ["string"]
+        }
+      },
+      "required": [
+        "tweet_created","tweet_content","eid1","claim1","stance1","validated_time1","eid2","claim2","stance2","validated_time2"
+      ]
+    }
+  }
