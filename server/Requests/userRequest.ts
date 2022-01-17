@@ -23,8 +23,8 @@ export const userRequests = (app:Express) =>{
       app.get('/api/user/:eid',async(req:Request,res:Response)=>{
             log(req)
             const eid = parseInt(req.params.eid);
-            let accountType = await database.login(eid)
-            res.send({accountType})
+            let account_type = await database.login(eid)
+            res.send({account_type,eid:req.params.eid})
       })
 
       app.get('/api/user/:eid',async(req:Request,res:Response)=>{
@@ -54,8 +54,16 @@ export const userRequests = (app:Express) =>{
 
             log(req)
             const eid = parseInt(req.params.eid);
+            const parent_eid = req.body.eid
             database.add_parent_user(eid,req.body.eid)
-            res.send();
+            res.send(
+                  {
+                        added_eid:String(eid),
+                        privlidge:req.body.privlidge,
+                        parent_eid:String(parent_eid),
+                        success:true
+                  }
+            );
       })
       
       app.delete('/api/user/parent/:eid',jsonParser,async(req:Request,res:Response)=>{
@@ -64,7 +72,13 @@ export const userRequests = (app:Express) =>{
             const eid = parseInt(req.params.eid);
             const delete_eid = req.body.eid
             database.delete_parent_user(eid,delete_eid)
-            res.send();
+            res.send(
+                  {
+                        deleted_eid:String(delete_eid),
+                        parent_eid:String(eid),
+                        success:true
+                  }
+            );
       })
 
 

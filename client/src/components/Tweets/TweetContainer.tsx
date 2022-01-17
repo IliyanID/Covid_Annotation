@@ -3,9 +3,11 @@ import { globalProps, tweet, tweetDefaultValidated } from '../../common_types'
 import '../../static/css/TweetContainer.css'
 import IndividualTweet from './Tweet/IndividualTweet'
 import { Button } from 'reactstrap'
-import { API_Get_Tweets, API_Post_Tweet } from '../../utils/API'
+import { API_Tweets } from '../../utils/API/APIMain'
 import { packageStatesIntoObject } from '../../utils/packageStatesIntoObject'
 import NoMoreTweets from './No-More-Tweets'
+
+let api:API_Tweets
 
 type TweetContainerStates = {
     tweets:tweet[],
@@ -17,7 +19,6 @@ type TweetContainerStates = {
 export type tweetContainerAllPackages = globalProps & TweetContainerStates
 
 const AddMissingProps = (tweets:tweet[]) =>{
-
     let temp = tweets.map(item=>{
         let tempObj = {...tweetDefaultValidated}
         Object.keys(item).forEach(key=>{
@@ -47,17 +48,11 @@ const HandleNewTweets = (allPackages:tweetContainerAllPackages) =>{
         let NumTweets = allPackages.tweets.length
         if(NumTweets === allPackages.showTweets || allPackages.eid.length !== 9)
             return
-        API_Get_Tweets({eid:allPackages.eid,limit:allPackages.showTweets}).then((response:tweet[]) =>{
-            if(response){
-                let updatedTweets = AddMissingProps(response)
-                allPackages.setShowTweets(response.length)
-                if(response.length  > 0)
-                    allPackages.setTweets([...updatedTweets])
-            }
-            else{
-                console.log('failed')
-                allPackages.showmessage('Failed to retreive tweets')
-            }
+        api.GET_TWEETS(allPackages.eid,allPackages.showTweets,(response:tweet[])=>{
+            let updatedTweets = AddMissingProps(response)
+            allPackages.setShowTweets(response.length)
+            if(response.length  > 0)
+                allPackages.setTweets([...updatedTweets])
         })
         // eslint-disable-next-line
     },[allPackages.tweets,allPackages.eid,allPackages.showTweets])
@@ -66,11 +61,9 @@ const HandleNewTweets = (allPackages:tweetContainerAllPackages) =>{
 const handleSubmit = async(props:tweetContainerAllPackages) =>{
     let notCompleted = props.tweets.filter((tweet:tweet) =>{return !tweet.complete})
     let completed = props.tweets.filter((tweet:tweet) =>{return tweet.complete})
-    let success = await API_Post_Tweet({requestType:'complete',eid:props.eid,data:completed},props.showMessage)
-    if(success){
+    api.SUBMIT_TWEETS(props.eid,completed,(response)=>{
         props.setTweets(notCompleted)
-        props.showMessage(`Submitted Completed Tweets! Getting New Tweets...`)
-    }
+    })
 }
 
 const handleInput = (e:React.MouseEvent<HTMLInputElement, MouseEvent>,allPackages:tweetContainerAllPackages) =>{
@@ -86,6 +79,8 @@ const handleInput = (e:React.MouseEvent<HTMLInputElement, MouseEvent>,allPackage
 }
 
 export const TweetContainer = (props:globalProps) =>{
+    api = new API_Tweets(props.showMessage)
+
     const allPackages = PackageAll(props)
     HandleNewTweets(allPackages)
     let completedExists = allPackages.tweets.filter(item => {return item.complete}).length > 0

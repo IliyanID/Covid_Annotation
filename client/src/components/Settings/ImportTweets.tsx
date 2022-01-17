@@ -1,12 +1,12 @@
 import React from 'react'
-import { Get_Base_URL } from '../../utils/API'  
 import { globalProps } from '../../common_types'
+import { API_Import_Tweets } from '../../utils/API/APISettings'
 
 import Dropzone, { IDropzoneProps } from 'react-dropzone-uploader'
 import { Table } from 'reactstrap' 
 
 export const Import = (props:globalProps) =>{
-    const getUploadParams: IDropzoneProps['getUploadParams'] = () => { return { url: Get_Base_URL()+'/tweets' } }
+    const getUploadParams: IDropzoneProps['getUploadParams'] = () => { return { url: new API_Import_Tweets(props.showMessage).Get_Base_URL() +'/tweets' } }
   
 
     // called every time a file's `status` changes

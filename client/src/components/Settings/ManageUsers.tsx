@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import { globalProps } from '../../common_types';
-import { API_ADD_USERS_PARENT, API_DELETE_USERS_PARENT, API_GET_USERS_PARENT } from '../../utils/API';
+import { API_Manage_Access } from '../../utils/API/APISettings';
 
 import { Button, Table, InputGroup, Input, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'
 import { AiOutlineClose } from 'react-icons/ai';
 
 export const ManageUsers = (props:globalProps) =>{
+    const api = new API_Manage_Access(props.showMessage)
+
     const [users,setUsers] = useState([])
     const updateList = () =>{
-        API_GET_USERS_PARENT({eid:props.eid}).then((res)=>{
-            setUsers(res)
-        })
+        api.GET_USERS(props.eid,setUsers)
     }
     useEffect(()=>{
         updateList()
@@ -38,11 +38,10 @@ export const ManageUsers = (props:globalProps) =>{
                                 return <tr>
                                     <td>{user.eid}</td>
                                     <td>{user.account_type}</td>
-                                    <td><AiOutlineClose onClick={async ()=>{
-                                        await API_DELETE_USERS_PARENT(props.eid,user.eid);
-                                        updateList();
-                                    }
-                                    } style={multiStyle}/></td>
+                                    <td><AiOutlineClose onClick={()=>{
+                                        api.DELETE_USER({eid:user.eid,parent:props.eid})
+                                    }}
+                                     style={multiStyle}/></td>
                                 </tr>
                             })
                         }
@@ -85,9 +84,8 @@ export const ManageUsers = (props:globalProps) =>{
                     color = {(newUser !== undefined && newUser >=111111111)?'success':'secondary'} 
                     style={{marginTop:'10px'}}
                     onClick={async ()=>{
-                        await API_ADD_USERS_PARENT(props.eid,newUser);
-                        updateList();
-                        setNewUser(0)
+                        if(newUser !== undefined)
+                            api.ADD_USER({eid:newUser,privlidge:'admin',parent:props.eid})
                     }}
                     disabled={newAccountType ==='Account Type' || newUser === undefined}
                     >Add New User</Button>

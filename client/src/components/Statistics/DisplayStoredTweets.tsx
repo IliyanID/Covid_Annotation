@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useMultiToggle } from '../../hooks/useToggle';
-import { completeTweetsConfig } from '../../static/config/filterConfig';
+import { completeTweetsConfig, IncompleteTweetsConfig, skippedTweetsConfig } from '../../static/config/filterConfig';
 
 import '../../static/css/Statistics/Admin/AnnotatedTweets.css'
 
 
 import { MdOutlineFilterList } from 'react-icons/md';
-import ReactFilterEasy, { ICondition } from 'react-filter-easy'
+import ReactFilterEasy, { ICondition, IField } from 'react-filter-easy'
 import Slider, { SliderTooltip } from 'rc-slider'
 import { BsPencilSquare } from 'react-icons/bs';
 import { Collapse } from 'reactstrap';
@@ -56,11 +56,28 @@ export const DisplayStoredTweets = (props:props) =>{
             );
           };
 
+    let selectedFields:IField[];
+    let header = ''
+    switch(props.context){
+        case 'annotatedTweets':
+            selectedFields = completeTweetsConfig
+            header = 'Annotated'
+            break;
+        case 'incompleteTweets':
+            selectedFields = IncompleteTweetsConfig
+            header = 'Incomplete'
+            break;
+        case 'skippedTweets':
+            selectedFields = skippedTweetsConfig
+            header = 'Skipped'
+            break;
+    }
+
     const [openArr,toggleOpenArr] = useMultiToggle(false,props.inputTweets.length)
     return  <div>
-                <h3 className='FilterHeader'><MdOutlineFilterList/>Filter Tweets</h3>
+                <h3 className='FilterHeader'><MdOutlineFilterList/>Filter {header} Tweets</h3>
                 <ReactFilterEasy
-                    fields={completeTweetsConfig}
+                    fields={selectedFields}
                     conditions={props.filter}
                     onChange={props.setFilter}
                     className='filterTweets'
@@ -88,6 +105,8 @@ export const DisplayStoredTweets = (props:props) =>{
                                         <Collapse isOpen={openArr[index]}>
                                             <td className='CollapseAnnotated' colSpan={3}>
                                                 {Object.keys(tweet).map(key=>{
+                                                    if(tweet[key] === null)
+                                                        return <></>
                                                     return  <tr>
                                                                 <td className='collapseKey'>{key}</td>
                                                                 <td>{tweet[key]}</td>

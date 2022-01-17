@@ -4,6 +4,8 @@ import { tweetsRequest } from './Requests/tweetsRequest';
 import { userRequests } from './Requests/userRequest';
 import { annotatedTweetsRequests } from './Requests/Statistics/AnnotatedTweetsRequests';
 import { dashBoardRequests } from './Requests/Statistics/DashBoardRequests';
+import { incompleteTweetsRequets } from './Requests/Statistics/IncompleteTweetsRequests';
+import { skippedTweetsRequest } from './Requests/Statistics/SkippedTweetsRequests';
 
 import TweetsCompleteRequest from './Schemas/TweetsCompleteRequest.json'
 
@@ -30,4 +32,5 @@ tweetsRequest(app)
 userRequests(app)
 dashBoardRequests(app)
 annotatedTweetsRequests(app)
-
+incompleteTweetsRequets(app)
+skippedTweetsRequest(app)

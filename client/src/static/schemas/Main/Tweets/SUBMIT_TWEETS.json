@@ -1,0 +1,26 @@
+{
+    "type": "object",
+    "properties": {
+      "eid": { 
+          "type": "string" 
+        },
+      "failed_tweets": { 
+                "type": "array",
+                "items": {
+                "type": "object",
+                "properties": {
+                        "id": {
+                            "type": "number"
+                        },
+                        "tweet_content": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "required": [
+                    "id","tweet_content"
+                ]
+            } 
+        },
+      "success": { "type": "boolean" }
+}

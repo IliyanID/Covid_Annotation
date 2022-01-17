@@ -1,0 +1,8 @@
+{
+    "type": "object",
+    "properties": {
+        "deleted_eid": { "type": "string" },
+        "parent_eid": { "type": "string" },
+        "success": { "type":"boolean" }
+    }
+}

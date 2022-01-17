@@ -1,0 +1,9 @@
+{
+    "type": "object",
+    "properties": {
+        "added_eid": { "type": "string" },
+        "privlidge": { "enum": ["admin","validator"] },
+        "parent_eid": { "type": "string" },
+        "success": { "type":"boolean" }
+    }
+}

@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from 'react'
 import '.././../../static/css/Statistics/Admin/Dashboard.css'
-import { API_Dashboard } from '../../../utils/APIStatisitcs'
+import { API_Dashboard } from '../../../utils/API/APIStatisitcs'
 import { globalProps } from '../../../common_types'
 
 import { FiUser } from 'react-icons/fi'
 
+let db:API_Dashboard
 export const DashBoard = (props:globalProps) =>{
+    db = new API_Dashboard(props.showMessage)
     return <div>
         <ActiveTweets {...props}/>
         <ActiveUsers/>
     </div>
 }
 
-const db = new API_Dashboard()
 
 
 
@@ -20,20 +21,21 @@ const db = new API_Dashboard()
 const ActiveTweets = (props:globalProps) =>{
     const [activeTweets,setActiveTweets] = useState<any[]>([])
     useEffect(()=>{
-        db.getActiveTweets(setActiveTweets)
+        db.GET_ACTIVE_TWEETS(setActiveTweets)
     },[])
     useEffect(()=>{
         let temp:any[] = []
-        activeTweets.map(tweet=>{
+        activeTweets.forEach(tweet=>{
             if(tweet.reviewer !== props.eid)
                 temp.push(tweet)
         })
-        if (activeTweets.length != temp.length)
+        if (activeTweets.length !== temp.length)
             setActiveTweets(temp)
+    //eslint-disable-next-line
     },[activeTweets])
 
     return  <div style={{float:'left',width:'calc(100vw - 500px)'}}>
-                <h4>Tweets Under Review</h4>
+                <h4>Tweets Currently Under Review</h4>
                 <div style={{display:'flex',flexWrap:'wrap'}}>
                     {activeTweets.map((tweet,index)=>{
                         if (index > 3)
@@ -58,7 +60,7 @@ const ActiveTweets = (props:globalProps) =>{
 const ActiveUsers = (props:{}) =>{
     const [loggedIn,setLoggedIn] = useState<string[]>([])
     useEffect(()=>{
-        db.getLoggedIn(setLoggedIn)
+        db.GET_LOGGEDIN(setLoggedIn)
     },[])
     return  <div className='activeUsers'>
                <h5>Users Logged-In</h5>

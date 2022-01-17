@@ -1,0 +1,7 @@
+{
+    "type": "object",
+    "properties": {
+      "account_type": { "enum": ["admin", "validator"] },
+      "eid": { "type": "string" }
+    }
+  }

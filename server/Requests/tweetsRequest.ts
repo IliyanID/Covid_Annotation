@@ -67,7 +67,7 @@ export const tweetsRequest = (app:Express) =>{
           res.send(errorMessage)
           return
         }
-          res.send(schema)
+          res.send({eid:String(eid),failed_tweets:[],success:true})
       })
 
 
@@ -87,7 +87,7 @@ export const tweetsRequest = (app:Express) =>{
           res.send(errorMessage)
           return
         }
-        res.send(schema)
+        res.send({eid:String(eid),success:true},)
 
       })
       

@@ -1,0 +1,9 @@
+{
+    "type": "object",
+    "properties": {
+      "eid": { 
+          "type": "string" 
+        },
+      "success": { "type": "boolean" }
+    }
+}

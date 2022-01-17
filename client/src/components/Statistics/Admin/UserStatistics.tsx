@@ -1,4 +1,4 @@
-export const UserStatistics = (props:{})=>{
+export const UserStatistics = (props:any)=>{
     return <div>
         
     </div>

@@ -1,9 +1,5 @@
 import React, { useState } from 'react'
 import SideBar from '../SideBar';
-import DashBoard from './Admin/DashBoard'
-import AnnotatedTweets from './Admin/AnnotatedTweets'
-import SkippedTweets from './Admin/SkippedTweets'
-import IncompleteTweets from './Admin/IncompleteTweets'
 import UserStatistics from './Admin/UserStatistics';
 import { Pages } from '../../containers/App'
 
@@ -11,37 +7,13 @@ import { globalProps } from '../../common_types';
 import '../../static/css/Statistics/Admin/Admin.css'
 
 
-import { HiAnnotation } from 'react-icons/hi'
-import { BsFillSkipEndFill } from 'react-icons/bs'
 import { FiUsers } from 'react-icons/fi'
-import { CgFormatSeparator } from 'react-icons/cg'
-import { MdSpaceDashboard } from 'react-icons/md'
 import { Button } from 'reactstrap'
 
 
-export const Admin = (props:globalProps)=>{
+export const Validator = (props:globalProps)=>{
 
     const listOptions =[
-        {
-            title:'Dashboard',
-            icon:<MdSpaceDashboard/>,
-            content:<DashBoard {...props}/>
-        },
-        {
-            title:'Annotated Tweets',
-            icon:<HiAnnotation/>,
-            content:<AnnotatedTweets {...props}/>
-        },
-        {
-            title:'Skipped Tweets',
-            icon:<BsFillSkipEndFill/>,
-            content:<SkippedTweets {...props}/>
-        },
-        {
-            title:'Incomplete Tweets',
-            icon:<CgFormatSeparator/>,
-            content:<IncompleteTweets {...props}/>
-        },
         {
             title:'User Statistics',
             icon: <FiUsers/>,
@@ -65,4 +37,4 @@ export const Admin = (props:globalProps)=>{
     </div>
 }
 
-export default Admin;
+export default Validator;

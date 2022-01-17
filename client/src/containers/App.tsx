@@ -12,7 +12,7 @@ import StatisticsContainer from '../components/Statistics/StatisticsContainer'
 import {globalPropsDefaultObj } from '../common_types'
 import { packageStatesIntoObject } from '../utils/packageStatesIntoObject'
 import LoginModal from '../components/Modals/Login_Modal';
-import { API_LOGOUT } from '../utils/API';
+import { API_USER } from '../utils/API/APIMain';
 
 export enum Pages  {
   validate,
@@ -45,8 +45,7 @@ const App = (props:any) => {
 
   let allPackages = PackageUserStates(props)
   window.onbeforeunload =  function() {
-      console.log('fired')
-      API_LOGOUT({eid:allPackages.eid})
+    new API_USER(allPackages.showMessage).LOGOUT(allPackages.eid)
 }
 
   return <div className="App">

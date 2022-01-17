@@ -2,7 +2,9 @@ import React, { useEffect, useRef } from 'react'
 import { Button } from 'reactstrap'
 import { BsFillSkipForwardFill } from 'react-icons/bs'
 import { tweetContainerAllPackages } from '../TweetContainer'
-import { API_Post_Tweet } from '../../../utils/API'
+import { API_Tweets } from '../../../utils/API/APIMain'
+
+let api:API_Tweets
 
 type PropsType = {
     index:number,
@@ -29,16 +31,15 @@ const HandleSkip = async(props:IndividualTweetType) =>{
     temp.splice(props.index,1)
 
     let data = removedTweet[0]
-    let response = await API_Post_Tweet({requestType:'skip',eid:props.eid,data:data},props.showMessage)
-
-    if(response){
+    api.SKIP_TWEET(props.eid,data,(res:any)=>{
         props.showMessage(`Skipped Tweet #${props.tweets[props.index].id}`)
         props.setTweets(temp)
-    }
-
+    })
 }
 
 const IndividualTweet = (props:IndividualTweetType) =>{
+    api = new API_Tweets(props.showMessage)
+
     let currentTweet = props.tweets[props.index]
     const ref = useRef<HTMLParagraphElement>(null)
     const indivRef = useRef<HTMLDivElement>(null)

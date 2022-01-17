@@ -1,6 +1,5 @@
 export type globalProps = {
     eid:string,
-    name:string,
     account_type: 'validator' | 'admin' | 'NA',
     showMessage:any,
     modalOpen:boolean,
@@ -10,8 +9,7 @@ export type globalProps = {
 
 export const globalPropsDefaultObj:globalProps = {
     eid:'',
-    name:'Iliyan Dimitrov',
-    account_type:'admin',
+    account_type:'NA',
     showMessage:(a:any,b:any)=>{return },
     modalOpen:true,
 
