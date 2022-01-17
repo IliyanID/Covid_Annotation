@@ -2,12 +2,15 @@ import { log } from '../utils/log'
 import {NextFunction, Request, Response} from 'express'
 import { database_user } from '../database/database_user';
 import { validateResponse } from '../utils/validateResponse';
+
 import bodyParser from 'body-parser';
 import express, { Express } from 'express'
+import bcrypt from 'bcrypt'
+
 
 export let response:express.Response;
 
-export const userRequests = (app:Express) =>{
+export const userRequests = (app:Express,addSession:(eid:string,token:string)=>void,removeSession:(eid:string)=>void) =>{
 
 
     var jsonParser = bodyParser.json()
@@ -15,74 +18,29 @@ export const userRequests = (app:Express) =>{
       
       app.post('/api/user/:eid',jsonParser,async(req:Request,res:Response)=>{
             log(req)
-            const eid = parseInt(req.params.eid);
+            const eid = req.params.eid;
             database.logout(eid)
+            removeSession(eid)
             res.send();
       })
 
       app.get('/api/user/:eid',async(req:Request,res:Response)=>{
             log(req)
-            const eid = parseInt(req.params.eid);
+            const eid = req.params.eid;
             let account_type = await database.login(eid)
-            res.send({account_type,eid:req.params.eid})
+
+            if(account_type === 'unauthorized'){
+                  res.status(401)
+                  res.send()
+            }
+            else{
+                  const salt = await bcrypt.genSalt(5);
+                  const secureToken = await bcrypt.hash(eid,salt)
+
+                  
+                  res.cookie(`token`,secureToken);
+                  addSession(eid,secureToken)
+                  res.send({account_type,eid:req.params.eid})
+            }
       })
-
-      app.get('/api/user/:eid',async(req:Request,res:Response)=>{
-            log(req)
-            const eid = parseInt(req.params.eid);
-            let accountType = await database.login(eid)
-            res.send({accountType})
-      })
-
-      
-      
-      app.get('/api/user/parent/:eid',async(req:Request,res:Response)=>{
-            log(req)
-            const eid = parseInt(req.params.eid);
-            let parent_users = await database.get_parent_users(eid)
-            res.send(parent_users)
-      })
-
-      app.put('/api/user/parent/:eid',jsonParser,async(req:Request,res:Response)=>{
-            log(req)
-            const eid = parseInt(req.params.eid);
-            database.logout(eid)
-            res.send();
-      })
-
-      app.post('/api/user/parent/:eid',jsonParser,async(req:Request,res:Response)=>{
-
-            log(req)
-            const eid = parseInt(req.params.eid);
-            const parent_eid = req.body.eid
-            database.add_parent_user(eid,req.body.eid)
-            res.send(
-                  {
-                        added_eid:String(eid),
-                        privlidge:req.body.privlidge,
-                        parent_eid:String(parent_eid),
-                        success:true
-                  }
-            );
-      })
-      
-      app.delete('/api/user/parent/:eid',jsonParser,async(req:Request,res:Response)=>{
-
-            log(req)
-            const eid = parseInt(req.params.eid);
-            const delete_eid = req.body.eid
-            database.delete_parent_user(eid,delete_eid)
-            res.send(
-                  {
-                        deleted_eid:String(delete_eid),
-                        parent_eid:String(eid),
-                        success:true
-                  }
-            );
-      })
-
-
-
-
 }
-

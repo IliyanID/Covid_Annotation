@@ -6,16 +6,16 @@ import bodyParser from 'body-parser';
 import express, { Express } from 'express'
 import { ICondition } from 'react-filter-easy'
 
-import { database_statistics } from '../../database/database_statistics';
+import { Dashboard_Database } from '../../database/database_statistics';
 
 export let response:express.Response;
 
 export const dashBoardRequests = (app:Express) =>{
     let jsonParser = bodyParser.json()
-    let database = new database_statistics()
+    const database = new Dashboard_Database()
     app.get('/api/statistics/dashboard/loggedin',(req:Request,res:Response)=>{
         log(req)
-        database.get_loggegin_users().then((users:any)=>{
+        database.get_loggedin_users().then((users:any)=>{
             let response:any[] = [];
             users.map((row:any)=>{
                 Object.keys(row).map((a)=>{
@@ -30,7 +30,6 @@ export const dashBoardRequests = (app:Express) =>{
 
     app.get('/api/statistics/dashboard/activeTweets',jsonParser,(req:Request,res:Response)=>{
         log(req)
-        let body = req.body as {filter:ICondition[],limit:number}
         database.get_active_tweets().then((users:any)=>{
             let response:any[] = [];
             users.map((row:any)=>{

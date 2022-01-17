@@ -8,11 +8,12 @@ export class API{
         const controller = new AbortController();
         const id = setTimeout(() => {
             controller.abort()
-            this.showMessage('Server did not Respond Within Three Seconds. Check Logs for More Details','error')
-        }, 3000);
+            this.showMessage(`The Server is Unrechable at ${this.Get_Base_URL()}. Please try again later.`,'error')
+        }, 5000);
         const response = await fetch(resource, {
           ...options,
-          signal: controller.signal  
+          signal: controller.signal,
+          credentials: "include"  
         });
         clearTimeout(id);
         if(response.ok){
@@ -34,8 +35,19 @@ export class API{
                 return parsedResponse; 
             }
         }
-        else if(response.status !== undefined)
-            this.showMessage(`Server Sent Back a Status ${response.status}. Check Logs for More Details.`,'error')
+        else if(response.status !== undefined){
+            switch(response.status){
+                case 400:
+                    this.showMessage('The Website sent an invalid request to the server. Check the logs for more details.','error')
+                    break;
+                case 401:
+                    this.showMessage('You are unauthorized to access the site. Please login or contact the administrator to be given access.','error')
+                    break;
+                default:
+                    this.showMessage(`Server Sent Back a Status ${response.status}. Check Logs for More Details.`,'error')
+                    break;
+            }
+        }
 
         else
             return undefined

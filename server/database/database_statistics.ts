@@ -1,134 +1,57 @@
-import { database } from "./database"
-import { ICondition } from 'react-filter-easy'
-import { query } from "express"
+import { ICondition } from "react-filter-easy";
 
 
-export class database_statistics extends database {
+import { database } from "./database_utils/database";
+import { Dashboard_Queries, Annotated_Tweets_Queries, Incomplete_Tweets_Queries, Skipped_Tweets_Queries } from "./Queires/statistics_queries";
+
+export class Dashboard_Database extends database {
+    queries:Dashboard_Queries
     constructor(){
         super('dev')
+        this.queries = new Dashboard_Queries()
     }
 
-    parseOperator = (operator:string)=>{
-        switch(operator){
-            case "equal":
-                return '='
-            break;
+    get_active_tweets = async () => {
+        return await this.queryDatabase(this.queries.get_active_tweets())
+    }  
 
-            case "more":
-                return '>'
-            break;
-            
-            case 'less':
-                return '<'
-            break;
+    get_loggedin_users = async () => {
+        return await this.queryDatabase(this.queries.get_loggedin_users())
+    }
+}
 
-            case 'contain':
-                return 'LIKE'
-            break;
-
-            case 'null':
-                return 'IS NULL AND'
-            break;
-
-            case 'not-null':
-                return 'IS NOT NULL AND'
-            break;
-        }
+export class Annotated_Tweets_Database extends database {     
+    queries:Annotated_Tweets_Queries
+    constructor(){
+        super('dev')
+        this.queries = new Annotated_Tweets_Queries()
     }
 
-    parseFilter = (filter:ICondition) =>{
-        let queryString = ''
-        if(filter.value === '')
-            filter.value = '\' = \'';
-        switch(filter.label){
-            case "Tweet ID":
-                queryString += ` id ${this.parseOperator(filter.operator)} '${filter.value}'`
-            break;
-
-            case "Tweet Content":
-                queryString += ` tweet_content ${this.parseOperator(filter.operator)} '${filter.value}'`
-            break;
-
-            case "Tweet Created":
-                queryString += ` tweet_created ${this.parseOperator(filter.operator)} '${filter.value}'`
-            break;
-
-            case "Annotators EID":
-                queryString += ` (eid1 ${this.parseOperator(filter.operator)} '${filter.value}' OR eid2 ${this.parseOperator(filter.operator)} '${filter.value}')`
-            break;
-
-            case "Claim":
-                queryString += ` (claim1 ${this.parseOperator(filter.operator)} '${filter.value}' OR claim2 ${this.parseOperator(filter.operator)} '${filter.value}')`
-            break;
-
-            case "Stance":
-                queryString += ` (stance1 ${this.parseOperator(filter.operator)} '${filter.value}' OR stance2 ${this.parseOperator(filter.operator)} '${filter.value}')`
-            break;
-
-            case "Validated Time":
-                queryString += ` (validated_time1 ${this.parseOperator(filter.operator)} '${filter.value}' OR validated_time2 ${this.parseOperator(filter.operator)} '${filter.value}')`
-            break;
-        }
-        return queryString;
+    get_tweets = async (filters:ICondition[],limit:number) => {
+        return await this.queryDatabase(this.queries.get_tweets(filters,limit))
     }
+}
 
-    get_active_tweets = async() =>{
-        let queryString = `
-            SELECT * from unvalidated WHERE (eid1 IS NOT NULL AND claim1 is NULL) OR (eid2 IS NOT NULL AND claim2 is NULL) ORDER BY RAND()
-        `
-        let result = this.queryDatabase(queryString);
-        return result;
+export class Incomplete_Tweets_Database extends database {     
+    queries:Incomplete_Tweets_Queries
+    constructor(){
+        super('dev')
+        this.queries = new Incomplete_Tweets_Queries()
     }
-
-    get_loggegin_users = async() =>{
-        let queryString = `
-            SELECT eid1,eid2 from unvalidated WHERE (eid1 IS NOT NULL AND claim1 IS NULL) OR (eid2 IS NOT NULL AND claim2 IS NULL)
-        `
-        let result = this.queryDatabase(queryString);
-        return result;
+    
+    get_tweets = async (filters:ICondition[],limit:number) => {
+        return await this.queryDatabase(this.queries.get_tweets(filters,limit))
     }
+}
 
-    get_annotated_tweets = async (filters:ICondition[],limit:number) =>{
-        let queryString = 'SELECT * FROM validated '
-
-        if(filters.length > 0)
-            queryString += ' WHERE '
-        filters.map((filter,index) =>{
-            queryString += this.parseFilter(filter)
-            if(index !== filters.length - 1)
-                queryString += ' AND '
-        })
-
-        queryString += ` ORDER BY validated_time2 DESC LIMIT ${limit} `
-        let result = await this.queryDatabase(queryString)
-        return result;
+export class Skipped_Tweets_Database extends database {     
+    queries:Skipped_Tweets_Queries
+    constructor(){
+        super('dev')
+        this.queries = new Skipped_Tweets_Queries()
     }
-
-    get_incomplete_tweets = async (filters:ICondition[],limit:number) =>{
-        let queryString = 'SELECT * FROM unvalidated WHERE '
-        filters.map((filter,index) =>{
-            queryString += this.parseFilter(filter)
-            queryString += ' AND '
-        })
-
-        queryString += `(stance1 is null OR stance2 is NULL) ORDER BY id ASC LIMIT ${limit} `
-        let result = await this.queryDatabase(queryString)
-        return result;
-    }
-
-    get_skipped_tweets = async (filters:ICondition[],limit:number) =>{
-        let queryString = 'SELECT * FROM skipped_tweets '
-
-        if(filters.length > 0)
-            queryString += ' WHERE '
-        filters.map((filter,index) =>{
-            queryString += this.parseFilter(filter)
-            if(index !== filters.length - 1)
-                queryString += ' AND '
-        })
-
-        queryString += ` ORDER BY id DESC LIMIT ${limit} `
-        let result = await this.queryDatabase(queryString)
-        return result;
+    
+    get_tweets = async (filters:ICondition[],limit:number) => {
+        return await this.queryDatabase(this.queries.get_tweets(filters,limit))
     }
 }

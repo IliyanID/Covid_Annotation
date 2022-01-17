@@ -6,16 +6,17 @@ import bodyParser from 'body-parser';
 import express, { Express } from 'express'
 import { ICondition } from 'react-filter-easy'
 
-import { database_statistics } from '../../database/database_statistics';
+import { Incomplete_Tweets_Database } from '../../database/database_statistics';
+import getIncompleteTweetsSchema from '../../Schemas/Statistics/IncompleteTweets/GET_TWEETS.json'
 
 export let response:express.Response;
 
 export const incompleteTweetsRequets = (app:Express) =>{
     let jsonParser = bodyParser.json()
-    let database = new database_statistics()
-    app.post('/api/statistics/incompleteTweets',jsonParser,(req:Request,res:Response)=>{
+    let database = new Incomplete_Tweets_Database()
+    app.post('/api/statistics/incompleteTweets',jsonParser,(req,res,next)=>validateResponse(req,res,next,getIncompleteTweetsSchema),(req:Request,res:Response)=>{
         log(req)
         let body = req.body as {filter:ICondition[],limit:number}
-        database.get_incomplete_tweets(body.filter,body.limit).then(result => res.json(result));
+        database.get_tweets(body.filter,body.limit).then(result => res.json(result));
     })
 }

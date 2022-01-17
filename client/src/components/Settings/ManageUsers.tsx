@@ -7,17 +7,20 @@ import { AiOutlineClose } from 'react-icons/ai';
 
 export const ManageUsers = (props:globalProps) =>{
     const api = new API_Manage_Access(props.showMessage)
-
+    
+    const [newUser,setNewUser] = useState<string|undefined>()
     const [users,setUsers] = useState([])
+
+
     const updateList = () =>{
         api.GET_USERS(props.eid,setUsers)
+        setNewUser('')
     }
     useEffect(()=>{
         updateList()
     // eslint-disable-next-line
     },[])
 
-    const [newUser,setNewUser] = useState<number|undefined>()
     const [dropdown,setDropwdown] = useState(false)
     const [newAccountType, setNewAccountType] = useState('Account Type')
     return  <div>
@@ -39,7 +42,9 @@ export const ManageUsers = (props:globalProps) =>{
                                     <td>{user.eid}</td>
                                     <td>{user.account_type}</td>
                                     <td><AiOutlineClose onClick={()=>{
-                                        api.DELETE_USER({eid:user.eid,parent:props.eid})
+                                        api.DELETE_USER({eid:user.eid,parent:props.eid},(response)=>{
+                                            updateList();
+                                        })
                                     }}
                                      style={multiStyle}/></td>
                                 </tr>
@@ -55,7 +60,7 @@ export const ManageUsers = (props:globalProps) =>{
                             let input = e.target.value
                             if(input.length <=9){
                                 if(input.length > 0)
-                                    setNewUser(parseInt(e.target.value))
+                                    setNewUser(e.target.value)
                                 else
                                     setNewUser(undefined)
                             }
@@ -71,21 +76,23 @@ export const ManageUsers = (props:globalProps) =>{
                             {newAccountType}
                         </DropdownToggle>
                         <DropdownMenu>
-                            <DropdownItem onClick={()=>setNewAccountType('Admin')}>
+                            <DropdownItem onClick={()=>setNewAccountType('admin')}>
                                 Admin
                             </DropdownItem>
-                            <DropdownItem onClick={()=>setNewAccountType('Validator')}>
+                            <DropdownItem onClick={()=>setNewAccountType('validator')}>
                                 Validator
                             </DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
                 </InputGroup>
                 <Button 
-                    color = {(newUser !== undefined && newUser >=111111111)?'success':'secondary'} 
+                    color = {(newUser !== undefined && parseInt(newUser) >=111111111)?'success':'secondary'} 
                     style={{marginTop:'10px'}}
                     onClick={async ()=>{
-                        if(newUser !== undefined)
-                            api.ADD_USER({eid:newUser,privlidge:'admin',parent:props.eid})
+                        if(newUser !== undefined && (newAccountType === 'admin' || newAccountType === 'validator'))
+                            api.ADD_USER({eid:parseInt(newUser),privlidge:newAccountType,parent:props.eid},(response)=>{
+                                updateList()
+                            })
                     }}
                     disabled={newAccountType ==='Account Type' || newUser === undefined}
                     >Add New User</Button>

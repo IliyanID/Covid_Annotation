@@ -32,13 +32,12 @@ export class API_Manage_Access extends API{
         this.fetchWithTimeout(url, {
             method: 'GET'
         },GetUsersManageAccessSchema).then(response=>{
-            console.log(response)
             if(response !== undefined)
                 setResult(response)
         })
     }
 
-    ADD_USER = (payload:{eid:number,privlidge:'admin'|'validator', parent:string}) =>{
+    ADD_USER = (payload:{eid:number,privlidge:'admin'|'validator', parent:string},setResult:(a:any)=>void) =>{
         const url = `${this.Get_Base_URL()}/user/parent/${payload.parent}`;
         this.fetchWithTimeout(url, {
             method: 'POST',
@@ -47,12 +46,14 @@ export class API_Manage_Access extends API{
             },
             body:JSON.stringify(payload)
         },AddUsersManageAccessSchema).then(response=>{
-            if(response !== undefined && response.success)
+            if(response !== undefined && response.success){
                 this.showMessage(`Succesfully Added User ${payload.eid} as ${payload.privlidge}.`, 'success')
+                setResult(response)
+            }
         })
     }
 
-    DELETE_USER = (payload:{eid:string, parent:string}) =>{
+    DELETE_USER = (payload:{eid:string, parent:string},setResult:(a:any)=>void) =>{
         const url = `${this.Get_Base_URL()}/user/parent/${payload.parent}`;
         this.fetchWithTimeout(url, {
             method: 'DELETE',
@@ -61,8 +62,10 @@ export class API_Manage_Access extends API{
             },
             body:JSON.stringify(payload)
         },DeleteUsersManageAccessSchema).then(response=>{
-            if(response !== undefined && response.success)
+            if(response !== undefined && response.success){
                 this.showMessage(`Succesfully Removed User ${payload.eid}.`, 'success')
+                setResult(response)
+            }
         })
     }
 

@@ -1,0 +1,8 @@
+{
+    "type": "object",
+    "properties": {
+      "eid": { "type": ["number","string"] },
+      "privlidge": { "enum": ["admin", "validator"] },
+      "parent": { "type": ["number","string"] }
+    }
+  }

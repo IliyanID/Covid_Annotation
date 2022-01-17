@@ -1,4 +1,4 @@
-import { database } from "./database"
+import { database } from "./database_utils/database"
 import { Request } from 'express'
 import { unvalidated_tweet, validated_tweet, validating_tweet } from "../common/common_types"
 import { JsonTocsv } from "../utils/JsonTocsv"
@@ -72,21 +72,8 @@ const SKIP_TWEET = async(id:number,column:string,queryDatabase:any,eid:number) =
     return res
 }
 
-const ADD_TWEETS_UNVALIDATED = (tweets:unvalidated_tweet[]) => {
-    let result = `INSERT INTO unvalidated(tweet_content,tweet_created) VALUES `
-    result += tweets.map((tweet)=>{
-        return` ('${tweet.tweet_content}','${tweet.tweet_created}') `
-    }
-    )
-    result += ` ON DUPLICATE KEY UPDATE tweet_content=tweet_content;`
-    return result
-}
 
-const GET_TWEETS_VALIDATED = () =>{
-    return `
-    SELECT * FROM validated
-    `
-}
+
 
 
 export class database_tweets extends database {
@@ -145,22 +132,5 @@ export class database_tweets extends database {
         })
    
         return sentData
-    }
-
-    remove_tweets = (eid:string) =>{
-
-    }
-
-    import_tweets = async (tweets:unvalidated_tweet[]) =>{
-        return await this.queryDatabase(ADD_TWEETS_UNVALIDATED(tweets))
-    }
-
-    export_tweets = async() =>{
-        let tweetsArr = await this.queryDatabase(GET_TWEETS_VALIDATED())
-        if(!tweetsArr)
-            return
-        //console.log(tweetsArr)
-        let csvTweets = JsonTocsv(tweetsArr)
-        return csvTweets
     }
 }

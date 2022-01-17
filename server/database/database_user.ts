@@ -1,4 +1,4 @@
-import { database } from './database'
+import { database } from './database_utils/database'
 
 
 
@@ -6,7 +6,7 @@ export class database_user extends database{
     constructor(){
         super('dev')
     }
-    login = async (eid:number) =>{
+    login = async (eid:string) =>{
         const checkExists = `
         SELECT * FROM users WHERE eid = ${eid}
         `
@@ -17,11 +17,11 @@ export class database_user extends database{
         const addNewUser = `
         INSERT INTO users (eid,account_type) VALUES (${eid},"validator")
         `
-        await this.queryDatabase(addNewUser);
-        return "validator"
+        //await this.queryDatabase(addNewUser);
+        return "unauthorized"
     }
 
-    logout = (eid:number) =>{
+    logout = (eid:string) =>{
         let eid1 = `
         UPDATE unvalidated SET eid1 = NULL WHERE
         eid1 = ${eid} AND claim1 IS NULL and stance1 IS NULL
@@ -34,32 +34,5 @@ export class database_user extends database{
 
         this.queryDatabase(eid1)
         this.queryDatabase(eid2)
-    }
-
-    get_parent_users = async(eid:number)=>{
-        let query = `
-        SELECT * FROM users  WHERE parent = ${eid}
-        `
-
-        let results = await this.queryDatabase(query)
-        return results
-    }
-
-    add_parent_user = async (parent:number,new_user:number)=>{
-        let query = `
-        INSERT IGNORE INTO users (eid,account_type,parent) values (${new_user},"admin",${parent})
-        `
-        let query2=`
-        UPDATE users SET account_type = "admin",parent=${parent} where eid = ${new_user}
-        `
-        await this.queryDatabase(query)
-        await this.queryDatabase(query2)
-    }
-
-    delete_parent_user = (parent:number,delete_user:number)=>{
-        let query = `
-            DELETE FROM users WHERE eid = ${delete_user} AND parent = ${parent}
-        `
-        this.queryDatabase(query)
     }
 }

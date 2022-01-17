@@ -1,9 +1,15 @@
 import Ajv from 'ajv'
+import { Request, Response, NextFunction } from 'express'
 
-export const validateResponse = (jsonObj:any,schema:any) => {
-    const ajv = new Ajv({allErrors: true});
-    let valid =  ajv.validate(schema, jsonObj)
-    if(ajv.errors)
-        return {valid:false,error:ajv.errors[0]}
-    return {valid:true}
+
+export const validateResponse = (req:Request,res:Response,next:NextFunction,schema:Object) => {
+    const ajv = new Ajv({allErrors:true})
+    ajv.validate(schema,req.body)
+    if(ajv.errors){
+        res.status(400)
+        console.error(ajv.errors)
+        res.json(ajv.errors)
+    }
+    else
+        next()
 }
