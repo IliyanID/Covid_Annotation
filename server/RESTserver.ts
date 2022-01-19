@@ -3,6 +3,8 @@ import cors from 'cors'
 import cookieparser from 'cookie-parser'
 import helmet from 'helmet'
 import bodyParser from 'body-parser';
+import https from 'https'
+import fs from 'fs'
 
 import { manageSessions } from './manageSessions';
 import { importDataRequests } from './Requests/Settings/ImportData';
@@ -16,9 +18,23 @@ import { tweetsRequest } from './Requests/Core/Tweets';
 
 const PORT = process.env.PORT || 3001;
 const app = express()
-app.listen(PORT, () => {
+/*app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
-});
+});*/
+
+https
+  .createServer(
+    {
+      key: fs.readFileSync("server.key"),
+      cert: fs.readFileSync("server.cert"),
+    },
+    app
+  )
+  .listen(PORT, function () {
+    console.log(
+      `Server listening on port ${PORT}`
+    );
+  });
 
 app.use(cors({
   origin: true,
