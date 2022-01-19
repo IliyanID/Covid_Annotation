@@ -54,4 +54,8 @@ export class Skipped_Tweets_Database extends database {
     get_tweets = async (filters:ICondition[],limit:number) => {
         return await this.queryDatabase(this.queries.get_tweets(filters,limit))
     }
+
+    delete_tweet = async(id:string|number) => {
+        return await this.queryDatabase(this.queries.delete_tweet(id))
+    }
 }

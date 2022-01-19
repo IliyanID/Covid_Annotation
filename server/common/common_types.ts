@@ -32,3 +32,9 @@ export type validating_tweet = {
     complete?:never,
     [key: string]: any   
 }
+
+export type user = {
+    eid:number,
+    parent:number|null,
+    account_type:'admin'|'validator'
+}

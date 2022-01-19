@@ -33,4 +33,12 @@ export class Manage_Access_Queries {
     remove_user = (deleted_EID:string,parent_EID:string) => {
         return `DELETE FROM users WHERE eid = ${deleted_EID} AND parent = ${parent_EID}`
     }
+
+    get_admins = () => {
+        return `SELECT * FROM users WHERE account_type = 'admin'`
+    }
+
+    get_all_users = () => {
+        return `SELECT * FROM users`
+    }
 }

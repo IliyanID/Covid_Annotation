@@ -69,9 +69,7 @@ const handleSubmit = async(props:tweetContainerAllPackages) =>{
 const handleInput = (e:React.MouseEvent<HTMLInputElement, MouseEvent>,allPackages:tweetContainerAllPackages) =>{
     
     let value = document.getElementById('inputId') as any
-    console.log(value)
     value = parseInt(value.value)
-    console.log(value)
     if(value > 0 && value !== allPackages.showTweets){
         console.log('set: ' + value)
     allPackages.setShowTweets(value)

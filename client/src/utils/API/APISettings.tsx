@@ -46,7 +46,7 @@ export class API_Manage_Access extends API{
             },
             body:JSON.stringify(payload)
         },AddUsersManageAccessSchema).then(response=>{
-            if(response !== undefined && response.success){
+            if(response !== undefined){
                 this.showMessage(`Succesfully Added User ${payload.eid} as ${payload.privlidge}.`, 'success')
                 setResult(response)
             }

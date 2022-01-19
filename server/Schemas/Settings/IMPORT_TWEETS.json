@@ -3,6 +3,12 @@
     "items": {
       "type": "object",
       "properties": {
+        "tweet_created": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
         "tweet_content": {
           "type": "string"
         }

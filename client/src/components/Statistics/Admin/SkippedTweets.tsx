@@ -11,13 +11,15 @@ export const SkippedTweets = (props:globalProps)=>{
     const [filter,setFilter] = useState<ICondition[]>([])
     const [limit,setLimit] = useState(5)
 
-    const api = new API_Skipped_Tweets(props.showMessage)
-    useEffect(()=>{
+    const api:any = new API_Skipped_Tweets(props.showMessage)
+    const updateTweets = () => {
         api.GET_TWEETS({filter,limit},setTweets)
+    }
+    useEffect(()=>{
+        updateTweets()
         
     },[filter,limit])
-    return  <DisplayStoredTweets limit={limit} setLimit={setLimit} filter={filter} setFilter = {setFilter} context='skippedTweets' inputTweets={tweets}/>
-}
+    return  <DisplayStoredTweets updateTweets = {updateTweets} api={api} limit={limit} setLimit={setLimit} filter={filter} setFilter = {setFilter} context='skippedTweets' inputTweets={tweets}/>}
 
 export default SkippedTweets
 

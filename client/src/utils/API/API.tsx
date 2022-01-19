@@ -8,7 +8,7 @@ export class API{
         const controller = new AbortController();
         const id = setTimeout(() => {
             controller.abort()
-            this.showMessage(`The Server is Unrechable at ${this.Get_Base_URL()}. Please try again later.`,'error')
+            this.showMessage(`The Server is unrechable at ${this.Get_Base_URL()}. Please try again later.`,'error')
         }, 5000);
         const response = await fetch(resource, {
           ...options,
@@ -42,6 +42,12 @@ export class API{
                     break;
                 case 401:
                     this.showMessage('You are unauthorized to access the site. Please login or contact the administrator to be given access.','error')
+                    break;
+                case 409:
+                    this.showMessage('Unable to modify user access. Conflicts with other users.','error')
+                    break;
+                case 500:
+                    this.showMessage('The server encountered an error. Please see log for more details.','error')
                     break;
                 default:
                     this.showMessage(`Server Sent Back a Status ${response.status}. Check Logs for More Details.`,'error')

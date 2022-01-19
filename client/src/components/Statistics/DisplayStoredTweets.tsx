@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useMultiToggle } from '../../hooks/useToggle';
 import { completeTweetsConfig, IncompleteTweetsConfig, skippedTweetsConfig } from '../../static/config/filterConfig';
+import { API_Skipped_Tweets, API_Annotated_Tweets, API_Incomplete_Tweets } from '../../utils/API/APIStatisitcs';
 
 import '../../static/css/Statistics/Admin/AnnotatedTweets.css'
 
@@ -9,8 +10,9 @@ import { MdOutlineFilterList } from 'react-icons/md';
 import ReactFilterEasy, { ICondition, IField } from 'react-filter-easy'
 import Slider, { SliderTooltip } from 'rc-slider'
 import { BsPencilSquare } from 'react-icons/bs';
-import { Collapse } from 'reactstrap';
+import { Button, Collapse } from 'reactstrap';
 import { RiArrowDownSLine, RiArrowUpSLine } from 'react-icons/ri';
+import { BsArrow90DegRight } from 'react-icons/bs'
 
 type inputTweets = {
     tweet_created:string,
@@ -29,12 +31,14 @@ type inputTweets = {
 type context = 'annotatedTweets'|'skippedTweets'|'incompleteTweets'
 
 type props = {
+    updateTweets:()=>void
     inputTweets:inputTweets,
     context:context,
     filter:ICondition[],
     setFilter:any,
     limit:number
     setLimit:any,
+    api:any
 }
 
 
@@ -56,6 +60,7 @@ export const DisplayStoredTweets = (props:props) =>{
             );
           };
 
+
     let selectedFields:IField[];
     let header = ''
     switch(props.context){
@@ -74,6 +79,7 @@ export const DisplayStoredTweets = (props:props) =>{
     }
 
     const [openArr,toggleOpenArr] = useMultiToggle(false,props.inputTweets.length)
+    const [update,setUpdate] = useState(false)
     return  <div>
                 <h3 className='FilterHeader'><MdOutlineFilterList/>Filter {header} Tweets</h3>
                 <ReactFilterEasy
@@ -113,6 +119,14 @@ export const DisplayStoredTweets = (props:props) =>{
                                                             </tr>
                                                 })}
                                             </td>
+                                            {props.context === 'skippedTweets'?<Button onClick={()=>{
+                                                props.api.DELETE_TWEET(tweet.id,()=>{
+                                                    props.updateTweets(); 
+                                                })
+                                            }}>
+                                                    Dismiss Tweet
+                                                    <BsArrow90DegRight style={{marginLeft:'10px'}}/>
+                                                    </Button>:<></>}
                                         </Collapse>
                                     </li>         
                         })}
@@ -122,6 +136,7 @@ export const DisplayStoredTweets = (props:props) =>{
                 
             </div>
 }
+
 
 
 export default DisplayStoredTweets

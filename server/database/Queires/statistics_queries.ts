@@ -55,6 +55,10 @@ export class Skipped_Tweets_Queries {
         queryString += ` ORDER BY id DESC LIMIT ${limit} `
         return queryString
     }
+
+    delete_tweet = (id:string|number) => {
+        return `DELETE FROM skipped_tweets WHERE id = ${id}`
+    }
 }
 
 const parseOperator = (operator:string)=>{

@@ -1,8 +1,12 @@
 import { connect_database } from './connect_database'
-import express from 'express'
 import mariadb from 'mariadb'
+import createError from 'http-errors'
+
 export class database {
     connection:mariadb.Pool
+
+    error_state = false
+
     constructor (enviroment:'dev'|'prod'){
         if(enviroment == 'dev')
             this.handleLogin('faure')
@@ -14,7 +18,8 @@ export class database {
         this.connection = await connect_database(url)
     }
 
-    queryDatabase = async (query:string) =>{
+    queryDatabase = async (query:string):Promise<any[]> =>{
+        this.error_state = false;
         return new Promise((resolve) => {
 
             connect_database('faure').then(e=>e.getConnection()
@@ -22,22 +27,26 @@ export class database {
             
             conn.query(query)
                 .then((rows) => {
-                resolve(rows)
-                conn.end()
+                    if(rows)
+                        resolve(rows)
+                    else    
+                        resolve([])
+                    conn.end()
                 })
                 .catch(err => {
-                console.log(err)
-                resolve(undefined)
-                
-                conn.end();
+                    console.log(err)
+                    conn.end();
+                    this.error_state = true;
+                    resolve([])
                 })
                 
                 }).catch(err => {
-                //not connected
+                    console.log('Failed to Connect to Database')
+                    this.error_state = true;
+                    resolve([])
                 })
             )
             
         })
     }
-
 }

@@ -2,6 +2,7 @@ import { database } from "./database_utils/database";
 import { JsonTocsv } from "../utils/JsonTocsv";
 import { Export_Data_Queries, Import_Data_Queries, Manage_Access_Queries } from "./Queires/settings_queries";
 import { unvalidated_tweet } from "../common/common_types";
+import { user } from "../common/common_types";
 
 export class Export_Database extends database {
     queries:Export_Data_Queries
@@ -38,18 +39,26 @@ export class Manage_Access_Database extends database {
         this.queries = new Manage_Access_Queries()
     }
 
-    get_users = async (parent_EID:string) =>{
+    get_users = async (parent_EID:string):Promise<user[]> =>{
         return await this.queryDatabase(this.queries.get_users(parent_EID))
     }
 
-    add_user = (new_EID:string,parent_EID:string,privlidge:string) =>{
-        this.queries.add_user(new_EID,parent_EID,privlidge).forEach(async (query)=>{
-            await this.queryDatabase(query)
-        })
+    add_user = async (new_EID:string,parent_EID:string,privlidge:string) =>{
+        const queries = this.queries.add_user(new_EID,parent_EID,privlidge)
+        await this.queryDatabase(queries[0])
+        return await this.queryDatabase(queries[1])        
     }
 
     delete_user = async (delete_EID:string,parent_EID:string) =>{
-        await this.queryDatabase(this.queries.remove_user(delete_EID,parent_EID))
+        return await this.queryDatabase(this.queries.remove_user(delete_EID,parent_EID))
+    }
+
+    get_admins = async():Promise<user[]> => {
+        return await this.queryDatabase(this.queries.get_admins());
+    }
+
+    get_all_users = async():Promise<user[]> => {
+        return await this.queryDatabase(this.queries.get_all_users())
     }
 
 }

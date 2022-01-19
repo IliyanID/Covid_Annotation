@@ -11,7 +11,6 @@ export const Import = (props:globalProps) =>{
 
     // called every time a file's `status` changes
     const handleChangeStatus: IDropzoneProps['onChangeStatus'] = ({ meta, file, remove }, status) => { 
-       console.log(status)
         if(status ==='done'){
             remove()
             props.showMessage('Tweets Succesfully Imported','info')

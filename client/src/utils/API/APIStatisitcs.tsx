@@ -9,7 +9,7 @@ import getAnnotatedTweetsSchema from '../../static/schemas/Statistics/AnnotatedT
 import getIncompleteTweetsSchema from '../../static/schemas/Statistics/IncompleteTweets/GET_TWEETS.json'
 
 import getSkippedTweetsSchema from '../../static/schemas/Statistics/SkippedTweets/GET_TWEETS.json'
-
+import deleteSkippedTweetSchema from '../../static/schemas/Statistics/SkippedTweets/DELETE_TWEET.json'
 
 export class API_Dashboard extends API {
     GET_LOGGEDIN = (setResult:(a:any)=>void) => {
@@ -79,6 +79,20 @@ export class API_Skipped_Tweets extends API {
               },
             body:JSON.stringify(filter)
         },getSkippedTweetsSchema).then(response=>{
+            if(response !== undefined)
+                setResult(response)
+        })
+    }
+
+    DELETE_TWEET = (id:number,setResult:(a:any)=>void) => {
+        const url = `${this.Get_Base_URL()}/statistics/skippedTweets `;
+        this.fetchWithTimeout(url, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+              },
+            body:JSON.stringify({id})
+        },deleteSkippedTweetSchema).then(response=>{
             if(response !== undefined)
                 setResult(response)
         })

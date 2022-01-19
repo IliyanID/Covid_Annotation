@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon --config nodemon.json --ignore '*.json' RESTserver.ts",
+    "start": "nodemon  --ignore '*.json' RESTserver.ts",
     "start-all": "concurrently --names 'SERVER,CLIENT' --prefix-colors 'yellow,blue' --kill-others \"npm run start\" \"npm run start --prefix ../client\" "
   },
   "keywords": [],
@@ -24,6 +24,7 @@
     "express": "^4.17.1",
     "fs": "0.0.1-security",
     "helmet": "^5.0.1",
+    "http-errors": "^2.0.0",
     "input-file": "^1.1.0",
     "mariadb": "^2.5.5",
     "multer": "^1.4.4",
@@ -42,6 +43,7 @@
     "@types/cookie-parser": "^1.4.2",
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
+    "@types/http-errors": "^1.8.2",
     "@types/pg": "^8.6.1",
     "kill-port": "^1.6.1"
   }
