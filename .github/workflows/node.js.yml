@@ -17,7 +17,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Install packages
-      run: cd server && npm intall
+      run: cd server && npm install
       
     - name: Deploy Server
       run: cd server && npm run start
