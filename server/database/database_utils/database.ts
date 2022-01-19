@@ -8,10 +8,12 @@ export class database {
     error_state = false
 
     constructor (enviroment:'dev'|'prod'){
+        try{
         if(enviroment == 'dev')
             this.handleLogin('faure')
         else    
             this.handleLogin('faure')
+        }catch{}
     }
 
     handleLogin = async (url:string) =>{
