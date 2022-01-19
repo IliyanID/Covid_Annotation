@@ -21,4 +21,5 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - run: cd server && lsof -ti tcp:3000 | xargs kill && nohup npm run start &
+    - run: cd server && npm install
+    - run: lsof -ti tcp:3000 | xargs kill && nohup npm run start &
