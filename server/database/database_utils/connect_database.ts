@@ -12,7 +12,7 @@ export const connect_database = async (url:string) =>{
 
 
     const connection = mariadb.createPool({
-      host: 'faure',
+      host: 'faure.cs.colostate.edu',
         user: 'iliyan',
         password: '832542166',
         database: 'covid_tweet',
