@@ -14,12 +14,11 @@ jobs:
 
     runs-on: self-hosted
 
-    strategy:
-      matrix:
-        node-version: [12.x, 14.x, 16.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
     steps:
     - uses: actions/checkout@v2
-    - run: cd server && npm install
-    - run: lsof -ti tcp:3000 | xargs kill && nohup npm run start &
+    - name: Install packages
+      run: cd server && npm intall
+      
+    - name: Deploy Server
+      run: cd server && npm run start
+
