@@ -62,7 +62,7 @@ export class API{
     Get_Base_URL = () =>{
         let domain_name = window.location.hostname
         if(domain_name.includes('www.cs.colostate.edu'))
-            return 'http://localhost:3001/api'
+            return 'https://10.1.45.140/api'
         return 'http://localhost:3001/api'
     }
 
