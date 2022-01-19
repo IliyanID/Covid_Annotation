@@ -20,5 +20,5 @@ jobs:
       run: cd server && npm install
       
     - name: Deploy Server
-      run: cd server && npm run start
+      run: cd server && nohup npm run start &
 
