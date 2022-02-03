@@ -16,7 +16,7 @@ import { incompleteTweetsRequets } from './Requests/Statistics/IncompleteTweetsR
 import { skippedTweetsRequest } from './Requests/Statistics/SkippedTweetsRequests';
 import { tweetsRequest } from './Requests/Core/Tweets';
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 443;
 const app = express()
 /*app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
@@ -25,8 +25,8 @@ const app = express()
 https
   .createServer(
     {
-      key: fs.readFileSync("server.key"),
-      cert: fs.readFileSync("server.cert"),
+      key: fs.readFileSync("covid-19.cs.colostate.edu.key"),
+      cert: fs.readFileSync("covid-19tweetannotation_cs_colostate_edu_cert.cer"),
     },
     app
   )

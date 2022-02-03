@@ -1,3 +1,6 @@
+import https from 'https'
+//import fetch from 'node-fetch'
+
 export class API{
     showMessage:(a:string,b:string)=>void
     constructor(showMessage:(a:string,b:string)=>void){
@@ -10,10 +13,20 @@ export class API{
             controller.abort()
             this.showMessage(`The Server is unrechable at ${this.Get_Base_URL()}. Please try again later.`,'error')
         }, 5000);
+
+        const httpsAgent = new https.Agent({
+            rejectUnauthorized: false,
+          });
+
+          console.log(httpsAgent)
+
         const response = await fetch(resource, {
           ...options,
           signal: controller.signal,
-          credentials: "include"  
+          
+          headers:new Headers({'User-Agent':'httpsAgent'}),
+          credentials: "include",
+
         });
         clearTimeout(id);
         if(response.ok){
