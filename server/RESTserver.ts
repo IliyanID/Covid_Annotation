@@ -4,6 +4,7 @@ import cookieparser from 'cookie-parser'
 import helmet from 'helmet'
 import bodyParser from 'body-parser';
 import https from 'https'
+import http from 'http'
 import fs from 'fs'
 
 import { manageSessions } from './manageSessions';
@@ -35,6 +36,10 @@ https
       `Server listening on port ${PORT}`
     );
   });
+
+http.createServer(app).listen(80,()=>{
+  console.log("Listiong on Port 80")
+})
 
 app.use(cors({
   origin: true,
