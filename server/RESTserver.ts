@@ -51,7 +51,6 @@ app.use(cookieparser())
 app.use(helmet())
 
 manageSessions(app)
-importDataRequests(app)
 exportDataRequests(app)
 
 
@@ -65,6 +64,9 @@ app.use((req,res,next)=>{
 
   next()
 })
+
+importDataRequests(app)
+
 
 manageAccessRequests(app)
 annotatedTweetsRequests(app)
