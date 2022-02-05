@@ -27,7 +27,7 @@ export const manageSessions = (app:Express) => {
           next()
         else{
           res.status(401)
-          res.send();
+          res.send(req.cookies);
         }
       })
 }
