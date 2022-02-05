@@ -57,7 +57,7 @@ exportDataRequests(app)
 
 app.use((req,res,next)=>{
   console.log(`${req.method} ${req.url}`)
-  console.log(`HEADERS: ${req.headers}`);
+  console.log(JSON.stringify(req.headers))
   if(req.body)
     console.log(req.body)
 
