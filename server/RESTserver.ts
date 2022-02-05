@@ -46,7 +46,7 @@ app.use(cors({
   credentials:true
 }));
 
-app.use(bodyParser.json({type:"*/*"}))
+app.use(bodyParser.json({type:"text/plain"}))
 app.use(cookieparser())
 app.use(helmet())
 
