@@ -5,9 +5,11 @@
 
     $METHOD = $_SERVER['REQUEST_METHOD'];
     $BODY = file_get_contents('php://input');
-    /*if(isset($_FILES['upfile'])){
-        $BODY = $_FILES['upfile'];
-    }*/
+    if(array_key_exists("file",$_FILES)){
+        //echo file_get_contents($_FILES['file']['tmp_name']);
+        $BODY = file_get_contents($_FILES['file']['tmp_name']);
+    }
+    //print_r($BODY);
 
     $HEADERS = getallheaders();
 
@@ -27,8 +29,14 @@
 
     //echo $_SERVER["CONTENT_TYPE"];
     if($METHOD != "GET"){
-        curl_setopt($ch, CURLOPT_POST,           1 );
-        curl_setopt($ch, CURLOPT_POSTFIELDS,$BODY);
+        curl_setopt($ch, CURLOPT_POST, TRUE);
+        //echo count($_POST);
+        if(count($_POST) != 0){
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST);
+        }
+        else{
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $BODY);
+        }
     }
 
     //Set Cookies
