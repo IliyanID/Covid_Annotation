@@ -3,5 +3,6 @@
     "properties": {
       "filter": { "type": "array" },
       "limit": { "type": "number" }
-    }
+    },
+      "required":["filter","limit"]
   }
