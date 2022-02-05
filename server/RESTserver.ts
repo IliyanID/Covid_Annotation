@@ -46,6 +46,9 @@ app.use(cors({
   credentials:true
 }));
 
+importDataRequests(app)
+
+
 app.use(bodyParser.json({type:"text/plain"}))
 app.use(cookieparser())
 app.use(helmet())
@@ -65,7 +68,6 @@ app.use((req,res,next)=>{
 })
 
 
-importDataRequests(app)
 
 
 manageAccessRequests(app)

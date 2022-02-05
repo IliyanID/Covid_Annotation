@@ -5,6 +5,7 @@ import { Express } from 'express'
 import { Import_Database } from '../../database/database_settings';
 import { csvToJson } from '../../utils/csvToJson';
 import importTweetsSchema from '../../Schemas/Settings/IMPORT_TWEETS.json'
+import bodyParser from 'body-parser';
 
 const multer  = require('multer');
 const os = require('os')
@@ -14,7 +15,7 @@ export const importDataRequests = (app:Express) =>{
     const database = new Import_Database();
     const upload = multer({ dest: os.tmpdir() });
     
-    app.post('/api/tweets'/*,upload.single('file')*/, async (req:any,res:Response,error) =>{
+    app.post('/api/tweets',bodyParser.text()/*,upload.single('file')*/, async (req:any,res:Response,error) =>{
         /*fs.readFile(req.file.path,'utf8', async function (err:any, fileData:any) {
             const parsedObj = csvToJson(fileData)
             validateResponse({body:parsedObj} as Request,res,()=>{
