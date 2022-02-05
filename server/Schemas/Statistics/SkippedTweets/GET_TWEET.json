@@ -1,3 +1,7 @@
 {
-    
-}
+    "type": "object",
+    "properties": {
+      "filter": { "type": "array" },
+      "limit": { "type": "number" }
+    }
+  }
