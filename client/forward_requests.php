@@ -5,15 +5,29 @@
 
     $METHOD = $_SERVER['REQUEST_METHOD'];
     $BODY = file_get_contents('php://input');
+    /*if(isset($_FILES['upfile'])){
+        $BODY = $_FILES['upfile'];
+    }*/
+
     $HEADERS = getallheaders();
 
-    //echo $url_path;
 
     $ch=curl_init();
+
+    $PARSED_HEADERS = [];
+    foreach($HEADERS as $key=>$val){
+        //echo $key . ': ' . $val . '<br>';
+        array_push($PARSED_HEADERS,"{$key}: {$val}");
+      }
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $PARSED_HEADERS);
+
+
     //Set URL
     curl_setopt($ch,CURLOPT_URL,$url_path);
 
+    //echo $_SERVER["CONTENT_TYPE"];
     if($METHOD != "GET"){
+        curl_setopt($ch, CURLOPT_POST,           1 );
         curl_setopt($ch, CURLOPT_POSTFIELDS,$BODY);
     }
 
@@ -49,6 +63,7 @@
     foreach($headers as &$h){
         header($h);
     }
+    
 
 
     $body = substr($result, $header_size);
