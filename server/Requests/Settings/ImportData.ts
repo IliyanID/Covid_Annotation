@@ -27,7 +27,7 @@ export const importDataRequests = (app:Express) =>{
         })*/
 
         console.log(req)
-        const parsedObj = csvToJson(req.body.text())
+        const parsedObj = csvToJson(req.body.text)
             validateResponse({body:parsedObj} as Request,res,()=>{
                 database.import_data(parsedObj).then(response=>{
                     if(database.error_state)
