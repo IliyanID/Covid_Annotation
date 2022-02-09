@@ -46,16 +46,6 @@ app.use(cors({
   credentials:true
 }));
 
-importDataRequests(app)
-
-
-app.use(bodyParser.json({type:"text/plain"}))
-app.use(cookieparser())
-app.use(helmet())
-
-manageSessions(app)
-exportDataRequests(app)
-
 app.use((req,res,next)=>{
   console.log(`${req.method} ${req.url}`)
   console.log(JSON.stringify(req.headers))
@@ -66,6 +56,18 @@ app.use((req,res,next)=>{
 
   next()
 })
+
+importDataRequests(app)
+
+
+app.use(bodyParser.json({type:"text/plain"}))
+app.use(cookieparser())
+app.use(helmet())
+
+manageSessions(app)
+exportDataRequests(app)
+
+
 
 
 
