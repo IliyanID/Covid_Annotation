@@ -15,9 +15,14 @@ export const importDataRequests = (app:Express) =>{
     const database = new Import_Database();
     const upload = multer({ dest: os.tmpdir() });
     
-    app.post('/api/tweets'/*,upload.single('file')*/, async (req:any,res:Response,error) =>{
+    app.post('/api/tweets',upload.single('file'), async (req:any,res:Response,error) =>{
         console.log(req.headers['content-type'])
-        /*fs.readFile(req.file.path,'utf8', async function (err:any, fileData:any) {
+        console.log(req.file)
+        if(!req.file){
+            res.send()
+            return;
+        }
+        fs.readFile(req.file.path,'utf8', async function (err:any, fileData:any) {
             const parsedObj = csvToJson(fileData)
             validateResponse({body:parsedObj} as Request,res,()=>{
                 database.import_data(parsedObj).then(response=>{
@@ -26,7 +31,7 @@ export const importDataRequests = (app:Express) =>{
                     res.json(parsedObj)
                 })
             },importTweetsSchema)
-        })*/
+        })
 
         /*console.log(req.body)
         const parsedObj = csvToJson(req.body.text)
