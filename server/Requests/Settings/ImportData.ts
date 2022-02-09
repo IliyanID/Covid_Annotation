@@ -16,6 +16,7 @@ export const importDataRequests = (app:Express) =>{
     const upload = multer({ dest: os.tmpdir() });
     
     app.post('/api/tweets',bodyParser.text({type:"*/*"})/*,upload.single('file')*/, async (req:any,res:Response,error) =>{
+        console.log(req.headers['content-type'])
         /*fs.readFile(req.file.path,'utf8', async function (err:any, fileData:any) {
             const parsedObj = csvToJson(fileData)
             validateResponse({body:parsedObj} as Request,res,()=>{
