@@ -17,12 +17,12 @@ import { incompleteTweetsRequets } from './Requests/Statistics/IncompleteTweetsR
 import { skippedTweetsRequest } from './Requests/Statistics/SkippedTweetsRequests';
 import { tweetsRequest } from './Requests/Core/Tweets';
 
-const PORT = process.env.PORT || 443;
+let PORT = process.env.PORT || 443;
 const app = express()
 /*app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });*/
-
+if(PORT === 443){
 https
   .createServer(
     {
@@ -35,10 +35,12 @@ https
     console.log(
       `Server listening on port ${PORT}`
     );
-  });
-
-http.createServer(app).listen(80,()=>{
-  console.log("Listiong on Port 80")
+  });}
+if(PORT === 443){
+  PORT = 80
+}
+http.createServer(app).listen(PORT,()=>{
+  console.log(`Server listening on port ${PORT}`)
 })
 
 app.use(cors({

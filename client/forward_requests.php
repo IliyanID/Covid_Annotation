@@ -1,14 +1,18 @@
 <?php
+    if (!function_exists('str_contains')) {
+        function str_contains(string $haystack, string $needle): bool
+        {
+            return '' === $needle || false !== strpos($haystack, $needle);
+        }
+    }
+    error_reporting(E_ALL ^ E_NOTICE);  
+    
     $url_path = "http://covid-19tweetannotation.cs.colostate.edu/{$_GET["path"]}";
     $url_path = str_replace('"',"",$url_path);
 
 
     $METHOD = $_SERVER['REQUEST_METHOD'];
-    $BODY = file_get_contents('php://input');
-    if(array_key_exists("file",$_FILES)){
-        //echo file_get_contents($_FILES['file']['tmp_name']);
-        $BODY = file_get_contents($_FILES['file']['tmp_name']);
-    }
+    
     //print_r($BODY);
 
     $HEADERS = getallheaders();
@@ -18,9 +22,23 @@
 
     $PARSED_HEADERS = [];
     foreach($HEADERS as $key=>$val){
-        //echo $key . ': ' . $val . '<br>';
-        array_push($PARSED_HEADERS,"{$key}: {$val}");
+        #echo $key . ': ' . $val . '<br>';
+        if(!str_contains($key,"ontent")){
+            array_push($PARSED_HEADERS,"{$key}: {$val}");
+        }
+
       }
+    $BODY = file_get_contents('php://input');
+    if(array_key_exists("file",$_FILES)){
+        //echo file_get_contents($_FILES['file']['tmp_name']);
+        $BODY = file_get_contents($_FILES['file']['tmp_name']);
+        array_push($PARSED_HEADERS,"Content-Type: text/plain");
+
+    }
+    else{
+        array_push($PARSED_HEADERS,"Content-Type: {$_SERVER["CONTENT_TYPE"]}");
+    }
+      //print_r($PARSED_HEADERS)
     curl_setopt($ch, CURLOPT_HTTPHEADER, $PARSED_HEADERS);
 
 

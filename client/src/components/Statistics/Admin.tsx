@@ -41,12 +41,12 @@ export const Admin = (props:globalProps)=>{
             title:'Incomplete Tweets',
             icon:<CgFormatSeparator/>,
             content:<IncompleteTweets {...props}/>
-        },
+        }/*,
         {
             title:'User Statistics',
             icon: <FiUsers/>,
             content:<UserStatistics {...props}/>
-        }
+        }*/
     ]
 
     const [selected, setSelected] = useState(0)

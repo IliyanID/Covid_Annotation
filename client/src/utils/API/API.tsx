@@ -74,9 +74,9 @@ export class API{
 
     Get_Base_URL = () =>{
         let domain_name = window.location.hostname
-        if(domain_name.includes('www.cs.colostate.edu'))
+        //if(domain_name.includes('www.cs.colostate.edu'))
             return 'https://www.cs.colostate.edu/COVID-19TweetAnnotation/forward_requests.php?path=api'
-        return 'http://localhost:3001/api'
+        return 'http://localhost:8000/api'
     }
 
     SchemaCheck = (response:Object,schema:Object) =>{
