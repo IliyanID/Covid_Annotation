@@ -28,8 +28,8 @@ export const importDataRequests = (app:Express) =>{
             },importTweetsSchema)
         })*/
 
-        console.log(req.body)
-        const parsedObj = csvToJson(req.body.text)
+        //console.log(req.body)
+        const parsedObj = csvToJson(req.body)
             validateResponse({body:parsedObj} as Request,res,()=>{
                 database.import_data(parsedObj).then(response=>{
                     if(database.error_state)
