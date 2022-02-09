@@ -91,8 +91,13 @@ const IndividualTweet = (props:IndividualTweetType) =>{
                                     color={(authorStance[index] === currentTweet.stance)?'primary':'secondary'} 
                                     style={{margin:'5px'}} 
                                     onClick={()=>{
-                                        if(authorStance[index] === 'No Claim')
+                                        if(authorStance[index] === 'No Claim'){
+                                            if(currentTweet.claim !== ""){
+                                                props.showMessage("Claim is set but selected No Claim","error")
+                                                return;
+                                            }
                                             updateKey(props,'claim',authorStance[index])
+                                        }
                                         else if(currentTweet.stance === 'No Claim')
                                             updateKey(props,'claim','')
 

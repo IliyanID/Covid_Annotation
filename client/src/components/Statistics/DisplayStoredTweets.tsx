@@ -105,7 +105,7 @@ export const DisplayStoredTweets = (props:props) =>{
                                         <div 
                                             className='icons' 
                                             onClick={()=>toggleOpenArr(index)}>
-                                                <BsPencilSquare/>
+                                                {/*<BsPencilSquare/>*/}
                                                 {openArr[index]?<RiArrowUpSLine/>:<RiArrowDownSLine/>}
                                         </div>
                                         <Collapse isOpen={openArr[index]}>
