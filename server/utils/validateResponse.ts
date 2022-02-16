@@ -7,6 +7,7 @@ export const validateResponse = (req:Request,res:Response,next:NextFunction,sche
     ajv.validate(schema,req.body)
     if(ajv.errors){
         res.status(400)
+        console.log(req.body)
         console.error(ajv.errors)
         res.json(ajv.errors)
     }

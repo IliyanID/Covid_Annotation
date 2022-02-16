@@ -30,7 +30,6 @@ export const importDataRequests = (app:Express) =>{
 
         //console.log(req.body)
         const parsedObj = csvToJson(req.body)
-        console.log(parsedObj)
 
             validateResponse({body:parsedObj} as Request,res,()=>{
                 database.import_data(parsedObj).then(response=>{
