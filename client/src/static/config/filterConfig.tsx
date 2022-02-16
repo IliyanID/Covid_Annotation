@@ -8,6 +8,14 @@ export const completeTweetsConfig = [
     }
   }, 
   {
+    "label": "Original ID",
+    "name": "Original ID",
+    "availableOperators": ["equal"],
+    "valueEditor": {
+      "component": <input type="number"/>,
+    }
+  }, 
+  {
     "label": "Tweet Content",
     "name": "Tweet Content",
     "availableOperators": ["contain"],
@@ -67,6 +75,14 @@ export const skippedTweetsConfig = [
   }
   }, 
   {
+    "label": "Original ID",
+    "name": "Original ID",
+    "availableOperators": ["equal"],
+    "valueEditor": {
+      "component": <input type="number"/>,
+    }
+  },
+  {
     "label": "Tweet Content",
     "name": "Tweet Content",
     "availableOperators": ["contain"],
@@ -101,6 +117,14 @@ export const IncompleteTweetsConfig = [
     "component": <input type="number"/>,
   }
   }, 
+  {
+    "label": "Original ID",
+    "name": "Original ID",
+    "availableOperators": ["equal"],
+    "valueEditor": {
+      "component": <input type="number"/>,
+    }
+  },
   {
     "label": "Tweet Content",
     "name": "Tweet Content",

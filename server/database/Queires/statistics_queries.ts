@@ -36,6 +36,7 @@ export class Incomplete_Tweets_Queries {
         })
 
         queryString += `(stance1 is null OR stance2 is NULL) ORDER BY id ASC LIMIT ${limit} `
+        console.log(queryString)
         return queryString
     }
 }
@@ -88,7 +89,8 @@ const parseFilter = (filter:ICondition) =>{
     switch(filter.label){
         case "Tweet ID":
             return ` id ${parseOperator(filter.operator)} '${filter.value}'`
-
+        case "Original ID":
+            return ` original_id ${parseOperator(filter.operator)} '${filter.value}'`
         case "Tweet Content":
             return ` tweet_content ${parseOperator(filter.operator)} '${filter.value}'`
 
