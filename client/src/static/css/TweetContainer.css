@@ -4,7 +4,6 @@
 
 .TweetContainer{
     width: calc(100vw - 20px);
-    height:90vh;
     margin-top:10px;
     margin-bottom:40px;
 }

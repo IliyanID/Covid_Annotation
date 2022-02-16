@@ -62,6 +62,14 @@ const IndividualTweet = (props:IndividualTweetType) =>{
     // eslint-disable-next-line
     },[])
 
+    useEffect(()=>{
+        if(currentTweet.claim && (currentTweet.claim.length ) >= (currentTweet.tweet_content.length-4) && currentTweet.stance !== 'All Claim'){
+            updateKey(props,'stance','All Claim')
+            console.log(currentTweet.claim?.length)
+            console.log(currentTweet.tweet_content.length)
+        }
+    },[currentTweet.claim])
+
     if (currentTweet.claim !== '' && currentTweet.stance !== ''){
         if(!currentTweet.complete)
             updateKey(props,'complete',true)
@@ -69,8 +77,21 @@ const IndividualTweet = (props:IndividualTweetType) =>{
     else if(currentTweet.complete)
         updateKey(props,'complete',false)
     
-    if(currentTweet.claim && currentTweet.claim.length === currentTweet.tweet_content.length && currentTweet.stance !== 'All Claim'){
-        updateKey(props,'stance','All Claim')
+    
+
+    let button_is_disabled = (index:number) =>{
+        if(currentTweet.claim === "" && authorStance[index] !== "No Claim" && authorStance[index] !== "All Claim")
+            return true;
+        if(currentTweet.claim === "No Claim" && authorStance[index] !== "No Claim")
+            return true;
+        if(currentTweet.claim !== "" && (authorStance[index] === "No Claim") && currentTweet.stance !== "No Claim")
+            return true;
+        if(currentTweet.claim !== "" && (authorStance[index] === "All Claim") && currentTweet.claim && !(currentTweet.claim.length >= (currentTweet.tweet_content.length-2)))
+            return true;
+        if(currentTweet.claim && currentTweet.claim.length >= (currentTweet.tweet_content.length-2) && authorStance[index] !== 'All Claim')
+            return true;
+        
+        
     }
 
     const [popover,togglePopover] = useToggle(false);
@@ -103,17 +124,7 @@ const IndividualTweet = (props:IndividualTweetType) =>{
                         authorStance.map((stance,index)=>{
                             let unique = `Button-author-stance-${props.index}-${index}`
 
-                            let button_is_disabled = () =>{
-                                if(currentTweet.claim === "" && authorStance[index] !== "No Claim" && authorStance[index] !== "All Claim")
-                                    return true;
-                                if(currentTweet.claim === "No Claim" && authorStance[index] !== "No Claim")
-                                    return true;
-                                if(currentTweet.claim !== "" && (authorStance[index] === "No Claim" || authorStance[index] === "All Claim"))
-                                    return true;
-                                if(currentTweet.claim === currentTweet.tweet_content && authorStance[index] !== 'All Claim')
-                                    return true;
-   
-                            }
+                            
 
                             
 
@@ -121,7 +132,7 @@ const IndividualTweet = (props:IndividualTweetType) =>{
                                         key={unique}
                                         color={(authorStance[index] === currentTweet.stance)?'primary':'secondary'} 
                                         style={{margin:'5px'}} 
-                                        disabled={button_is_disabled()}
+                                        disabled={button_is_disabled(index)}
                                         onClick={()=>{
                                             if(authorStance[index] === "All Claim")
                                                 updateKey(props,'claim',currentTweet.tweet_content)

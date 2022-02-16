@@ -6,7 +6,7 @@ export class Export_Data_Queries {
             case 'validated':
                 return `SELECT * FROM validated`
             case 'partial':
-                return 'SELECT * FROM unvalidated WHERE claim1 IS NOT NULL OR claim2 IS NOT NULL'
+                return 'SELECT * FROM unvalidated WHERE (claim1 IS NOT NULL AND claim2 IS NULL) OR (claim2 IS NOT NULL AND claim1 IS NULL)'
             case 'skipped':
                 return 'SELECT * FROM skipped_tweets'
         }
