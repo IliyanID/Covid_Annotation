@@ -69,7 +69,7 @@ const IndividualTweet = (props:IndividualTweetType) =>{
     else if(currentTweet.complete)
         updateKey(props,'complete',false)
     
-    if(currentTweet.claim === currentTweet.tweet_content && currentTweet.stance !== 'All Claim'){
+    if(currentTweet.claim && currentTweet.claim.length === currentTweet.tweet_content.length && currentTweet.stance !== 'All Claim'){
         updateKey(props,'stance','All Claim')
     }
 
