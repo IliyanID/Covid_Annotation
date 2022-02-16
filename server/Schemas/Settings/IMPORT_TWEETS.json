@@ -7,7 +7,7 @@
           "type": "string"
         },
         "id": {
-          "type": "string"
+          "type": ["string","number"]
         },
         "tweet_content": {
           "type": "string"
@@ -15,7 +15,8 @@
       },
       "required": [
         "tweet_content",
-        "tweet_created"
+        "tweet_created",
+        "id"
       ]
     }
   }
