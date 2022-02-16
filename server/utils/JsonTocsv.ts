@@ -1,4 +1,6 @@
 export const JsonTocsv = (arr:any) =>{
+    if(!arr[0])
+        return ''
     let headers = Object.keys(arr[0]).map(header=>{
         return header
     })

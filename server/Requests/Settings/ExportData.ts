@@ -7,7 +7,8 @@ export const exportDataRequests = (app:Express) =>{
   const database = new Export_Database()
 
   app.get('/api/tweets', (req:Request,res:Response,error) =>{
-    database.export_data().then(allTweetsCSV => {
+    let dataType = req.query.dataType as string;
+    database.export_data(dataType).then(allTweetsCSV => {
       if(database.error_state)
         return error()
       res.setHeader('content-type', 'text/plain');

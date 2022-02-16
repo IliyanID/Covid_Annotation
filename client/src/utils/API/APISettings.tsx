@@ -9,8 +9,8 @@ export class API_Account_Settings extends API{
 
 export class API_Export_Tweets extends API{
 
-    API_EXPORT = async(setResult:(a:any)=>void)=>{
-        const url = `${this.Get_Base_URL()}/tweets`
+    API_EXPORT = async(dataType:string,setResult:(a:any)=>void)=>{
+        const url = `${this.Get_Base_URL()}/tweets?dataType=${dataType}`
         this.fetchWithTimeout(url, {
             method: 'GET',
         }).then(response=>{

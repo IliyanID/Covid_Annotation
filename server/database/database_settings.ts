@@ -11,10 +11,10 @@ export class Export_Database extends database {
         this.queries = new Export_Data_Queries()
     }
 
-    export_data = async () =>{
-        let tweetsArr = await this.queryDatabase(this.queries.export_data())
+    export_data = async (dataType:string) =>{
+        let tweetsArr = await this.queryDatabase(this.queries.export_data(dataType))
         if(!tweetsArr)
-            return
+            return ''
         let csvTweets = JsonTocsv(tweetsArr)
         return csvTweets
     }

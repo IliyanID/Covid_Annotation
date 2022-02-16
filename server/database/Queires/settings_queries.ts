@@ -1,8 +1,15 @@
 import { unvalidated_tweet } from "../../common/common_types"
 
 export class Export_Data_Queries {
-    export_data = () =>{
-        return `SELECT * FROM validated`
+    export_data = (dataType:string) =>{
+        switch(dataType){
+            case 'validated':
+                return `SELECT * FROM validated`
+            case 'partial':
+                return 'SELECT * FROM unvalidated WHERE claim1 IS NOT NULL OR claim2 IS NOT NULL'
+            case 'skipped':
+                return 'SELECT * FROM skipped_tweets'
+        }
     }
 }
 
