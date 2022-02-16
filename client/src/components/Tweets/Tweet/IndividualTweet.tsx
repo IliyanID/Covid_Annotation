@@ -68,6 +68,10 @@ const IndividualTweet = (props:IndividualTweetType) =>{
     }
     else if(currentTweet.complete)
         updateKey(props,'complete',false)
+    
+    if(currentTweet.claim === currentTweet.tweet_content && currentTweet.stance !== 'All Claim'){
+        updateKey(props,'stance','All Claim')
+    }
 
     const [popover,togglePopover] = useToggle(false);
 
@@ -106,8 +110,12 @@ const IndividualTweet = (props:IndividualTweetType) =>{
                                     return true;
                                 if(currentTweet.claim !== "" && (authorStance[index] === "No Claim" || authorStance[index] === "All Claim"))
                                     return true;
+                                if(currentTweet.claim === currentTweet.tweet_content && authorStance[index] !== 'All Claim')
+                                    return true;
    
                             }
+
+                            
 
                             return <Button 
                                         key={unique}
