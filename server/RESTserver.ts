@@ -22,7 +22,7 @@ const app = express()
 /*app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });*/
-/*if(PORT === 443){
+if(PORT === 443){
 https
   .createServer(
     {
@@ -35,7 +35,7 @@ https
     console.log(
       `Server listening on port ${PORT}`
     );
-  });}*/
+  });}
 if(PORT === 443){
   PORT = 80
 }
