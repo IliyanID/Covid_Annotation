@@ -1,1 +1,1 @@
-CREATE TABLE users (eid INT NOT NULL, account_type CHAR(60));
+truncate unvalidated
