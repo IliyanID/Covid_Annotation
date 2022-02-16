@@ -8,9 +8,9 @@ export class Export_Data_Queries {
 
 export class Import_Data_Queries {
     import_data = (tweets:unvalidated_tweet[]) => {
-        let result = `INSERT INTO unvalidated(tweet_content,tweet_created) VALUES `
+        let result = `INSERT INTO unvalidated(tweet_content,tweet_created,original_id) VALUES `
         result += tweets.map((tweet)=>{
-            return` ('${tweet.tweet_content}','${tweet.tweet_created}') `
+            return` ('${tweet.tweet_content}','${tweet.tweet_created}',${tweet.id}) `
         })
         
         result += ` ON DUPLICATE KEY UPDATE tweet_content=tweet_content;`
