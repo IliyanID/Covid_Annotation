@@ -4,10 +4,9 @@
 
 .TweetContainer{
     width: calc(100vw - 20px);
+    height:90vh;
     margin-top:10px;
     margin-bottom:40px;
-    display:flex;
-    flex-wrap:wrap;
 }
     .TweetContainer > *{
 
@@ -16,14 +15,18 @@
         position: fixed;
         right:5px;
         bottom:45px;
+        font-size: 25px;
     }
     .IndividualTweet{
         box-shadow: 0 4px 2px -2px gray;
-        flex-basis:500px;
-        flex-grow:1;
+
         margin:10px;
+        margin-top:80px;
+        width: calc(100% - 20px);
         border-radius: 5px;
         border:2px solid var(--cardColor);
+        min-height: calc(70% - 100px);
+        position: relative;
     }
         .IndividualTweet h3{
             background-color: var(--cardColor);
@@ -51,5 +54,12 @@
             border:2px solid black;
             border-radius:5px;
             margin:10px;
+            margin-bottom:130px;
             
+        }
+        .authorsStance{
+            position: absolute;
+            bottom:5px;
+            left:50%;
+            transform: translateX(-50%);
         }

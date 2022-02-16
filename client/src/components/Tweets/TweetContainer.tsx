@@ -39,7 +39,7 @@ const AddMissingProps = (tweets:tweet[]) =>{
 const PackageAll = (props:globalProps):tweetContainerAllPackages =>{
     let p:any = {...props}
     p = packageStatesIntoObject(p,['tweets','setTweets'],useState<tweet[]>([]))
-    p = packageStatesIntoObject(p,['showTweets','setShowTweets'],useState(5))
+    p = packageStatesIntoObject(p,['showTweets','setShowTweets'],useState(1))
     return p;
 }
 
@@ -83,7 +83,6 @@ export const TweetContainer = (props:globalProps) =>{
     HandleNewTweets(allPackages)
     let completedExists = allPackages.tweets.filter(item => {return item.complete}).length > 0
     return  <>
-                <input  id='inputId' defaultValue='5' style={{marginTop:'45px'}}  onMouseUp={(e)=>{handleInput(e,allPackages)}} type='range' min='1' max='10'></input>
                 <h6>Displaying {allPackages.showTweets} Tweets</h6>
                 <div className='TweetContainer'>
                     <NoMoreTweets tweets = {allPackages.tweets}/>

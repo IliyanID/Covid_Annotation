@@ -30,8 +30,6 @@ export const userRequests = (app:Express,addSession:(eid:string,token:string)=>v
 
                   
                   res.cookie(`token`,secureToken,{httpOnly:false,sameSite:'none',secure:true});
-                  res.header('Access-Control-Allow-Origin', 'https://www.cs.colostate.edu')
-                  res.header('Access-Control-Allow-Credentials','true')
                   addSession(eid,secureToken)
                   res.send({account_type,eid:req.params.eid})
             }
