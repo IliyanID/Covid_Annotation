@@ -62,7 +62,7 @@ app.use((req,res,next)=>{
 importDataRequests(app)
 
 
-app.use(bodyParser.json({type:"text/plain"}))
+app.use(bodyParser.json({type:"text/plain",limit:"50mb"}))
 app.use(cookieparser())
 app.use(helmet())
 
