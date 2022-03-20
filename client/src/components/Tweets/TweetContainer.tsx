@@ -6,6 +6,8 @@ import { Button } from 'reactstrap'
 import { API_Tweets } from '../../utils/API/APIMain'
 import { packageStatesIntoObject } from '../../utils/packageStatesIntoObject'
 import NoMoreTweets from './No-More-Tweets'
+import { Line } from 'rc-progress';
+
 
 let api:API_Tweets
 
@@ -63,6 +65,9 @@ const handleSubmit = async(props:tweetContainerAllPackages) =>{
     let completed = props.tweets.filter((tweet:tweet) =>{return tweet.complete})
     api.SUBMIT_TWEETS(props.eid,completed,(response)=>{
         props.setTweets(notCompleted)
+        props.setTracked_tweets(response.tracked_tweets)
+        props.setTracked_tweets_percentage(response.tracked_tweets_percentage)
+
     })
 }
 
@@ -76,15 +81,31 @@ const handleInput = (e:React.MouseEvent<HTMLInputElement, MouseEvent>,allPackage
     }
 }
 
+const calculateCompletionColor = (percent:number)=>{
+    function componentToHex(c:number) {
+        c = Math.floor(c)
+        var hex = c.toString(16);
+        return hex.length == 1 ? "0" + hex : hex;
+      }
+
+    let b = 255 - (2.55 * percent)
+    let g = 255 - b;
+    return "#" + componentToHex(17) + componentToHex(g) + componentToHex(b);
+}
+
 export const TweetContainer = (props:globalProps) =>{
     api = new API_Tweets(props.showMessage)
 
     const allPackages = PackageAll(props)
+
+
+
     HandleNewTweets(allPackages)
     let completedExists = allPackages.tweets.filter(item => {return item.complete}).length > 0
     return  <>
-                <h6>Displaying {allPackages.showTweets} Tweets</h6>
                 <div className='TweetContainer'>
+                    <h6 style={{marginTop:'60px'}}>Completed {props.tracked_tweets} Tweets. {props.tracked_tweets_percentage}% of Goal</h6>
+                    <Line  percent={props.tracked_tweets_percentage} strokeWidth={1} strokeColor={calculateCompletionColor(props.tracked_tweets_percentage)} />
                     <NoMoreTweets tweets = {allPackages.tweets}/>
                     
                     {allPackages.tweets.map((tweet,index) =>{

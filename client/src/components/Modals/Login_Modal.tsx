@@ -12,6 +12,8 @@ export const Login_Modal = (props:globalProps) =>{
             localStorage.setItem('eid',input);
             props.setEid(input)
             props.setAccount_type(response.account_type)
+            props.setTracked_tweets(response.tracked_tweets)
+            props.setTracked_tweets_percentage(response.tracked_tweets_percentage)
         })
         
         

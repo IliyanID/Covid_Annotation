@@ -32,12 +32,16 @@ export const tweetsRequest = (app:Express) =>{
         (req,res,next)=>validateResponse(req,res,next,TweetsCompleteRequest),
         async(req:Request,res:Response,error)=>{
           const eid = parseInt(req.params.eid);
-        
-          const response = await database.add_complete_tweets(req.body,eid) as any
+          
+          const user = await database.add_complete_tweets(req.body,eid) as any
           if(database.error_state)
             return error()
 
-          res.send({eid:String(eid),failed_tweets:[],success:true})
+          let tracked_tweets_percentage = 100
+          if (user.tracked_tweets_goal !== 0){
+            tracked_tweets_percentage = Math.floor((user.tracked_tweets/user.tracked_tweets_goal)*100)
+          }
+          res.send({eid:String(eid),failed_tweets:[],success:true,tracked_tweets:user.tracked_tweets,tracked_tweets_percentage})
       })
 
 

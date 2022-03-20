@@ -1,7 +1,10 @@
 {
     "type": "object",
+    "required":["account_type","eid","tracked_tweets","tracked_tweets_percentage"],
     "properties": {
       "account_type": { "enum": ["admin", "validator"] },
-      "eid": { "type": "string" }
+      "eid": { "type": "string" },
+      "tracked_tweets":{"type":"number"},
+      "tracked_tweets_percentage":{"type":"number"}
     }
   }

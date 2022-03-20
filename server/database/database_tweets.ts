@@ -1,17 +1,20 @@
 import { database } from "./database_utils/database"
 import { unvalidated_tweet, validated_tweet, validating_tweet } from "../common/common_types"
-import { Tweets_Queries } from "./Queires/core_queries"
+import { Tweets_Queries, User_Queries } from "./Queires/core_queries"
 
 export class database_tweets extends database {
     queries:Tweets_Queries
+    queries_user:User_Queries
     constructor(){
         super('dev')
         this.queries = new Tweets_Queries()
+        this.queries_user = new User_Queries();
     }
     
 
-    add_complete_tweets = async (tweets:validated_tweet[],eid:number) =>{
+    add_complete_tweets = async (tweets:any[],eid:number) =>{
         let response:any;
+        let user = {tracked_tweets:0}
        for(let i = 0; i < tweets.length; i++){
             let item = tweets[i]
             let temp = {...item,eid}
@@ -21,10 +24,15 @@ export class database_tweets extends database {
             }
             else if(unvalidatedTweet[0].eid1 === eid)
                 response =  await this.queryDatabase(this.queries.add_tweets_complete(temp,['claim1','stance1']))
+
+            let users = await this.queryDatabase(this.queries_user.getUser(eid)) as any;
+            user = users[0]
+            user.tracked_tweets++;
+            await this.queryDatabase(this.queries_user.updated_tracked_tweets(user.tracked_tweets,eid));
             if(!response)
-                return
+                return 0
         }
-        return response;
+        return user;
     }
 
     skip_tweet_help = async(id:number,column:string,queryDatabase:any,eid:number) =>{

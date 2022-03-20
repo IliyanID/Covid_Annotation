@@ -18,6 +18,7 @@ import { skippedTweetsRequest } from './Requests/Statistics/SkippedTweetsRequest
 import { tweetsRequest } from './Requests/Core/Tweets';
 
 let PORT = process.env.PORT || 443;
+PORT = 8000
 const app = express()
 /*app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);

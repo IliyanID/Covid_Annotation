@@ -12,7 +12,7 @@ export class database_user extends database{
         const login_queries = this.queries.login(eid)
         let results:any = await this.queryDatabase(login_queries[0])
         if(results[0]!== undefined)
-            return results[0].account_type
+            return results[0]
     
         return "unauthorized"
     }

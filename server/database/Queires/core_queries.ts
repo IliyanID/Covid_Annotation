@@ -77,5 +77,17 @@ export class User_Queries {
             `
         ]
     }
+
+    getUser = (eid:string|number)=>{
+        return `
+        SELECT * FROM users WHERE eid=${eid}
+        `
+    }
+
+    updated_tracked_tweets = (tracked_tweets:number|string,eid:number|string) =>{
+        return `
+        UPDATE users SET tracked_tweets=${tracked_tweets} WHERE eid=${eid}  
+        `
+    }
 }
 

@@ -3,7 +3,9 @@ export type globalProps = {
     account_type: 'validator' | 'admin' | 'NA',
     showMessage:any,
     modalOpen:boolean,
-    currentPage?:any
+    currentPage?:any,
+    tracked_tweets:number,
+    tracked_tweets_percentage:number
     [key: string]: any
 }
 
@@ -12,6 +14,8 @@ export const globalPropsDefaultObj:globalProps = {
     account_type:'NA',
     showMessage:(a:any,b:any)=>{return },
     modalOpen:true,
+    tracked_tweets:0,
+    tracked_tweets_percentage:0
 
 } as const
 

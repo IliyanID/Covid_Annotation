@@ -15,12 +15,12 @@ export const userRequests = (app:Express,addSession:(eid:string,token:string)=>v
 
       app.get('/api/user/:eid',async(req:Request,res:Response)=>{
             const eid = req.params.eid;
-            let account_type = await database.login(eid)
+            let account = await database.login(eid)
             if(database.error_state){
                   res.status(500)
                   res.json({error_message:'Internal Server Error'})
             }
-            else if(account_type === 'unauthorized'){
+            else if(account === 'unauthorized'){
                   res.status(401)
                   res.send()
             }
@@ -31,7 +31,13 @@ export const userRequests = (app:Express,addSession:(eid:string,token:string)=>v
                   
                   res.cookie(`token`,secureToken,{httpOnly:false,sameSite:'none',secure:true});
                   addSession(eid,secureToken)
-                  res.send({account_type,eid:req.params.eid})
+
+                  let tracked_tweets_percentage = 100
+                  if (account.tracked_tweets_goal !== 0){
+                        tracked_tweets_percentage = Math.floor((account.tracked_tweets/account.tracked_tweets_goal) * 100)
+                        console.log(tracked_tweets_percentage)
+          }
+                  res.send({account_type:account.account_type,eid:req.params.eid,tracked_tweets:account.tracked_tweets,tracked_tweets_percentage})
             }
       })
 }

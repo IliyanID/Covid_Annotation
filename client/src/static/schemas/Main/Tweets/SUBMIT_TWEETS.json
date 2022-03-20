@@ -1,5 +1,6 @@
 {
     "type": "object",
+    "required":["tracked_tweets","tracked_tweets_percentage"],
     "properties": {
       "eid": { 
           "type": "string" 
@@ -20,7 +21,14 @@
                 "required": [
                     "id","tweet_content"
                 ]
-            } 
+            },
+            "tracked_tweets":{"type":"number"},
+            "tracked_tweets_percentage": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 100
+              }
+       
         },
       "success": { "type": "boolean" }
 }
