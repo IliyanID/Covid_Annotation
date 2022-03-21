@@ -4,7 +4,7 @@ import DashBoard from './Admin/DashBoard'
 import AnnotatedTweets from './Admin/AnnotatedTweets'
 import SkippedTweets from './Admin/SkippedTweets'
 import IncompleteTweets from './Admin/IncompleteTweets'
-import UserStatistics from './Admin/UserStatistics';
+import UserTweetGoals from './Admin/UserTweetGoals';
 import { Pages } from '../../containers/App'
 
 import { globalProps } from '../../common_types';
@@ -41,12 +41,12 @@ export const Admin = (props:globalProps)=>{
             title:'Incomplete Tweets',
             icon:<CgFormatSeparator/>,
             content:<IncompleteTweets {...props}/>
-        }/*,
+        },
         {
-            title:'User Statistics',
+            title:'User Tweet Goals',
             icon: <FiUsers/>,
-            content:<UserStatistics {...props}/>
-        }*/
+            content:<UserTweetGoals {...props}/>
+        }
     ]
 
     const [selected, setSelected] = useState(0)

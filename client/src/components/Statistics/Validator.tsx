@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import SideBar from '../SideBar';
-import UserStatistics from './Admin/UserStatistics';
+import UserStatistics from './Admin/UserTweetGoals';
 import { Pages } from '../../containers/App'
 
 import { globalProps } from '../../common_types';

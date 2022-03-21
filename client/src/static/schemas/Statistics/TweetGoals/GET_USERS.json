@@ -1,0 +1,18 @@
+{
+    "type": "array",
+    "items": {
+      "type": "object",
+      "properties": {
+        "eid":{
+            "type":["string","number"]
+        },
+        "tweets_completed_goal":{
+            "type":"number"
+        },
+        "tweets_completed":{
+            "type":"number"
+        }
+      },
+      "required": ["eid","tweets_completed_goal","tweets_completed"]
+    }
+  }

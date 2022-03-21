@@ -1,0 +1,37 @@
+.tweet_goal_row>div {
+    margin-bottom:20px;
+    font-size: 15px;
+    margin-left:30px;
+}
+
+.ModifyGoalContainer{
+    margin:20px 0px;
+    text-align: center;
+}
+    .ModifyGoalContainer > *{
+        margin:auto;
+        width:50%;
+    }
+
+.tweet_goal_icon{
+    position:absolute;
+    top:10px;
+    left:10px;
+    width:30px;
+    height: auto;
+}
+
+.tweet_goal_input{
+    color:black!important;
+    position:absolute;
+    left:500px;
+}
+
+.confirmation_box{
+    display:flex;
+    justify-content: center;
+    
+}
+    .confirmation_box > *{
+        margin:10px;
+    }

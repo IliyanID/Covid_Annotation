@@ -58,3 +58,5 @@ export const tweetDefaultUnvalidated:unvalidated_tweet = {
     priority:false,
     id:-1
 }
+
+export type user = {eid:number,tweets_completed:number,tweets_completed_goal:number}

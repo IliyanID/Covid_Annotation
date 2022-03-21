@@ -11,6 +11,12 @@ import getIncompleteTweetsSchema from '../../static/schemas/Statistics/Incomplet
 import getSkippedTweetsSchema from '../../static/schemas/Statistics/SkippedTweets/GET_TWEETS.json'
 import deleteSkippedTweetSchema from '../../static/schemas/Statistics/SkippedTweets/DELETE_TWEET.json'
 
+import getUsersSchema from '../../static/schemas/Statistics/TweetGoals/GET_USERS.json'
+import updateUsersSchema from'../../static/schemas/Statistics/TweetGoals/UPDATE_GOALS.json'
+import clearUsersSchema from'../../static/schemas/Statistics/TweetGoals/CLEAR_GOALS.json'
+import { user } from "../../common_types";
+
+
 export class API_Dashboard extends API {
     GET_LOGGEDIN = (setResult:(a:any)=>void) => {
         const url = `${this.Get_Base_URL()}/statistics/dashboard/loggedin`;
@@ -99,3 +105,47 @@ export class API_Skipped_Tweets extends API {
     }
 }
 
+
+export class API_User_Tweet_Goals extends API{
+    GET_USERS = (filter:ICondition[],setResult:(a:any)=>void) =>{
+        const url = `${this.Get_Base_URL()}/statistics/userTweetGoals/users `;
+        this.fetchWithTimeout(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+              },
+            body:JSON.stringify(filter)
+        },getUsersSchema).then(response=>{
+            if(response !== undefined)
+                setResult(response)
+        })
+    }
+
+    UPDATE_GOALS = (users:user[],setResult:(a:any)=>void) =>{
+        const url = `${this.Get_Base_URL()}/statistics/userTweetGoals/users `;
+        this.fetchWithTimeout(url, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+              },
+            body:JSON.stringify(users)
+        },updateUsersSchema).then(response=>{
+            if(response !== undefined)
+                setResult(response)
+        })
+    }
+
+    CLEAR_GOAL = (users:user[],setResult:(a:any)=>void) =>{
+        const url = `${this.Get_Base_URL()}/statistics/userTweetGoals/users `;
+        this.fetchWithTimeout(url, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+              },
+            body:JSON.stringify(users)
+        },clearUsersSchema).then(response=>{
+            if(response !== undefined)
+                setResult(response)
+        })
+    }
+}

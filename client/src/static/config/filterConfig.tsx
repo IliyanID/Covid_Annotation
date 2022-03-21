@@ -150,3 +150,30 @@ export const IncompleteTweetsConfig = [
     },    
   }   
 ];
+
+export const userTweetGoals = [
+  {
+    "label": "User EID",
+    "name": "User EID",
+    "availableOperators": ["equal"],
+    "valueEditor": {
+      "component": <input type="number"/>,
+    },    
+  } ,
+  {
+    "label": "Tweets Completed",
+    "name": "Tweets Completed",
+    "availableOperators": ["equal","less","more"],
+    "valueEditor": {
+      "component": <input type="number"/>,
+    }, 
+  },
+  {
+    "label": "Tweet Completion Goal",
+    "name": "Tweets Completion Goal",
+    "availableOperators": ["equal","less","more"],
+    "valueEditor": {
+      "component": <input type="number"/>,
+    }, 
+  }
+]
