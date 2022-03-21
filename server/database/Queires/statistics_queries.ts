@@ -62,6 +62,32 @@ export class Skipped_Tweets_Queries {
     }
 }
 
+export class User_Tweets_Goals{
+
+    get_users = (filters:ICondition[]) =>{
+        let query = 'SELECT * FROM users WHERE '
+        for(let i = 0; i < filters.length;i++){
+            let filter = filters[i]
+            query += parseFilter(filter) + 'AND'
+        }
+
+        //Remove last AND
+        query = query.substring(0,query.length - 3)
+        return query;
+    }
+
+    update_users = (user:any)=>{
+        return  `UPDATE users SET tracked_tweets=${user.tweets_completed}, tracked_tweets_goal=${user.tweets_completed_goal} WHERE eid=${user.eid}`
+
+    }
+
+    clear_goals = (users:any)=>{
+        return `
+        
+        `
+    }
+}
+
 const parseOperator = (operator:string)=>{
     switch(operator){
         case "equal":
@@ -108,5 +134,14 @@ const parseFilter = (filter:ICondition) =>{
 
         case "Validated Time":
             return ` (validated_time1 ${parseOperator(filter.operator)} '${filter.value}' OR validated_time2 ${parseOperator(filter.operator)} '${filter.value}')`
+        
+        case "User EID":
+            return `eid ${parseOperator(filter.operator)} '${filter.value}'`
+        
+        case "Tweets Completed":
+            return `tracked_tweets ${parseOperator(filter.operator)} '${filter.value}'`
+
+        case "Tweet Completion Goal":
+            return `tracked_tweets_goal ${parseOperator(filter.operator)} '${filter.value}'`
     }
 }

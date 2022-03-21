@@ -2,7 +2,7 @@ import { ICondition } from "react-filter-easy";
 
 
 import { database } from "./database_utils/database";
-import { Dashboard_Queries, Annotated_Tweets_Queries, Incomplete_Tweets_Queries, Skipped_Tweets_Queries } from "./Queires/statistics_queries";
+import { Dashboard_Queries, Annotated_Tweets_Queries, Incomplete_Tweets_Queries, Skipped_Tweets_Queries, User_Tweets_Goals } from "./Queires/statistics_queries";
 
 export class Dashboard_Database extends database {
     queries:Dashboard_Queries
@@ -57,5 +57,27 @@ export class Skipped_Tweets_Database extends database {
 
     delete_tweet = async(id:string|number) => {
         return await this.queryDatabase(this.queries.delete_tweet(id))
+    }
+}
+
+export class UserTweetGoalsDatabase extends database{
+    queries:User_Tweets_Goals
+    constructor(){
+        super('dev')
+        this.queries = new User_Tweets_Goals()
+
+    }
+    get_users = async(filters:ICondition[])=>{
+        let result = await this.queryDatabase(this.queries.get_users(filters));
+        return result
+    }
+
+    update_users = async(users:any[]) =>{
+
+        let result 
+        users.map((users,index)=>{
+            result = this.queryDatabase(this.queries.update_users(users));
+        }) 
+        return result
     }
 }

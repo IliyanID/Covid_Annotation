@@ -13,7 +13,6 @@ export const annotatedTweetsRequests = (app:Express) =>{
     app.post('/api/statistics/annotatedTweets',
         (req,res,next)=>validateResponse(req,res,next,getAnnotatedTweets),
         (req:Request,res:Response,error)=>{
-        
         const body = req.body as {filter:ICondition[],limit:number}
         database.get_tweets(body.filter,body.limit).then(result => {
             if(database.error_state)

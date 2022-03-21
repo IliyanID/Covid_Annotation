@@ -23,7 +23,10 @@ export class Tweets_Queries {
         (eid1 = ${eid} AND claim1 IS NULL AND stance1 IS NULL) 
         OR 
         (eid2 = ${eid} AND claim2 IS NULL AND stance2 IS NULL)
-          LIMIT ${limit}
+          
+
+        and NOT EXISTS (SELECT * FROM skipped_tweets WHERE unvalidated.id=skipped_tweets.id )
+        LIMIT ${limit}
         `
     }
 

@@ -108,7 +108,7 @@ export class API_Skipped_Tweets extends API {
 
 export class API_User_Tweet_Goals extends API{
     GET_USERS = (filter:ICondition[],setResult:(a:any)=>void) =>{
-        const url = `${this.Get_Base_URL()}/statistics/userTweetGoals/users `;
+        const url = `${this.Get_Base_URL()}/statistics/usertweetgoals/users `;
         this.fetchWithTimeout(url, {
             method: 'POST',
             headers: {
@@ -122,7 +122,7 @@ export class API_User_Tweet_Goals extends API{
     }
 
     UPDATE_GOALS = (users:user[],setResult:(a:any)=>void) =>{
-        const url = `${this.Get_Base_URL()}/statistics/userTweetGoals/users `;
+        const url = `${this.Get_Base_URL()}/statistics/usertweetgoals/users `;
         this.fetchWithTimeout(url, {
             method: 'PUT',
             headers: {
@@ -130,20 +130,6 @@ export class API_User_Tweet_Goals extends API{
               },
             body:JSON.stringify(users)
         },updateUsersSchema).then(response=>{
-            if(response !== undefined)
-                setResult(response)
-        })
-    }
-
-    CLEAR_GOAL = (users:user[],setResult:(a:any)=>void) =>{
-        const url = `${this.Get_Base_URL()}/statistics/userTweetGoals/users `;
-        this.fetchWithTimeout(url, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-              },
-            body:JSON.stringify(users)
-        },clearUsersSchema).then(response=>{
             if(response !== undefined)
                 setResult(response)
         })

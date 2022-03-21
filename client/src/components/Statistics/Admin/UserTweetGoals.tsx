@@ -8,6 +8,7 @@ import { AiTwotoneSave } from 'react-icons/ai'
 import { MdClearAll } from 'react-icons/md'
 import useToggle from '../../../hooks/useToggle'
 import { API_User_Tweet_Goals } from '../../../utils/API/APIStatisitcs'
+import { user } from '../../../common_types'
 
 let API:API_User_Tweet_Goals
 
@@ -17,7 +18,7 @@ export const UserTweetGoals = (props:any)=>{
 
     const [filter,setFilter] = useState<ICondition[]>([]) 
     const [openConfirmation,toggleConfirmation] = useToggle(false);
-    const [users,setUsers] = useState([{eid:832542166,tweets_completed:5,tweets_completed_goal:5}])
+    const [users,setUsers] = useState<user[]>([])
     const [goal,setGoal] = useState('')
     const currentChange= useRef('')
 
@@ -29,19 +30,29 @@ export const UserTweetGoals = (props:any)=>{
 
     useEffect(()=>{
         getUsers()
-    },[])
+    },[filter])
 
     const ApplyChanges = () => {
+        let tempUsers:any;
+
         switch(currentChange.current){
             case 'Update':
-                API.UPDATE_GOALS(users,(result)=>{
+                tempUsers = users.map((user,index)=>{
+                    user.tweets_completed_goal = parseInt(goal)
+                    return user;
+                })
+                API.UPDATE_GOALS(tempUsers,(result)=>{
                     props.showMessage('Succesfully Update User Goals','success')
                     getUsers()
                 })
             break;
 
             case 'Clear':
-                API.CLEAR_GOAL(users,(result)=>{
+                tempUsers = users.map((user,index)=>{
+                    user.tweets_completed = 0
+                    return user;
+                })
+                API.UPDATE_GOALS(tempUsers,(result)=>{
                     props.showMessage('Succesfully Clear User Tweet Counts','success')
                     getUsers()
                 })
@@ -89,7 +100,7 @@ export const UserTweetGoals = (props:any)=>{
                         <Button onClick={()=>{
                             currentChange.current = 'Update'
                             toggleConfirmation();
-                            }} disabled={goal=='' || goal.length != 9 } color='primary' id='saveGoals'><AiTwotoneSave/></Button>
+                            }} disabled={goal==''} color='primary' id='saveGoals'><AiTwotoneSave/></Button>
                         <Button onClick={ ()=>{
                             currentChange.current = 'Clear'
                             toggleConfirmation();

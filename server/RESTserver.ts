@@ -16,6 +16,7 @@ import { dashBoardRequests } from './Requests/Statistics/DashBoardRequests';
 import { incompleteTweetsRequets } from './Requests/Statistics/IncompleteTweetsRequests';
 import { skippedTweetsRequest } from './Requests/Statistics/SkippedTweetsRequests';
 import { tweetsRequest } from './Requests/Core/Tweets';
+import { UserTweetsGoalRequests } from './Requests/Statistics/UserTweetGoalsRequests'
 
 let PORT = process.env.PORT || 443;
 PORT = 8000
@@ -60,6 +61,8 @@ app.use((req,res,next)=>{
   next()
 })
 
+
+
 importDataRequests(app)
 
 
@@ -72,15 +75,15 @@ exportDataRequests(app)
 
 
 
-
-
-
 manageAccessRequests(app)
 annotatedTweetsRequests(app)
 dashBoardRequests(app)
 incompleteTweetsRequets(app)
 skippedTweetsRequest(app)
 tweetsRequest(app)
+UserTweetsGoalRequests(app)
+
+
 
 app.use((req,res)=>{
   console.error('Server Sent Back a Error 500')
