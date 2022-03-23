@@ -19,7 +19,6 @@ import { tweetsRequest } from './Requests/Core/Tweets';
 import { UserTweetsGoalRequests } from './Requests/Statistics/UserTweetGoalsRequests'
 
 let PORT = process.env.PORT || 443;
-PORT = 8000
 const app = express()
 /*app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
