@@ -104,7 +104,7 @@ export const TweetContainer = (props:globalProps) =>{
     let completedExists = allPackages.tweets.filter(item => {return item.complete}).length > 0
     return  <>
                 <div className='TweetContainer'>
-                    <h6 style={{marginTop:'60px'}}>Completed {props.tracked_tweets} Tweets. {props.tracked_tweets_percentage}% of Goal</h6>
+                    <h6 style={{marginTop:'60px'}}>Completed {props.tracked_tweets} {(props.tracked_tweets == 1)? 'Tweet':'Tweets'}. {props.tracked_tweets_percentage}% of Goal</h6>
                     <Line  percent={props.tracked_tweets_percentage} strokeWidth={1} strokeColor={calculateCompletionColor(props.tracked_tweets_percentage)} />
                     <NoMoreTweets tweets = {allPackages.tweets}/>
                     
