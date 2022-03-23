@@ -24,7 +24,7 @@ export class database {
         this.error_state = false;
         return new Promise((resolve) => {
 
-            connect_database('faure').then(e=>e.getConnection()
+            this.connection.getConnection()
             .then(conn => {
             
             conn.query(query)
@@ -42,13 +42,7 @@ export class database {
                     resolve([])
                 })
                 
-                }).catch(err => {
-                    console.log('Failed to Connect to Database')
-                    this.error_state = true;
-                    resolve([])
                 })
-            )
-            
         })
     }
 }
