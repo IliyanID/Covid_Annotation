@@ -17,7 +17,7 @@ export const Validator = (props:globalProps)=>{
         {
             title:'User Statistics',
             icon: <FiUsers/>,
-            content:<UserStatistics {...props}/>
+            content:<div></div>
         }
     ]
 

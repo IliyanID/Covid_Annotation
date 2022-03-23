@@ -17,8 +17,8 @@ export const connect_database = async (url:string) =>{
         password: '832542166',
         database: 'covid_tweet',
         port: 3306,
-        connectionLimit:20
+        connectionLimit:2
  });
-
+ console.log("Made new connection")
     return connection
 }
