@@ -77,7 +77,7 @@ export class User_Tweets_Goals{
     }
 
     update_users = (user:any)=>{
-        return  `UPDATE users SET tracked_tweets=${user.tweets_completed}, tracked_tweets_goal=${user.tweets_completed_goal} WHERE eid=${user.eid}`
+        return  `UPDATE users SET tracked_tweets=${user.tweets_completed}, tracked_tweets_goal=${user.tweets_completed_goal} WHERE eid=${user.eid} `
 
     }
 
@@ -136,12 +136,12 @@ const parseFilter = (filter:ICondition) =>{
             return ` (validated_time1 ${parseOperator(filter.operator)} '${filter.value}' OR validated_time2 ${parseOperator(filter.operator)} '${filter.value}')`
         
         case "User EID":
-            return `eid ${parseOperator(filter.operator)} '${filter.value}'`
+            return ` eid ${parseOperator(filter.operator)} '${filter.value}'`
         
         case "Tweets Completed":
-            return `tracked_tweets ${parseOperator(filter.operator)} '${filter.value}'`
+            return ` tracked_tweets ${parseOperator(filter.operator)} '${filter.value}'`
 
         case "Tweet Completion Goal":
-            return `tracked_tweets_goal ${parseOperator(filter.operator)} '${filter.value}'`
+            return ` tracked_tweets_goal ${parseOperator(filter.operator)} '${filter.value}'`
     }
 }
