@@ -41,6 +41,8 @@ export const tweetsRequest = (app:Express) =>{
           if (user.tracked_tweets_goal !== 0){
             tracked_tweets_percentage = Math.floor((user.tracked_tweets/user.tracked_tweets_goal)*100)
           }
+          if(tracked_tweets_percentage > 100)
+            tracked_tweets_percentage = 100
           res.send({eid:String(eid),failed_tweets:[],success:true,tracked_tweets:user.tracked_tweets,tracked_tweets_percentage})
       })
 

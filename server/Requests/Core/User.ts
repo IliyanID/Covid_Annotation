@@ -35,8 +35,9 @@ export const userRequests = (app:Express,addSession:(eid:string,token:string)=>v
                   let tracked_tweets_percentage = 100
                   if (account.tracked_tweets_goal !== 0){
                         tracked_tweets_percentage = Math.floor((account.tracked_tweets/account.tracked_tweets_goal) * 100)
-                        console.log(tracked_tweets_percentage)
-          }
+                  }
+                  if(tracked_tweets_percentage > 100)
+                        tracked_tweets_percentage = 100
                   res.send({account_type:account.account_type,eid:req.params.eid,tracked_tweets:account.tracked_tweets,tracked_tweets_percentage})
             }
       })
