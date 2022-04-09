@@ -11,6 +11,10 @@ export class Export_Data_Queries {
                 return 'SELECT * FROM skipped_tweets'
         }
     }
+
+    delete_database = (dataType:string) =>{
+        return `truncate ${dataType}`
+    }
 }
 
 export class Import_Data_Queries {

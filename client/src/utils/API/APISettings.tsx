@@ -18,6 +18,20 @@ export class API_Export_Tweets extends API{
                 setResult(response)
         })
     }
+
+    CLEAR_DB = async(dataType:string,successFunc:()=>void)=>{
+        const url = `${this.Get_Base_URL()}/tweets?dataType=${dataType}`
+        this.fetchWithTimeout(url, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+              },
+            body:JSON.stringify({dataType})
+        }).then(response=>{
+            if(response !== undefined)
+                successFunc()
+        })
+    }
 }
 
 export class API_Import_Tweets extends API{

@@ -39,6 +39,7 @@ export class API_Tweets extends API{
             headers: {
                 'Content-Type': 'application/json'
             },
+            mode: 'no-cors',
             body:JSON.stringify(tweet)
         },SkipTweetApiTweets).then(response=>{   
             if(response !== undefined)

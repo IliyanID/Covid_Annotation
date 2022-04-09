@@ -18,6 +18,10 @@ export class Export_Database extends database {
         let csvTweets = JsonTocsv(tweetsArr)
         return csvTweets
     }
+
+    delete_database = async(dataType:string) => {
+        return await this.queryDatabase(this.queries.delete_database(dataType))
+    }
 }
 
 export class Import_Database extends database {
