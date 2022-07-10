@@ -38,8 +38,8 @@
      npm run start
    ```
    5.) Starting Locations
-   * For the cliet the applicatins begins in src/components/App.tsx
-   * For the server the applications begins in RESTserver.ts
+   * For the cliet the application begins in client/src/components/App.tsx
+   * For the server the application begins in server/RESTserver.ts
    
    ## Accessing Production Server
    
