@@ -20,6 +20,10 @@ export enum Pages  {
   statistics
 }
 
+//Here the example object from common_types.tsx is imported. All the object keys are created into React states
+//For example if an item has the name "name"
+//This is in the outputed variables [name,setName]
+//It then returns a large object with all of the React States
 const PackageUserStates = (props:any)=>{
   let p:any = {}
   Object.keys(globalPropsDefaultObj).forEach(key=>{
@@ -32,6 +36,7 @@ const PackageUserStates = (props:any)=>{
   return p
 }
 
+//Whenever currentPage is updated it switches between the three main screens
 const getCurrentPage = (allPackages:any) =>{
   if(allPackages.currentPage === Pages.validate)
     return  <TweetContainer {...allPackages}/>
@@ -44,6 +49,9 @@ const getCurrentPage = (allPackages:any) =>{
 const App = (props:any) => {
 
   let allPackages = PackageUserStates(props)
+
+  //This runs whenever the user closes the broswer window
+  //It sends an API call to the server to unasign their tweets
   window.onbeforeunload =  function() {
     new API_USER(allPackages.showMessage).LOGOUT(allPackages.eid)
 }
