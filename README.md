@@ -8,7 +8,7 @@
 
 1.) Setting Development and Productin Enviroment Variables
 
-<small>This is used so that during development the server only binds to port 80 instead of port 80 and port 443<small/>
+<small>Only run this command within your development enviorment<small/>
 
    ```sh
      EXPORT PORT = 80
