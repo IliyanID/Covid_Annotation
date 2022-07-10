@@ -16,6 +16,8 @@ import updateUsersSchema from'../../static/schemas/Statistics/TweetGoals/UPDATE_
 import clearUsersSchema from'../../static/schemas/Statistics/TweetGoals/CLEAR_GOALS.json'
 import { user } from "../../common_types";
 
+//Sub-API Classes utilize the general methods from API.
+//on a succesful api call the calback function is usually called with the result passed.
 
 export class API_Dashboard extends API {
     GET_LOGGEDIN = (setResult:(a:any)=>void) => {

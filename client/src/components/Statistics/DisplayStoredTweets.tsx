@@ -63,6 +63,8 @@ export const DisplayStoredTweets = (props:props) =>{
 
     let selectedFields:IField[];
     let header = ''
+    //This is used for the other windows
+    //Calculates what screen is active
     switch(props.context){
         case 'annotatedTweets':
             selectedFields = completeTweetsConfig

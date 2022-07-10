@@ -45,6 +45,7 @@ const IndividualTweet = (props:IndividualTweetType) =>{
     let currentTweet = props.tweets[props.index]
     const ref = useRef<HTMLParagraphElement>(null)
     const indivRef = useRef<HTMLDivElement>(null)
+    //When the site loads it assigns an event listener for dragging the mouse over the text
     useEffect(()=>{
         if(ref.current !== null && indivRef.current !== null){
             let width = (document.getElementsByClassName('IndividualTweet')[0] as any)
@@ -62,6 +63,8 @@ const IndividualTweet = (props:IndividualTweetType) =>{
     // eslint-disable-next-line
     },[])
 
+    //This runs whenver the user selects a new claim
+    //It checks to see if they selected everything and assines the appropiate stance
     useEffect(()=>{
         if(currentTweet.claim && (currentTweet.claim.length ) >= (currentTweet.tweet_content.length-4) && currentTweet.stance !== 'All Claim'){
             updateKey(props,'stance','All Claim')
@@ -78,7 +81,7 @@ const IndividualTweet = (props:IndividualTweetType) =>{
         updateKey(props,'complete',false)
     
     
-
+    
     let button_is_disabled = (index:number) =>{
         if(currentTweet.claim === "" && authorStance[index] !== "No Claim" && authorStance[index] !== "All Claim")
             return true;
@@ -94,6 +97,7 @@ const IndividualTweet = (props:IndividualTweetType) =>{
         
     }
 
+    //Used for a helpful tooltip
     const [popover,togglePopover] = useToggle(false);
 
     return  <div ref={indivRef} className='IndividualTweet'>

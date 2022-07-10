@@ -28,6 +28,8 @@ export const tweetsRequest = (app:Express) =>{
         res.json(response);
       });
       
+
+      //On every post the server compares the data against a schema
       app.post('/api/tweets/complete/:eid',
         (req,res,next)=>validateResponse(req,res,next,TweetsCompleteRequest),
         async(req:Request,res:Response,error)=>{
@@ -46,6 +48,7 @@ export const tweetsRequest = (app:Express) =>{
           res.send({eid:String(eid),failed_tweets:[],success:true,tracked_tweets:user.tracked_tweets,tracked_tweets_percentage})
       })
 
+      //On every post the server compares the data against a schema
 
       app.post('/api/tweets/skip/:eid',
         (req,res,next)=>validateResponse(req,res,next,TweetsSkipRequest), 

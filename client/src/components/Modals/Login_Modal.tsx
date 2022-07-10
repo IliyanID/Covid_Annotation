@@ -6,6 +6,10 @@ import { API_USER } from '../../utils/API/APIMain'
 export const Login_Modal = (props:globalProps) =>{
     const [input,setInput] = useState(localStorage.getItem('eid') || '')
     const api = new API_USER(props.showMessage)
+
+    //This runs whenever the user logs in
+    //It stores the eid within the browser storage
+    //On the next login it retrevies it from storage
     const handleLogin = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>{
         api.LOGIN(input,(response)=>{
             props.setModalOpen(false)

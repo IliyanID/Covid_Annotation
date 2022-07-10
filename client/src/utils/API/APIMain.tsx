@@ -6,6 +6,10 @@ import SkipTweetApiTweets from '../../static/schemas/Main/Tweets/SKIP_TWEET.json
 
 import loginApiUserSchema from '../../static/schemas/Main/User/LOGIN.json'
 
+
+//Sub-API Classes utilize the general methods from API.
+//on a succesful api call the calback function is usually called with the result passed.
+
 export class API_Tweets extends API{
     GET_TWEETS = (eid:string,limit:number,setResult:(a:any)=>void) =>{
         const url = `${this.Get_Base_URL()}/tweets/${eid}?limit=${limit}`;

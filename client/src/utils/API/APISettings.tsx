@@ -4,6 +4,9 @@ import GetUsersManageAccessSchema from '../../static/schemas/Settings/ManageAcce
 import AddUsersManageAccessSchema from '../../static/schemas/Settings/ManageAccess/ADD_USER.json'
 import DeleteUsersManageAccessSchema from '../../static/schemas/Settings/ManageAccess/DELETE_USER.json'
 
+//Sub-API Classes utilize the general methods from API.
+//on a succesful api call the calback function is usually called with the result passed.
+
 export class API_Account_Settings extends API{
 }
 

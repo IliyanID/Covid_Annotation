@@ -21,6 +21,8 @@ export const manageAccessRequests = (app:Express) =>{
             res.send();
       })
 
+      //On every post the server compares the data against a schema
+
       app.post('/api/user/parent/:eid',
             (req,res,next)=>validateResponse(req,res,next,addUserSchema),
             async(req:Request,res:Response,error)=>{

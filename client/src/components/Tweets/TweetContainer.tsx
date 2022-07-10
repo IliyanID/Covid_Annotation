@@ -45,6 +45,8 @@ const PackageAll = (props:globalProps):tweetContainerAllPackages =>{
     return p;
 }
 
+//This runs whenver the user completes a tweet
+//The state is updated and it automatically calls the GET tweets from the server
 const HandleNewTweets = (allPackages:tweetContainerAllPackages) =>{
     return useEffect(()=>{
         let NumTweets = allPackages.tweets.length
@@ -81,6 +83,7 @@ const handleInput = (e:React.MouseEvent<HTMLInputElement, MouseEvent>,allPackage
     }
 }
 
+//This is used for the top status bar to change color the closer they get to completing their tweet goal
 const calculateCompletionColor = (percent:number)=>{
     function componentToHex(c:number) {
         c = Math.floor(c)

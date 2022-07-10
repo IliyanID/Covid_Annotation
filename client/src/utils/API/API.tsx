@@ -7,6 +7,10 @@ export class API{
         this.showMessage = showMessage
     }
 
+    //Expectes to receive a schema
+    //Compares the response against the expected JSON schema
+    
+    //Additonally, added timeout. Defualts to 5 seconds
     fetchWithTimeout = async(resource:string, options:RequestInit = {},schema:Object = {}):Promise<any> => {    
         const controller = new AbortController();
         const id = setTimeout(() => {
@@ -20,6 +24,8 @@ export class API{
 
           console.log(httpsAgent)
 
+
+        //credentials:include adds the auth cookie for the server
         const response = await fetch(resource, {
           ...options,
           signal: controller.signal,
@@ -73,6 +79,7 @@ export class API{
     }
 
     Get_Base_URL = () =>{
+        //Figures out wether its in the development or production enviroment
         let domain_name = window.location.hostname
         if(domain_name.includes('www.cs.colostate.edu'))
             return 'https://www.cs.colostate.edu/COVID-19TweetAnnotation/forward_requests.php?path=api'

@@ -78,7 +78,7 @@
     // TRUE to exclude the body from the output.
     curl_setopt($ch, CURLOPT_NOBODY, 0);
 
-
+    //Send the new request and get response
     $result = curl_exec($ch);
 
     $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
